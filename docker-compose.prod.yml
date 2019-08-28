@@ -1,0 +1,70 @@
+# docker-compose.yml
+version: '3'
+
+services:
+  nginx:
+    build: 
+      context: ./nginx/
+      args:
+        APP_ENV: prod
+    image: lifetools_nginx:latest
+    container_name: lifetools_nginx
+    restart: always
+    depends_on:
+      - certbot
+      - prisma
+      - flutter
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8081:8081"
+
+  prisma:
+    build: ./prisma/
+    image: lifetools_prisma:latest
+    container_name: lifetools_prisma
+    depends_on:
+      - postgres
+    env_file:
+      - ./prisma/docker-compose.env
+    cap_add:
+      - SYS_ADMIN
+    expose:
+      - "4000"
+
+  postgres:
+    image: postgres:12-alpine
+    container_name: lifetools_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: prisma
+      POSTGRES_PASSWORD: prisma
+      POSTGRES_DB: life-tools
+    expose:
+      - "5432"
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+
+  flutter:
+    build: 
+      context: ./lifetools/
+      args:
+        FLUTTER_VERSION: v1.9.7
+    image: lifetools_flutter:latest
+    container_name: lifetools_flutter
+    restart: always
+    expose:
+      - "80"
+
+  certbot:
+    image: certbot/certbot
+    container_name: lifetools_certbot
+    restart: always
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
