@@ -4,7 +4,7 @@ import 'package:flutter_app/src/models/daily_routine_item.dart';
 import 'package:flutter_app/src/resources/daily_routine_provider.dart';
 import 'package:flutter_app/src/utils/graphql/graphql_exception.dart';
 
-/// Manage the business logic related to the daily routine of a user.
+/// Manage the business logic related to the daily routine and its items.
 class DailyRoutineBloc {
   /// Provider of the authentication requests, responsible of making API calls.
   final DailyRoutineProvider _dailyRoutineProvider = DailyRoutineProvider();
@@ -61,7 +61,7 @@ class DailyRoutineBloc {
   ///
   /// The [query] key and values must match the JSON key and values needed
   /// by the GraphQL API for the 'createOneDailyRoutineItem' resolver.
-  Future<void> create(Map<String, dynamic> query) async {
+  Future<void> createOneItem(Map<String, dynamic> query) async {
     await _dailyRoutineProvider.createOneItem(query);
   }
 
@@ -69,7 +69,7 @@ class DailyRoutineBloc {
   ///
   /// The [query] key and values must match the JSON key and values needed
   /// by the GraphQL API for the 'updateOneDailyRoutineItem' resolver.
-  Future<void> update(Map<String, dynamic> query) async {
+  Future<void> updateOneItem(Map<String, dynamic> query) async {
     await _dailyRoutineProvider.updateOneItem(query);
   }
 
@@ -77,7 +77,7 @@ class DailyRoutineBloc {
   ///
   /// The [query] key and values must match the JSON key and values needed
   /// by the GraphQL API for the 'deleteOneDailyRoutineItem' resolver.
-  Future<void> delete(Map<String, dynamic> query) async {
+  Future<void> deleteOneItem(Map<String, dynamic> query) async {
     await _dailyRoutineProvider.deleteOneItem(query);
   }
 }

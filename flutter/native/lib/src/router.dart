@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/blocs/inherited_widgets/daily_routine_bloc_provider.dart';
 
 import 'package:flutter_app/src/blocs/user_bloc.dart';
 import 'package:flutter_app/src/ui/screens/auth/signin.dart';
 import 'package:flutter_app/src/ui/screens/auth/signup.dart';
+import 'package:flutter_app/src/ui/screens/daily_routine.dart';
 import 'package:flutter_app/src/ui/widgets/shared/app_scaffold.dart';
 
 /// Build the appropriate [MaterialPageRoute] on route navigation.
@@ -14,15 +16,9 @@ class Router {
     if (!UserBloc.isLoggedIn) {
       switch (settings.name) {
         case '/auth/signin':
-          return buildPage(
-            body: SignInScreen(),
-            showAppBar: false,
-          );
+          return buildPage(body: SignInScreen(), showAppBar: false);
         default:
-          return buildPage(
-            body: SignUpScreen(),
-            showAppBar: false,
-          );
+          return buildPage(body: SignUpScreen(), showAppBar: false);
       }
     } else if (UserBloc.isLoggedIn) {
       switch (settings.name) {
@@ -31,11 +27,11 @@ class Router {
           break;
         default:
           return buildPage(
-            body: Container(),
+            body: DailyRoutineBlocProvider(child: DailyRoutine()),
           );
       }
     }
-    return buildPage(body: SignUpScreen());
+    return buildPage(body: SignUpScreen(), showAppBar: false);
   }
 
   /// Build a new [MaterialPageRoute] based on the provided parameters.

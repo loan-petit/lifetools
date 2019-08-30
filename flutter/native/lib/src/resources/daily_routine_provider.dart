@@ -26,10 +26,10 @@ class DailyRoutineProvider {
         me {
           user {
             dailyRoutine {
-              id;
-              name;
-              startTime;
-              endTime;
+              id
+              name
+              startTime
+              endTime
             }
           }
         }
@@ -52,10 +52,10 @@ class DailyRoutineProvider {
     String body = """
       query FetchOneDailyRoutineItem{
         findOneDailyRoutineItem $args {
-          id;
-          name;
-          startTime;
-          endTime;
+          id
+          name
+          startTime
+          endTime
         }
       }
     """;
