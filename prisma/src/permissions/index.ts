@@ -15,53 +15,34 @@ const rules = {
     })
     return userId === user.id
   }),
-  isContentFeedbackOwner: rule()(async (parent, { id }, context) => {
+  isDailyRoutineItemOwner: rule()(async (parent, { id }, context) => {
     const userId = getUserId(context)
-    const author = await context.photon.contentFeedbacks
+    const owner = await context.photon.dailyRoutineItems
       .findOne({
         where: {
           id
         }
       })
-      .author()
-    return userId === author.id
+      .owner()
+    return userId === owner.id
   }),
-  isContentListOwner: rule()(async (parent, { id }, context) => {
-    const userId = getUserId(context)
-    const author = await context.photon.contentLists
-      .findOne({
-        where: {
-          id
-        }
-      })
-      .author()
-    return userId === author.id
-  })
 }
 
 export const permissions = shield({
   Query: {
     findOneUser: rules.isAuthenticatedUser,
     findManyUser: rules.isAuthenticatedUser,
-    me: rules.isAuthenticatedUser
+    me: rules.isAuthenticatedUser,
+
+    findOneDailyRoutineItem: rules.isAuthenticatedUser,
+    findManyDailyRoutineItem: rules.isAuthenticatedUser,
   },
   Mutation: {
-    updateOneUser: rule.isCurrentUser,
-    deleteOneUser: rule.isCurrentUser,
+    updateOneUser: rules.isCurrentUser,
+    deleteOneUser: rules.isCurrentUser,
 
-    createContent: rules.isAuthenticatedUser,
-
-    createContentFeedback: rules.isAuthenticatedUser,
-    updateOneContentFeedback: rules.isContentFeedbackOwner,
-    deleteOneContentFeedback: rules.isContentFeedbackOwner,
-
-    createContentList: rules.isAuthenticatedUser,
-    followContentList: rules.isAuthenticatedUser,
-    unfollowContentList: rules.isAuthenticatedUser,
-    updateOneContentList: rules.isContentListOwner,
-    deleteOneContentList: rules.isContentListOwner,
-
-    followUser: rules.isAuthenticatedUser,
-    unfollowUser: rules.isAuthenticatedUser
+    createOneDailyRoutineItem: rules.isAuthenticatedUser,
+    updateOneDailyRoutineItem: rules.isDailyRoutineItemOwner,
+    deleteOneDailyRoutineItem: rules.isDailyRoutineItemOwner,
   }
 })
