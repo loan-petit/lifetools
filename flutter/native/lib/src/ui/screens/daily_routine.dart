@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_app/src/blocs/daily_routine_bloc.dart';
 import 'package:flutter_app/src/blocs/inherited_widgets/daily_routine_bloc_provider.dart';
-import 'package:flutter_app/src/models/daily_routine_item.dart';
-import 'package:flutter_app/src/ui/widgets/daily_routine_item.dart';
+import 'package:flutter_app/src/models/daily_routine_event.dart';
+import 'package:flutter_app/src/ui/widgets/daily_routine_event.dart';
 import 'package:flutter_app/src/ui/widgets/shared/loading_screen.dart';
 
 /// Display the logged in user's daily routine.
@@ -45,9 +45,9 @@ class _DailyRoutineState extends State<DailyRoutine> {
               );
             }
             if (snapshot.hasData) {
-              return _buildItemList(snapshot.data);
+              return _buildEventList(snapshot.data);
             }
-            return LoadingScreen(child: _buildItemList(snapshot.data));
+            return LoadingScreen(child: _buildEventList(snapshot.data));
           },
         ),
         _buildFab(),
@@ -55,17 +55,17 @@ class _DailyRoutineState extends State<DailyRoutine> {
     );
   }
 
-  /// Build the list of items in the daily routine.
-  Widget _buildItemList(Iterable<DailyRoutineItemModel> data) {
+  /// Build the list of events in the daily routine.
+  Widget _buildEventList(Iterable<DailyRoutineEventModel> data) {
     if (data == null) return Container();
 
-    final List<DailyRoutineItemModel> dailyRoutine = data.toList();
+    final List<DailyRoutineEventModel> dailyRoutine = data.toList();
 
     return ListView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 24.0),
       itemCount: dailyRoutine.length,
       itemBuilder: (BuildContext context, int index) =>
-          DailyRoutineItem(dailyRoutineItem: dailyRoutine[index]),
+          DailyRoutineEvent(dailyRoutineEvent: dailyRoutine[index]),
     );
   }
 
@@ -75,7 +75,7 @@ class _DailyRoutineState extends State<DailyRoutine> {
       padding: EdgeInsets.only(right: 12.0, bottom: 12.0),
       child: FloatingActionButton(
         onPressed: () async {
-          await Navigator.pushNamed(context, '/upsert-daily-routine-item');
+          await Navigator.pushNamed(context, '/upsert-daily-routine-event');
         },
         tooltip: "Create a new event in your daily routine.",
         child: Icon(Icons.add),

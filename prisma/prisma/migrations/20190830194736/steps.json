@@ -3,27 +3,17 @@
   "steps": [
     {
       "stepType": "CreateModel",
-      "name": "DailyRoutineItem",
+      "name": "User",
+      "embedded": false
+    },
+    {
+      "stepType": "CreateModel",
+      "name": "DailyRoutineEvent",
       "embedded": false
     },
     {
       "stepType": "CreateField",
       "model": "User",
-      "name": "dailyRoutine",
-      "type": {
-        "Relation": {
-          "to": "DailyRoutineItem",
-          "to_fields": [],
-          "name": "DailyRoutineItemToUser",
-          "on_delete": "None"
-        }
-      },
-      "arity": "list",
-      "isUnique": false
-    },
-    {
-      "stepType": "CreateField",
-      "model": "DailyRoutineItem",
       "name": "id",
       "type": {
         "Base": "String"
@@ -44,7 +34,63 @@
     },
     {
       "stepType": "CreateField",
-      "model": "DailyRoutineItem",
+      "model": "User",
+      "name": "email",
+      "type": {
+        "Base": "String"
+      },
+      "arity": "required",
+      "isUnique": true
+    },
+    {
+      "stepType": "CreateField",
+      "model": "User",
+      "name": "password",
+      "type": {
+        "Base": "String"
+      },
+      "arity": "required",
+      "isUnique": false
+    },
+    {
+      "stepType": "CreateField",
+      "model": "User",
+      "name": "dailyRoutine",
+      "type": {
+        "Relation": {
+          "to": "DailyRoutineEvent",
+          "to_fields": [],
+          "name": "DailyRoutineEventToUser",
+          "on_delete": "None"
+        }
+      },
+      "arity": "list",
+      "isUnique": false
+    },
+    {
+      "stepType": "CreateField",
+      "model": "DailyRoutineEvent",
+      "name": "id",
+      "type": {
+        "Base": "String"
+      },
+      "arity": "required",
+      "isUnique": true,
+      "id": {
+        "strategy": "Auto",
+        "sequence": null
+      },
+      "default": {
+        "Expression": [
+          "cuid",
+          "String",
+          []
+        ]
+      }
+    },
+    {
+      "stepType": "CreateField",
+      "model": "DailyRoutineEvent",
       "name": "name",
       "type": {
         "Base": "String"
@@ -54,7 +100,7 @@
     },
     {
       "stepType": "CreateField",
-      "model": "DailyRoutineItem",
+      "model": "DailyRoutineEvent",
       "name": "startTime",
       "type": {
         "Base": "Int"
@@ -64,7 +110,7 @@
     },
     {
       "stepType": "CreateField",
-      "model": "DailyRoutineItem",
+      "model": "DailyRoutineEvent",
       "name": "endTime",
       "type": {
         "Base": "Int"
@@ -74,7 +120,7 @@
     },
     {
       "stepType": "CreateField",
-      "model": "DailyRoutineItem",
+      "model": "DailyRoutineEvent",
       "name": "owner",
       "type": {
         "Relation": {
@@ -82,7 +128,7 @@
           "to_fields": [
             "id"
           ],
-          "name": "DailyRoutineItemToUser",
+          "name": "DailyRoutineEventToUser",
           "on_delete": "None"
         }
       },

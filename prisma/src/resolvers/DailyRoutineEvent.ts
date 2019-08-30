@@ -1,7 +1,7 @@
 import { objectType } from '@prisma/nexus'
 
-export const DailyRoutineItem = objectType({
-  name: 'DailyRoutineItem',
+export const DailyRoutineEvent = objectType({
+  name: 'DailyRoutineEvent',
   definition (t) {
     t.model.id()
     t.model.name()

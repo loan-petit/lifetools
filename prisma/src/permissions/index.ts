@@ -15,9 +15,9 @@ const rules = {
     })
     return userId === user.id
   }),
-  isDailyRoutineItemOwner: rule()(async (parent, { id }, context) => {
+  isDailyRoutineEventOwner: rule()(async (parent, { id }, context) => {
     const userId = getUserId(context)
-    const owner = await context.photon.dailyRoutineItems
+    const owner = await context.photon.dailyRoutineEvents
       .findOne({
         where: {
           id
@@ -34,15 +34,15 @@ export const permissions = shield({
     findManyUser: rules.isAuthenticatedUser,
     me: rules.isAuthenticatedUser,
 
-    findOneDailyRoutineItem: rules.isAuthenticatedUser,
-    findManyDailyRoutineItem: rules.isAuthenticatedUser,
+    findOneDailyRoutineEvent: rules.isAuthenticatedUser,
+    findManyDailyRoutineEvent: rules.isAuthenticatedUser,
   },
   Mutation: {
     updateOneUser: rules.isCurrentUser,
     deleteOneUser: rules.isCurrentUser,
 
-    createOneDailyRoutineItem: rules.isAuthenticatedUser,
-    updateOneDailyRoutineItem: rules.isDailyRoutineItemOwner,
-    deleteOneDailyRoutineItem: rules.isDailyRoutineItemOwner,
+    createOneDailyRoutineEvent: rules.isAuthenticatedUser,
+    updateOneDailyRoutineEvent: rules.isDailyRoutineEventOwner,
+    deleteOneDailyRoutineEvent: rules.isDailyRoutineEventOwner,
   }
 })

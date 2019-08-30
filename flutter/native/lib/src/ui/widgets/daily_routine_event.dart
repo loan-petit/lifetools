@@ -1,24 +1,22 @@
-import 'package:pedantic/pedantic.dart';
-
 import 'package:flutter/material.dart';
 
-import 'package:flutter_app/src/models/daily_routine_item.dart';
+import 'package:flutter_app/src/models/daily_routine_event.dart';
 
-/// Build a list item based on a [ListTile].
+/// Build a list event based on a [ListTile].
 ///
-/// The item data has to be send to [dailyRoutineItem].
-class DailyRoutineItem extends StatefulWidget {
-  final DailyRoutineItemModel dailyRoutineItem;
+/// The event data has to be send to [dailyRoutineEvent].
+class DailyRoutineEvent extends StatefulWidget {
+  final DailyRoutineEventModel dailyRoutineEvent;
 
-  DailyRoutineItem({
-    @required this.dailyRoutineItem,
-  }) : assert(dailyRoutineItem != null);
+  DailyRoutineEvent({
+    @required this.dailyRoutineEvent,
+  }) : assert(dailyRoutineEvent != null);
 
   @override
-  _DailyRoutineItemState createState() => _DailyRoutineItemState();
+  _DailyRoutineEventState createState() => _DailyRoutineEventState();
 }
 
-class _DailyRoutineItemState extends State<DailyRoutineItem> {
+class _DailyRoutineEventState extends State<DailyRoutineEvent> {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -27,7 +25,7 @@ class _DailyRoutineItemState extends State<DailyRoutineItem> {
       child: ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
         leading: _buildLeading(),
-        title: Text(widget.dailyRoutineItem.name),
+        title: Text(widget.dailyRoutineEvent.name),
         trailing: Icon(
           Icons.navigate_next,
           size: 30.0,
@@ -40,12 +38,12 @@ class _DailyRoutineItemState extends State<DailyRoutineItem> {
   Widget _buildLeading() {
     final startTime = TimeOfDay.fromDateTime(
       DateTime.fromMillisecondsSinceEpoch(
-        widget.dailyRoutineItem.startTime * 1000,
+        widget.dailyRoutineEvent.startTime * 1000,
       ),
     );
     final endTime = TimeOfDay.fromDateTime(
       DateTime.fromMillisecondsSinceEpoch(
-        widget.dailyRoutineItem.endTime * 1000,
+        widget.dailyRoutineEvent.endTime * 1000,
       ),
     );
 

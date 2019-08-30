@@ -15,10 +15,10 @@ model User {
   id           String             @default(cuid()) @id @unique
   email        String             @unique
   password     String
-  dailyRoutine DailyRoutineItem[]
+  dailyRoutine DailyRoutineEvent[]
 }
 
-model DailyRoutineItem {
+model DailyRoutineEvent {
   id        String @default(cuid()) @id @unique
   name      String
   startTime Int

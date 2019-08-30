@@ -8,7 +8,7 @@ type AuthPayload {
   user: User!
 }
 
-type DailyRoutineItem {
+type DailyRoutineEvent {
   endTime: Int!
   id: ID!
   name: String!
@@ -16,7 +16,7 @@ type DailyRoutineItem {
   startTime: Int!
 }
 
-input DailyRoutineItemCreateInput {
+input DailyRoutineEventCreateInput {
   endTime: Int!
   id: ID
   name: String!
@@ -24,14 +24,14 @@ input DailyRoutineItemCreateInput {
   startTime: Int!
 }
 
-input DailyRoutineItemCreateWithoutOwnerInput {
+input DailyRoutineEventCreateWithoutOwnerInput {
   endTime: Int!
   id: ID
   name: String!
   startTime: Int!
 }
 
-input DailyRoutineItemUpdateInput {
+input DailyRoutineEventUpdateInput {
   endTime: Int
   id: ID
   name: String
@@ -39,49 +39,49 @@ input DailyRoutineItemUpdateInput {
   startTime: Int
 }
 
-input DailyRoutineItemUpdateManyDataInput {
+input DailyRoutineEventUpdateManyDataInput {
   endTime: Int
   id: ID
   name: String
   startTime: Int
 }
 
-input DailyRoutineItemUpdateManyWithoutOwnerInput {
-  connect: [DailyRoutineItemWhereUniqueInput!]
-  create: [DailyRoutineItemCreateWithoutOwnerInput!]
-  delete: [DailyRoutineItemWhereUniqueInput!]
+input DailyRoutineEventUpdateManyWithoutOwnerInput {
+  connect: [DailyRoutineEventWhereUniqueInput!]
+  create: [DailyRoutineEventCreateWithoutOwnerInput!]
+  delete: [DailyRoutineEventWhereUniqueInput!]
   deleteMany: [MutationUpdateOneUserWhereInput!]
-  disconnect: [DailyRoutineItemWhereUniqueInput!]
-  set: [DailyRoutineItemWhereUniqueInput!]
-  update: [DailyRoutineItemUpdateWithWhereUniqueWithoutOwnerInput!]
-  updateMany: [DailyRoutineItemUpdateManyWithWhereNestedInput!]
-  upsert: [DailyRoutineItemUpsertWithWhereUniqueWithoutOwnerInput!]
+  disconnect: [DailyRoutineEventWhereUniqueInput!]
+  set: [DailyRoutineEventWhereUniqueInput!]
+  update: [DailyRoutineEventUpdateWithWhereUniqueWithoutOwnerInput!]
+  updateMany: [DailyRoutineEventUpdateManyWithWhereNestedInput!]
+  upsert: [DailyRoutineEventUpsertWithWhereUniqueWithoutOwnerInput!]
 }
 
-input DailyRoutineItemUpdateManyWithWhereNestedInput {
-  data: DailyRoutineItemUpdateManyDataInput!
+input DailyRoutineEventUpdateManyWithWhereNestedInput {
+  data: DailyRoutineEventUpdateManyDataInput!
   where: MutationUpdateOneUserWhereInput!
 }
 
-input DailyRoutineItemUpdateWithoutOwnerDataInput {
+input DailyRoutineEventUpdateWithoutOwnerDataInput {
   endTime: Int
   id: ID
   name: String
   startTime: Int
 }
 
-input DailyRoutineItemUpdateWithWhereUniqueWithoutOwnerInput {
-  data: DailyRoutineItemUpdateWithoutOwnerDataInput!
-  where: DailyRoutineItemWhereUniqueInput!
+input DailyRoutineEventUpdateWithWhereUniqueWithoutOwnerInput {
+  data: DailyRoutineEventUpdateWithoutOwnerDataInput!
+  where: DailyRoutineEventWhereUniqueInput!
 }
 
-input DailyRoutineItemUpsertWithWhereUniqueWithoutOwnerInput {
-  create: DailyRoutineItemCreateWithoutOwnerInput!
-  update: DailyRoutineItemUpdateWithoutOwnerDataInput!
-  where: DailyRoutineItemWhereUniqueInput!
+input DailyRoutineEventUpsertWithWhereUniqueWithoutOwnerInput {
+  create: DailyRoutineEventCreateWithoutOwnerInput!
+  update: DailyRoutineEventUpdateWithoutOwnerDataInput!
+  where: DailyRoutineEventWhereUniqueInput!
 }
 
-input DailyRoutineItemWhereUniqueInput {
+input DailyRoutineEventWhereUniqueInput {
   id: ID
 }
 
@@ -97,12 +97,12 @@ input IntFilter {
 }
 
 type Mutation {
-  createOneDailyRoutineItem(data: DailyRoutineItemCreateInput!): DailyRoutineItem!
-  deleteOneDailyRoutineItem(where: DailyRoutineItemWhereUniqueInput!): DailyRoutineItem
+  createOneDailyRoutineEvent(data: DailyRoutineEventCreateInput!): DailyRoutineEvent!
+  deleteOneDailyRoutineEvent(where: DailyRoutineEventWhereUniqueInput!): DailyRoutineEvent
   deleteOneUser(where: UserWhereUniqueInput!): User
   signin(email: String, password: String): AuthPayload!
   signup(email: String, password: String, passwordConfirmation: String): AuthPayload!
-  updateOneDailyRoutineItem(data: DailyRoutineItemUpdateInput!, where: DailyRoutineItemWhereUniqueInput!): DailyRoutineItem
+  updateOneDailyRoutineEvent(data: DailyRoutineEventUpdateInput!, where: DailyRoutineEventWhereUniqueInput!): DailyRoutineEvent
   updateOneUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
 }
 
@@ -117,9 +117,9 @@ input MutationUpdateOneUserWhereInput {
 }
 
 type Query {
-  findManyDailyRoutineItem(after: String, before: String, first: Int, last: Int, skip: Int): [DailyRoutineItem!]
+  findManyDailyRoutineEvent(after: String, before: String, first: Int, last: Int, skip: Int): [DailyRoutineEvent!]
   findManyUser(after: String, before: String, first: Int, last: Int, skip: Int): [User!]
-  findOneDailyRoutineItem(where: DailyRoutineItemWhereUniqueInput!): DailyRoutineItem
+  findOneDailyRoutineEvent(where: DailyRoutineEventWhereUniqueInput!): DailyRoutineEvent
   findOneUser(where: UserWhereUniqueInput!): User
   me: AuthPayload!
 }
@@ -139,7 +139,7 @@ input StringFilter {
 }
 
 type User {
-  dailyRoutine(after: String, before: String, first: Int, last: Int, skip: Int): [DailyRoutineItem!]
+  dailyRoutine(after: String, before: String, first: Int, last: Int, skip: Int): [DailyRoutineEvent!]
   id: ID!
 }
 
@@ -155,7 +155,7 @@ input UserCreateWithoutDailyRoutineInput {
 }
 
 input UserUpdateInput {
-  dailyRoutine: DailyRoutineItemUpdateManyWithoutOwnerInput
+  dailyRoutine: DailyRoutineEventUpdateManyWithoutOwnerInput
   email: String
   id: ID
   password: String

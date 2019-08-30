@@ -7,9 +7,9 @@ const DefaultMutations = mutationType({
     t.crud.updateOneUser()
     t.crud.deleteOneUser()
 
-    t.crud.createOneDailyRoutineItem()
-    t.crud.updateOneDailyRoutineItem()
-    t.crud.deleteOneDailyRoutineItem()
+    t.crud.createOneDailyRoutineEvent()
+    t.crud.updateOneDailyRoutineEvent()
+    t.crud.deleteOneDailyRoutineEvent()
   }
 })
 

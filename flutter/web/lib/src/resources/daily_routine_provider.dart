@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:flutter_app/src/models/daily_routine_item.dart';
+import 'package:flutter_app/src/models/daily_routine_event.dart';
 import 'package:flutter_app/src/services/data_persistence_service.dart';
 import 'package:flutter_app/src/utils/graphql/graphql_helper.dart';
 
 /// Provide CRUD operations, on GraphQL API, related to the daily routine
-/// and its items.
+/// and its events.
 ///
 /// Check out the GraphQL API documentation to get a deeper understanding
 /// of the resolvers and their parameters.
@@ -20,7 +20,7 @@ class DailyRoutineProvider {
       };
 
   /// Fetch the daily routine of the logged in user.
-  Future<Iterable<DailyRoutineItemModel>> fetch() async {
+  Future<Iterable<DailyRoutineEventModel>> fetch() async {
     String body = """
       query FetchDailyRoutine {
         me {
@@ -42,16 +42,16 @@ class DailyRoutineProvider {
       resolverName: 'me',
     );
 
-    return responseBody['user']['dailyRoutine'].map<DailyRoutineItemModel>(
-        (mediaList) => DailyRoutineItemModel.fromJson(mediaList));
+    return responseBody['user']['dailyRoutine'].map<DailyRoutineEventModel>(
+        (mediaList) => DailyRoutineEventModel.fromJson(mediaList));
   }
 
-  /// Fetch a daily routine item based on the provided [query] parameters.
-  Future<DailyRoutineItemModel> fetchOneItem(Map<String, dynamic> query) async {
+  /// Fetch a daily routine event based on the provided [query] parameters.
+  Future<DailyRoutineEventModel> fetchOneEvent(Map<String, dynamic> query) async {
     String args = GraphqlHelper.mapToParams(query);
     String body = """
-      query FetchOneDailyRoutineItem{
-        findOneDailyRoutineItem $args {
+      query FetchOneDailyRoutineEvent{
+        findOneDailyRoutineEvent $args {
           id
           name
           startTime
@@ -63,18 +63,18 @@ class DailyRoutineProvider {
     Map<String, dynamic> responseBody = await GraphqlHelper.request(
       body: body,
       headers: _authorizationHeader,
-      resolverName: 'findOneDailyRoutineItem',
+      resolverName: 'findOneDailyRoutineEvent',
     );
 
-    return DailyRoutineItemModel.fromJson(responseBody);
+    return DailyRoutineEventModel.fromJson(responseBody);
   }
 
-  /// Create a daily routine item based on the provided [query] parameters.
-  Future<void> createOneItem(Map<String, String> query) async {
+  /// Create a daily routine event based on the provided [query] parameters.
+  Future<void> createOneEvent(Map<String, String> query) async {
     String args = GraphqlHelper.mapToParams(query);
     String body = """
-      mutation CreateOneDailyRoutineItem {
-        createOneDailyRoutineItem $args {
+      mutation CreateOneDailyRoutineEvent {
+        createOneDailyRoutineEvent $args {
           id
         }
       }
@@ -83,16 +83,16 @@ class DailyRoutineProvider {
     await GraphqlHelper.request(
       body: body,
       headers: _authorizationHeader,
-      resolverName: 'createOneDailyRoutineItem',
+      resolverName: 'createOneDailyRoutineEvent',
     );
   }
 
-  /// Update a daily routine item based on the provided [query] parameters.
-  Future<void> updateOneItem(Map<String, dynamic> query) async {
+  /// Update a daily routine event based on the provided [query] parameters.
+  Future<void> updateOneEvent(Map<String, dynamic> query) async {
     String args = GraphqlHelper.mapToParams(query);
     String body = """
-      mutation UpdateOneDailyRoutineItem {
-        updateOneDailyRoutineItem $args {
+      mutation UpdateOneDailyRoutineEvent {
+        updateOneDailyRoutineEvent $args {
           id
         }
       }
@@ -101,16 +101,16 @@ class DailyRoutineProvider {
     await GraphqlHelper.request(
       body: body,
       headers: _authorizationHeader,
-      resolverName: 'updateOneDailyRoutineItem',
+      resolverName: 'updateOneDailyRoutineEvent',
     );
   }
 
-  /// Delete a daily routine item based on the provided [query] parameters.
-  Future<void> deleteOneItem(Map<String, dynamic> query) async {
+  /// Delete a daily routine event based on the provided [query] parameters.
+  Future<void> deleteOneEvent(Map<String, dynamic> query) async {
     String args = GraphqlHelper.mapToParams(query);
     String body = """
-      mutation DeleteOneDailyRoutineItem {
-        deleteOneDailyRoutineItem $args {
+      mutation DeleteOneDailyRoutineEvent {
+        deleteOneDailyRoutineEvent $args {
           id
         }
       }
@@ -119,7 +119,7 @@ class DailyRoutineProvider {
     await GraphqlHelper.request(
       body: body,
       headers: _authorizationHeader,
-      resolverName: 'deleteOneDailyRoutineItem',
+      resolverName: 'deleteOneDailyRoutineEvent',
     );
   }
 }

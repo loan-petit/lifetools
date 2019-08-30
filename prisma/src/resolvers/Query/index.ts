@@ -7,8 +7,8 @@ const DefaultQueries = queryType({
     t.crud.findOneUser()
     t.crud.findManyUser()
 
-    t.crud.findOneDailyRoutineItem()
-    t.crud.findManyDailyRoutineItem()
+    t.crud.findOneDailyRoutineEvent()
+    t.crud.findManyDailyRoutineEvent()
   }
 })
 

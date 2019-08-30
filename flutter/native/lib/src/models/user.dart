@@ -1,4 +1,4 @@
-import 'package:flutter_app/src/models/daily_routine_item.dart';
+import 'package:flutter_app/src/models/daily_routine_event.dart';
 
 /// Abstraction of a user. This class should be build from GraphQL API
 /// responses returning an AuthPayload.
@@ -14,7 +14,7 @@ class UserModel {
   String id;
   String token;
   int expiresIn;
-  List<DailyRoutineItemModel> dailyRoutine;
+  List<DailyRoutineEventModel> dailyRoutine;
 
   UserModel({
     this.id,
@@ -34,8 +34,8 @@ class UserModel {
         token: json['token'],
         expiresIn: json['expiresIn'],
         id: json['user']['id'],
-        dailyRoutine: json['user']['dailyRoutine'].map<DailyRoutineItemModel>(
-            (item) => DailyRoutineItemModel.fromJson(item)),
+        dailyRoutine: json['user']['dailyRoutine'].map<DailyRoutineEventModel>(
+            (event) => DailyRoutineEventModel.fromJson(event)),
       );
     }
 
