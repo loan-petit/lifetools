@@ -6,6 +6,9 @@ const DefaultQueries = queryType({
   definition (t) {
     t.crud.findOneUser()
     t.crud.findManyUser()
+
+    t.crud.findOneDailyRoutineItem()
+    t.crud.findManyDailyRoutineItem()
   }
 })
 
