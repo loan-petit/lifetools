@@ -5,13 +5,13 @@ import 'package:flutter_app/src/resources/user_provider.dart';
 import 'package:flutter_app/src/services/data_persistence_service.dart';
 import 'package:flutter_app/src/utils/graphql/graphql_exception.dart';
 
-/// Provide the business logic related to the users.
+/// Manage the business logic related to the users.
 class UserBloc {
   /// Take care of the data persistence, necessary to keep user logged in
   /// during his subsequents accesses to the app.
   static final _dataPersistenceService = DataPersistenceService();
 
-  /// Provider of the authentication requests, responsible of making API calls.
+  /// Provider CRUD operations for
   final UserProvider _usersProvider = UserProvider();
 
   /// Sink and Streams controller.
@@ -73,7 +73,7 @@ class UserBloc {
   /// Persist the JWT [token] and its expiration date.
   /// Those informations will be used to check if a user is logged in and
   /// to provide access to GraphQL resolvers restricted to authenticated users.
-  /// 
+  ///
   /// The expiration date is determined based on the [expiresIn] time.
   void _storeJwt(String token, int expiresIn) {
     _dataPersistenceService.set('id_token', token);

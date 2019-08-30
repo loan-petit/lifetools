@@ -4,12 +4,12 @@ import 'package:flutter_app/src/models/user.dart';
 import 'package:flutter_app/src/services/data_persistence_service.dart';
 import 'package:flutter_app/src/utils/graphql/graphql_helper.dart';
 
-/// Provide user related data from the GraphQL API and store it in [UserModel].
+/// Provide CRUD operations, on GraphQL API, related to the users.
 ///
 /// Check out the GraphQL API documentation to get a deeper understanding
-/// of the queries and their parameters.
+/// of the resolvers and their parameters.
 class UserProvider {
-  /// Service used to persist user's authentication token.
+  /// Service used to access the JWT of the logged in user.
   final _dataPersistenceService = DataPersistenceService();
 
   /// Authorization header providing access to GraphQL resolvers

@@ -2,7 +2,7 @@ import 'package:flutter_web/material.dart';
 
 import 'package:flutter_app/src/blocs/user_bloc.dart';
 
-/// Widget used to share the [UsersBloc] across a part of the widget tree.
+/// Widget used to share the [UserBloc] across a part of the widget tree.
 class UserBlocProvider extends InheritedWidget {
   final UserBloc bloc;
 
@@ -12,13 +12,13 @@ class UserBlocProvider extends InheritedWidget {
   })  : bloc = UserBloc(),
         super(key: key, child: child);
 
-  /// Notify every widget below this one in the tree of [UsersBloc] changes.
+  /// Notify every widget below this one in the tree of [UserBloc] changes.
   @override
   bool updateShouldNotify(_) {
     return true;
   }
 
-  /// Retrieve the [UsersBloc] from the context of a widget below this one
+  /// Retrieve the [UserBloc] from the context of a widget below this one
   /// in the tree.
   static UserBloc of(BuildContext context) {
     return (context.inheritFromWidgetOfExactType(UserBlocProvider)
