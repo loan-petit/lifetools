@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pedantic/pedantic.dart';
 
-import 'package:flutter_app/src/blocs/user_bloc.dart';
+import 'package:flutter_app/src/blocs/user.dart';
+import 'package:flutter_app/src/ui/widgets/shared/app_scaffold.dart';
 import 'package:flutter_app/src/ui/widgets/shared/arc_hero/index.dart';
 import 'package:flutter_app/src/ui/widgets/shared/loading_screen.dart';
 import 'package:flutter_app/src/utils/field_validator.dart';
@@ -49,9 +50,47 @@ class _SignUpScreenState extends State<SignUpScreen> {
     super.dispose();
   }
 
-  /// Build the sign up [Form] and its widgets.
   @override
   Widget build(BuildContext context) {
+    return AppScaffold(
+      showDefaultAppBar: false,
+      body: LoadingScreen(
+        isInAsyncCall: _isLoadingVisible,
+        child: Column(
+          children: <Widget>[
+            Flexible(
+              flex: 1,
+              child: ArcHero(
+                hero: FlutterLogo(
+                  colors: Colors.yellow,
+                  size: MediaQuery.of(context).size.height / 8,
+                ),
+                arcContent: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: <Color>[
+                        Theme.of(context).primaryColor,
+                        Theme.of(context).accentColor,
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Flexible(
+              flex: 3,
+              child: _buildForm(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Build the sign in form and its widgets.
+  Form _buildForm() {
     final email = TextFormField(
       keyboardType: TextInputType.emailAddress,
       autofocus: true,
@@ -144,60 +183,29 @@ class _SignUpScreenState extends State<SignUpScreen> {
       },
     );
 
-    return LoadingScreen(
-      isInAsyncCall: _isLoadingVisible,
-      child: Column(
-        children: <Widget>[
-          Flexible(
-            flex: 1,
-            child: ArcHero(
-              hero: FlutterLogo(
-                colors: Colors.yellow,
-                size: MediaQuery.of(context).size.height / 8,
-              ),
-              arcContent: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: <Color>[
-                      Theme.of(context).primaryColor,
-                      Theme.of(context).accentColor,
-                    ],
-                  ),
-                ),
-              ),
+    return Form(
+      key: _formKey,
+      autovalidate: _autoValidate,
+      child: Padding(
+        padding: EdgeInsets.all(24.0),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                email,
+                SizedBox(height: 24.0),
+                password,
+                SizedBox(height: 24.0),
+                passwordConfirmation,
+                SizedBox(height: 12.0),
+                signUpButton,
+                if (_areCredentialsInvalid) errorLabel,
+                signInLabel,
+              ],
             ),
           ),
-          Flexible(
-            flex: 3,
-            child: Padding(
-              padding: EdgeInsets.all(24.0),
-              child: Form(
-                key: _formKey,
-                autovalidate: _autoValidate,
-                child: Center(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        email,
-                        SizedBox(height: 24.0),
-                        password,
-                        SizedBox(height: 24.0),
-                        passwordConfirmation,
-                        SizedBox(height: 12.0),
-                        signUpButton,
-                        if (_areCredentialsInvalid) errorLabel,
-                        signInLabel,
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -208,9 +216,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
     setState(() => _isLoadingVisible = !_isLoadingVisible);
   }
 
-  /// Manage changes in UI before, during and after user sign up.
+  /// Sign a user up and manage UI changes before, during and after the operation.
   ///
-  /// Retrieve user's credentials in order to send these to the [UserBloc]
+  /// Retrieve user's [credentials] in order to send these to the [UserBloc]
   /// which will handle all the business logic needed to sign the user up.
   void _signUp(Map<String, String> credentials) async {
     if (_formKey.currentState.validate()) {

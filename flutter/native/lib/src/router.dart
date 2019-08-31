@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/blocs/inherited_widgets/daily_routine_bloc_provider.dart';
 
-import 'package:flutter_app/src/blocs/user_bloc.dart';
+import 'package:flutter_app/src/blocs/inherited_widgets/daily_routine_bloc_provider.dart';
+import 'package:flutter_app/src/blocs/user.dart';
 import 'package:flutter_app/src/ui/screens/auth/signin.dart';
 import 'package:flutter_app/src/ui/screens/auth/signup.dart';
 import 'package:flutter_app/src/ui/screens/daily_routine.dart';
-import 'package:flutter_app/src/ui/widgets/shared/app_scaffold.dart';
 
 /// Build the appropriate [MaterialPageRoute] on route navigation.
 class Router {
@@ -15,45 +14,31 @@ class Router {
   Route<dynamic> onGenerateRoute(RouteSettings settings) {
     if (!UserBloc.isLoggedIn) {
       switch (settings.name) {
+        // Sign a user in
         case '/auth/signin':
-          return buildPage(body: SignInScreen(), showAppBar: false);
+          return MaterialPageRoute(
+              settings: settings, builder: (_) => SignInScreen());
+        // Sign a user up
         default:
-          return buildPage(body: SignUpScreen(), showAppBar: false);
+          return MaterialPageRoute(
+              settings: settings, builder: (_) => SignUpScreen());
       }
     } else if (UserBloc.isLoggedIn) {
       switch (settings.name) {
+        // Sign a user out
         case '/auth/signout':
           UserBloc.signOut();
           break;
+        // Display the daily routine
         default:
-          return buildPage(
-            body: DailyRoutineBlocProvider(child: DailyRoutine()),
+          return MaterialPageRoute(
+            settings: settings,
+            builder: (_) => DailyRoutineBlocProvider(child: DailyRoutine()),
           );
       }
     }
-    return buildPage(body: SignUpScreen(), showAppBar: false);
-  }
-
-  /// Build a new [MaterialPageRoute] based on the provided parameters.
-  ///
-  /// Initialize the app base UI with [AppScaffold].
-  /// The [AppScaffold] inherits from the [AuthBlocInheritedWidget]
-  /// to provide to the whole app inheritance of the [AuthBloc].
-  ///
-  /// The [title] property is associated to the [Scaffold.title] property.
-  ///
-  /// Show the scaffold's app bar if [showAppBar] is true.
-  MaterialPageRoute buildPage({
-    String title,
-    bool showAppBar = true,
-    @required Widget body,
-  }) {
+    // Sign a user up
     return MaterialPageRoute(
-      builder: (_) => AppScaffold(
-        showAppBar: showAppBar,
-        title: title,
-        body: body,
-      ),
-    );
+        settings: settings, builder: (_) => SignUpScreen());
   }
 }

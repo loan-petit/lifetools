@@ -1,6 +1,6 @@
 import 'package:flutter_web/material.dart';
 
-import 'package:flutter_app/src/blocs/daily_routine_bloc.dart';
+import 'package:flutter_app/src/blocs/daily_routine.dart';
 
 /// Widget used to share the [DailyRoutineBloc] across a part of the widget tree.
 class DailyRoutineBlocProvider extends InheritedWidget {

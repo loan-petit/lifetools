@@ -1,6 +1,6 @@
 import 'package:flutter_web/material.dart';
 
-import 'package:flutter_app/src/blocs/user_bloc.dart';
+import 'package:flutter_app/src/blocs/user.dart';
 
 /// Wrapper around [Scaffold] used as screen UI base.
 ///
@@ -15,8 +15,11 @@ import 'package:flutter_app/src/blocs/user_bloc.dart';
 /// )
 /// ```
 class AppScaffold extends StatefulWidget {
-  /// Build the scaffold's [AppBar] if true.
-  final bool showAppBar;
+  /// Build the scaffold's default [AppBar] using [_buildAppBar] if true.
+  final bool showDefaultAppBar;
+
+  /// Specify an [AppBar] to use instead of the default one.
+  final Widget appBar;
 
   /// Title presented in the [AppBar].
   final String title;
@@ -24,9 +27,14 @@ class AppScaffold extends StatefulWidget {
   /// [Scaffold] body which will be wrapped.
   final Widget body;
 
+  /// Builder for a [Scaffold.floatingActionButton].
+  final WidgetBuilder floatingActionButtonBuilder;
+
   AppScaffold({
-    this.showAppBar = true,
+    this.showDefaultAppBar = true,
+    this.appBar,
     this.title,
+    this.floatingActionButtonBuilder,
     @required this.body,
   }) : assert(body != null);
 
@@ -40,7 +48,7 @@ class _AppScaffoldState extends State<AppScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: (widget.showAppBar) ? _buildAppBar() : null,
+      appBar: (widget.showDefaultAppBar) ? _buildAppBar() : widget.appBar,
       body: LayoutBuilder(
         builder: (context, constraints) {
           return Container(
@@ -53,6 +61,9 @@ class _AppScaffoldState extends State<AppScaffold> {
           );
         },
       ),
+      floatingActionButton: widget.floatingActionButtonBuilder != null
+          ? Builder(builder: widget.floatingActionButtonBuilder)
+          : null,
     );
   }
 

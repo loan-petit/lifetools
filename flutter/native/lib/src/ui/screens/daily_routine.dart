@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_app/src/blocs/daily_routine_bloc.dart';
+import 'package:flutter_app/src/blocs/daily_routine.dart';
 import 'package:flutter_app/src/blocs/inherited_widgets/daily_routine_bloc_provider.dart';
 import 'package:flutter_app/src/models/daily_routine_event.dart';
-import 'package:flutter_app/src/ui/widgets/daily_routine_event.dart';
+import 'package:flutter_app/src/ui/widgets/daily_routine/event.dart';
+import 'package:flutter_app/src/ui/widgets/daily_routine/upsert_event.dart';
+import 'package:flutter_app/src/ui/widgets/shared/app_scaffold.dart';
 import 'package:flutter_app/src/ui/widgets/shared/loading_screen.dart';
 
 /// Display the logged in user's daily routine.
@@ -16,6 +18,12 @@ class _DailyRoutineState extends State<DailyRoutine> {
   /// Manage the business logic related to the daily routine.
   DailyRoutineBloc _dailyRoutineBloc;
 
+  /// If true, display the [FloatingActionButton] and the default
+  /// [AppScaffold]'s app bar.
+  /// Else, hide both in order to let the [UpsertDailyRoutineEvent] bottom
+  /// sheet take care of the UI.
+  bool _isBottomSheetVisible = false;
+
   /// Retrieve the daily routine.
   @override
   void didChangeDependencies() {
@@ -27,31 +35,31 @@ class _DailyRoutineState extends State<DailyRoutine> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        StreamBuilder(
-          stream: _dailyRoutineBloc.dailyRoutine,
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.hasError) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 24.0, horizontal: 12.0),
-                child: Text(
-                  "An error occured during the retrieval of your daily routine.",
-                  textAlign: TextAlign.center,
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-                ),
-              );
-            }
-            if (snapshot.hasData) {
-              return _buildEventList(snapshot.data);
-            }
-            return LoadingScreen(child: _buildEventList(snapshot.data));
-          },
-        ),
-        _buildFab(),
-      ],
+    return AppScaffold(
+      showDefaultAppBar: !_isBottomSheetVisible,
+      body: StreamBuilder(
+        stream: _dailyRoutineBloc.dailyRoutine,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasError) {
+            return Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 24.0, horizontal: 12.0),
+              child: Text(
+                "An error occured during the retrieval of your daily routine.",
+                textAlign: TextAlign.center,
+                style:
+                    TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+              ),
+            );
+          }
+          if (snapshot.hasData) {
+            return _buildEventList(snapshot.data);
+          }
+          return LoadingScreen(child: _buildEventList(snapshot.data));
+        },
+      ),
+      floatingActionButtonBuilder:
+          (!_isBottomSheetVisible) ? _buildFloatingActionButton : null,
     );
   }
 
@@ -69,17 +77,22 @@ class _DailyRoutineState extends State<DailyRoutine> {
     );
   }
 
-  Widget _buildFab() {
-    return Container(
-      alignment: Alignment.bottomRight,
-      padding: EdgeInsets.only(right: 12.0, bottom: 12.0),
-      child: FloatingActionButton(
-        onPressed: () async {
-          await Navigator.pushNamed(context, '/upsert-daily-routine-event');
-        },
-        tooltip: "Create a new event in your daily routine.",
-        child: Icon(Icons.add),
-      ),
+  Widget _buildFloatingActionButton(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () {
+        final bottomSheetController = showBottomSheet(
+          context: context,
+          builder: (_) {
+            return UpsertDailyRoutineEvent();
+          },
+        );
+        setState(() => _isBottomSheetVisible = true);
+        bottomSheetController.closed.then((value) {
+          setState(() => _isBottomSheetVisible = false);
+        });
+      },
+      tooltip: "Create a new event in your daily routine.",
+      child: Icon(Icons.add),
     );
   }
 }
