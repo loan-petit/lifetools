@@ -70,7 +70,7 @@ class DailyRoutineProvider {
   }
 
   /// Create a daily routine event based on the provided [query] parameters.
-  Future<void> createOneEvent(Map<String, String> query) async {
+  Future<void> createOneEvent(Map<String, dynamic> query) async {
     String args = GraphqlHelper.mapToParams(query);
     String body = """
       mutation CreateOneDailyRoutineEvent {
@@ -79,6 +79,7 @@ class DailyRoutineProvider {
         }
       }
     """;
+    print(body);
 
     await GraphqlHelper.request(
       body: body,

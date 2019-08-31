@@ -34,7 +34,7 @@ class UserModel {
         token: json['token'],
         expiresIn: json['expiresIn'],
         id: json['user']['id'],
-        dailyRoutine: json['user']['dailyRoutine'].map<DailyRoutineEventModel>(
+        dailyRoutine: json['user']['dailyRoutine']?.map<DailyRoutineEventModel>(
             (event) => DailyRoutineEventModel.fromJson(event)),
       );
     }

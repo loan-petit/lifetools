@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter_web/material.dart';
 import 'package:flutter_web/services.dart';
-import 'package:flutter_app/src/ui/widgets/shared/app_scaffold.dart';
+import 'package:flutter_app/src/models/user.dart';
 import 'package:pedantic/pedantic.dart';
 
+import 'package:flutter_app/src/blocs/user.dart';
 import 'package:flutter_app/src/blocs/daily_routine.dart';
+import 'package:flutter_app/src/models/daily_routine_event.dart';
 import 'package:flutter_app/src/ui/widgets/shared/loading_screen.dart';
 import 'package:flutter_app/src/utils/field_validator.dart';
 import 'package:flutter_app/src/utils/graphql/graphql_exception.dart';
@@ -12,9 +16,9 @@ import 'package:flutter_app/src/utils/graphql/graphql_exception.dart';
 ///
 /// If you want to update an event, send its ID to the [eventId].
 class UpsertDailyRoutineEvent extends StatefulWidget {
-  final String eventId;
+  final DailyRoutineEventModel dailyRoutineEvent;
 
-  UpsertDailyRoutineEvent({this.eventId});
+  UpsertDailyRoutineEvent({this.dailyRoutineEvent});
 
   @override
   _UpsertDailyRoutineEventState createState() =>
@@ -29,19 +33,44 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
   /// Controller for the editable name [TextFormField].
   final _name = TextEditingController();
 
+  /// Editable startTime value.
+  TimeOfDay _startTime;
+
+  /// Editable endTime value.
+  TimeOfDay _endTime;
+
   /// If true, validate and update the [TextFormField] error text
   /// after every changes.
   bool _autoValidate = false;
+
+  /// If true, display a [Text] to indicate that an error occured.
+  bool _doesErrorOccured = false;
 
   /// If true, display the [LoadingScreen] during asynchronous operations.
   bool _isLoadingVisible = false;
 
   /// Manages the business logic related to the user sign in.
+  final _userBloc = UserBloc();
+
+  /// Manages the business logic relation to daily routine event updates.
   final _dailyRoutineBloc = DailyRoutineBloc();
 
-  /// Dispose of the [DailyRoutineBloc].
+  /// Initialize [_startTime] and [_endTime] depending on
+  /// [widget.dailyRoutineEvent] attribute.
+  @override
+  void initState() {
+    super.initState();
+
+    _startTime =
+        widget.dailyRoutineEvent?.startTime ?? TimeOfDay(hour: 8, minute: 0);
+    _endTime =
+        widget.dailyRoutineEvent?.endTime ?? TimeOfDay(hour: 8, minute: 0);
+  }
+
+  /// Dispose of the [UserBloc] and the [DailyRoutineBloc].
   @override
   void dispose() {
+    _userBloc.dispose();
     _dailyRoutineBloc.dispose();
 
     super.dispose();
@@ -50,26 +79,34 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
   /// Build the sign in [Form] and its widgets.
   @override
   Widget build(BuildContext context) {
-    return AppScaffold(
-      appBar: _buildAppBar(),
-      body: LoadingScreen(
-        isInAsyncCall: _isLoadingVisible,
-        child: _buildForm(),
-      ),
-    );
-  }
-
-  AppBar _buildAppBar() {
-    return AppBar(
-      elevation: 0,
+    return AlertDialog(
       actions: <Widget>[
+        if (widget.dailyRoutineEvent != null)
+          IconButton(
+            onPressed: () {
+              _deleteEvent();
+            },
+            color: Theme.of(context).accentColor,
+            icon: Icon(Icons.delete),
+          ),
         FlatButton(
           onPressed: () {
-            _upsertEvent({'name': _name.text});
+            _upsertEvent({
+              'name': _name.text,
+              'startTime': (_startTime.hour * 60 + _startTime.minute) * 60,
+              'endTime': (_endTime.hour * 60 + _endTime.minute) * 60,
+            });
           },
-          child: Text("Save"),
+          child: Text(
+            "Save",
+            style: Theme.of(context).textTheme.subhead.apply(
+                  color: Theme.of(context).accentColor,
+                  fontWeightDelta: 2,
+                ),
+          ),
         ),
       ],
+      content: _buildForm(),
     );
   }
 
@@ -85,22 +122,65 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
       ),
     );
 
+    final startTimePicker = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Text("Start Time"),
+        FlatButton(
+          onPressed: () async {
+            _startTime = await showTimePicker(
+              context: context,
+              initialTime: _startTime,
+            );
+            setState(() {
+              // Update _startTime with picked time.
+            });
+          },
+          child: Text(_startTime.format(context)),
+        ),
+      ],
+    );
+
+    final endTimePicker = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Text("End Time"),
+        FlatButton(
+          onPressed: () async {
+            _endTime = await showTimePicker(
+              context: context,
+              initialTime: _endTime,
+            );
+            setState(() {
+              // Update _endTime with picked time.
+            });
+          },
+          child: Text(_endTime.format(context)),
+        ),
+      ],
+    );
+
+    final errorLabel = Text(
+      'An unexpected error occured, please retry.',
+      textAlign: TextAlign.center,
+      style: Theme.of(context).textTheme.body2.apply(color: Colors.red),
+    );
+
     return Form(
       key: _formKey,
       autovalidate: _autoValidate,
-      child: Padding(
-        padding: EdgeInsets.all(24.0),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                name,
-                SizedBox(height: 24.0),
-              ],
-            ),
-          ),
-        ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          name,
+          SizedBox(height: 24.0),
+          startTimePicker,
+          SizedBox(height: 24.0),
+          endTimePicker,
+          if (_doesErrorOccured) SizedBox(height: 24.0),
+          if (_doesErrorOccured) errorLabel,
+        ],
       ),
     );
   }
@@ -115,31 +195,86 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
   ///
   /// Send data present in [query] to the [DailyRoutineBloc] which will handle
   /// the business logic needed to create or update an event.
-  void _upsertEvent(Map<String, String> query) async {
+  Future<void> _upsertEvent(Map<String, dynamic> query) async {
     if (_formKey.currentState.validate()) {
       try {
         // Hide keyboard as the form as been submitted and the user
         // has to wait for the end of the asynchronous calls.
         unawaited(SystemChannels.textInput.invokeMethod('TextInput.hide'));
         await _changeLoadingVisible();
-        if (widget.eventId != null) {
-          await _dailyRoutineBloc
-              .updateOneEvent({'id': widget.eventId, ...query});
-        } else {
-          await _dailyRoutineBloc.createOneEvent(query);
-        }
-        await Navigator.pop(context);
+        _retrieveCurrentUserId((userId) async {
+          if (widget.dailyRoutineEvent?.id != null) {
+            await _dailyRoutineBloc.updateOneEvent({
+              'data': {
+                ...query,
+                'id': widget.dailyRoutineEvent.id,
+                'owner': {
+                  'connect': {'id': userId}
+                },
+              }
+            });
+          } else {
+            await _dailyRoutineBloc.createOneEvent({
+              'data': {
+                ...query,
+                'owner': {
+                  'connect': {'id': userId}
+                },
+              },
+            });
+          }
+          await Navigator.pop(context);
+        });
       } on GraphqlException {
         // Notify the user that an error happend.
         await _changeLoadingVisible();
-        Scaffold.of(context).showSnackBar(
-          SnackBar(
-            content: Text("Unexpected Error"),
-          ),
-        );
+        setState(() {
+          _doesErrorOccured = true;
+        });
       }
     } else {
       setState(() => _autoValidate = true);
     }
+  }
+
+  /// Delete an event and manage UI changes before, during and after the operation.
+  Future<void> _deleteEvent() async {
+    try {
+      // Hide keyboard as the user won't update the event.
+      unawaited(SystemChannels.textInput.invokeMethod('TextInput.hide'));
+      await _changeLoadingVisible();
+      _retrieveCurrentUserId((userId) async {
+        await _dailyRoutineBloc.deleteOneEvent({
+          'where': {'id': widget.dailyRoutineEvent.id}
+        });
+        await Navigator.pop(context);
+      });
+    } on GraphqlException {
+      // Notify the user that an error happend.
+      await _changeLoadingVisible();
+      setState(() {
+        _doesErrorOccured = true;
+      });
+    }
+  }
+
+  void _retrieveCurrentUserId(void Function(String) callback) {
+    StreamSubscription<UserModel> streamSubscription;
+
+    _userBloc.getCurrentUser();
+    streamSubscription = _userBloc.user.listen(
+      (UserModel data) {
+        streamSubscription.cancel();
+        callback(data.id);
+      },
+      onError: (error) async {
+        // Notify the user that an error happend.
+        await _changeLoadingVisible();
+        setState(() {
+          _doesErrorOccured = true;
+        });
+      },
+      cancelOnError: true,
+    );
   }
 }

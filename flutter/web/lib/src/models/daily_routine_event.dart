@@ -1,3 +1,5 @@
+import 'package:flutter_web/material.dart';
+
 import 'package:flutter_app/src/models/user.dart';
 
 /// Abstraction of a daily routine event. This class should be build from
@@ -15,8 +17,8 @@ import 'package:flutter_app/src/models/user.dart';
 class DailyRoutineEventModel {
   String id;
   String name;
-  int startTime;
-  int endTime;
+  TimeOfDay startTime;
+  TimeOfDay endTime;
   UserModel owner;
 
   DailyRoutineEventModel({
@@ -36,8 +38,20 @@ class DailyRoutineEventModel {
     return DailyRoutineEventModel(
       id: json['id'],
       name: json['name'],
-      startTime: json['startTime'],
-      endTime: json['endTime'],
+      startTime: (json['startTime'] != null)
+          ? TimeOfDay.fromDateTime(
+              DateTime.fromMillisecondsSinceEpoch(
+                json['startTime'] * 1000,
+              ),
+            )
+          : null,
+      endTime: (json['endTime'] != null)
+          ? TimeOfDay.fromDateTime(
+              DateTime.fromMillisecondsSinceEpoch(
+                json['endTime'] * 1000,
+              ),
+            )
+          : null,
       owner: UserModel.fromJson(json['owner']),
     );
   }

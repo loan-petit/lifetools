@@ -65,10 +65,6 @@ class UserProvider {
           expiresIn
           user {
             id
-            firstName
-            lastName
-            title
-            description
           }
         }
       }

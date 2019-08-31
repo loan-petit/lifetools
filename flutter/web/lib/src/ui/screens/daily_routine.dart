@@ -18,12 +18,6 @@ class _DailyRoutineState extends State<DailyRoutine> {
   /// Manage the business logic related to the daily routine.
   DailyRoutineBloc _dailyRoutineBloc;
 
-  /// If true, display the [FloatingActionButton] and the default
-  /// [AppScaffold]'s app bar.
-  /// Else, hide both in order to let the [UpsertDailyRoutineEvent] bottom
-  /// sheet take care of the UI.
-  bool _isBottomSheetVisible = false;
-
   /// Retrieve the daily routine.
   @override
   void didChangeDependencies() {
@@ -36,7 +30,6 @@ class _DailyRoutineState extends State<DailyRoutine> {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      showAppBar: !_isBottomSheetVisible,
       body: StreamBuilder(
         stream: _dailyRoutineBloc.dailyRoutine,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -60,8 +53,7 @@ class _DailyRoutineState extends State<DailyRoutine> {
           return LoadingScreen(child: _buildEventList(snapshot.data));
         },
       ),
-      floatingActionButtonBuilder:
-          (!_isBottomSheetVisible) ? _buildFloatingActionButton : null,
+      floatingActionButtonBuilder: _buildFloatingActionButton,
     );
   }
 
@@ -82,16 +74,12 @@ class _DailyRoutineState extends State<DailyRoutine> {
   Widget _buildFloatingActionButton(BuildContext context) {
     return FloatingActionButton(
       onPressed: () {
-        final bottomSheetController = showBottomSheet(
+        showDialog(
           context: context,
           builder: (_) {
             return UpsertDailyRoutineEvent();
           },
         );
-        setState(() => _isBottomSheetVisible = true);
-        bottomSheetController.closed.then((value) {
-          setState(() => _isBottomSheetVisible = false);
-        });
       },
       backgroundColor: Theme.of(context).primaryColor,
       tooltip: "Create a new event in your daily routine.",

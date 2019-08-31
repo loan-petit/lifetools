@@ -164,7 +164,7 @@ class _SignInScreenState extends State<SignInScreen> {
   ///
   /// Retrieve user's [credentials] in order to send these to the [UserBloc]
   /// which will handle all the business logic needed to sign the user in.
-  void _signIn(Map<String, String> credentials) async {
+  Future<void> _signIn(Map<String, String> credentials) async {
     if (_formKey.currentState.validate()) {
       try {
         // Hide keyboard as the form as been submitted and the user

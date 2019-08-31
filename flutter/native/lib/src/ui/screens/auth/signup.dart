@@ -184,7 +184,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   ///
   /// Retrieve user's [credentials] in order to send these to the [UserBloc]
   /// which will handle all the business logic needed to sign the user up.
-  void _signUp(Map<String, String> credentials) async {
+  Future<void> _signUp(Map<String, String> credentials) async {
     if (_formKey.currentState.validate()) {
       try {
         // Hide keyboard as the form as been submitted and the user

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_app/src/models/daily_routine_event.dart';
+import 'package:flutter_app/src/ui/widgets/daily_routine/upsert_event.dart';
 
 /// Build a list event based on a [ListTile].
 ///
@@ -26,9 +27,20 @@ class _DailyRoutineEventState extends State<DailyRoutineEvent> {
         contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
         leading: _buildLeading(),
         title: Text(widget.dailyRoutineEvent.name),
-        trailing: Icon(
-          Icons.navigate_next,
-          size: 30.0,
+        trailing: IconButton(
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (_) {
+                return UpsertDailyRoutineEvent(
+                    dailyRoutineEvent: widget.dailyRoutineEvent);
+              },
+            );
+          },
+          icon: Icon(
+            Icons.navigate_next,
+            size: 30.0,
+          ),
         ),
       ),
     );
@@ -36,17 +48,6 @@ class _DailyRoutineEventState extends State<DailyRoutineEvent> {
 
   /// Build the [ListTile.leading].
   Widget _buildLeading() {
-    final startTime = TimeOfDay.fromDateTime(
-      DateTime.fromMillisecondsSinceEpoch(
-        widget.dailyRoutineEvent.startTime * 1000,
-      ),
-    );
-    final endTime = TimeOfDay.fromDateTime(
-      DateTime.fromMillisecondsSinceEpoch(
-        widget.dailyRoutineEvent.endTime * 1000,
-      ),
-    );
-
     return Container(
       padding: EdgeInsets.only(right: 12.0),
       decoration: BoxDecoration(
@@ -54,8 +55,8 @@ class _DailyRoutineEventState extends State<DailyRoutineEvent> {
       ),
       child: Column(
         children: <Widget>[
-          Text(startTime.toString()),
-          Text(endTime.toString()),
+          Text(widget.dailyRoutineEvent.startTime.format(context)),
+          Text(widget.dailyRoutineEvent.endTime.format(context)),
         ],
       ),
     );
