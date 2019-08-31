@@ -51,7 +51,6 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      showDefaultAppBar: false,
       appBar: _buildAppBar(),
       body: LoadingScreen(
         isInAsyncCall: _isLoadingVisible,

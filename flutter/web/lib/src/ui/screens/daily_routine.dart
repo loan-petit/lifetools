@@ -36,7 +36,7 @@ class _DailyRoutineState extends State<DailyRoutine> {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      showDefaultAppBar: !_isBottomSheetVisible,
+      showAppBar: !_isBottomSheetVisible,
       body: StreamBuilder(
         stream: _dailyRoutineBloc.dailyRoutine,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -47,8 +47,10 @@ class _DailyRoutineState extends State<DailyRoutine> {
               child: Text(
                 "An error occured during the retrieval of your daily routine.",
                 textAlign: TextAlign.center,
-                style:
-                    TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+                style: Theme.of(context)
+                    .textTheme
+                    .subhead
+                    .apply(color: Colors.red, fontWeightDelta: 2),
               ),
             );
           }
@@ -91,6 +93,7 @@ class _DailyRoutineState extends State<DailyRoutine> {
           setState(() => _isBottomSheetVisible = false);
         });
       },
+      backgroundColor: Theme.of(context).primaryColor,
       tooltip: "Create a new event in your daily routine.",
       child: Icon(Icons.add),
     );

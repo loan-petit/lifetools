@@ -12,17 +12,18 @@ class App extends StatelessWidget {
       title: 'Life tools',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        // Define the default brightness and colors.
         brightness: Brightness.light,
-        primarySwatch: Colors.amber,
-        accentColor: Colors.amberAccent,
-
-        // Define the default font family.
-        fontFamily: 'OpenSans-Regular',
-
-        // Define the default TextTheme. Use this to specify the default
-        // text styling for headlines, titles, bodies of text, and more.
-        textTheme: Typography.englishLike2018,
+        scaffoldBackgroundColor: Color.fromRGBO(252, 252, 252, 1),
+        primaryColor: Color.fromRGBO(255, 201, 97, 1),
+        accentColor: Color.fromRGBO(255, 188, 58, 1),
+        appBarTheme: AppBarTheme(color: Colors.transparent),
+        fontFamily: 'OpenSans',
+        typography: Typography(
+          platform: Theme.of(context).platform,
+          englishLike: Typography.englishLike2018,
+          dense: Typography.dense2018,
+          tall: Typography.tall2018,
+        ),
       ),
       initialRoute: '/',
       onGenerateRoute: _router.onGenerateRoute,

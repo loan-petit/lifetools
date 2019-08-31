@@ -16,7 +16,7 @@ import 'package:flutter_app/src/blocs/user.dart';
 /// ```
 class AppScaffold extends StatefulWidget {
   /// Build the scaffold's default [AppBar] using [_buildAppBar] if true.
-  final bool showDefaultAppBar;
+  final bool showAppBar;
 
   /// Specify an [AppBar] to use instead of the default one.
   final Widget appBar;
@@ -31,7 +31,7 @@ class AppScaffold extends StatefulWidget {
   final WidgetBuilder floatingActionButtonBuilder;
 
   AppScaffold({
-    this.showDefaultAppBar = true,
+    this.showAppBar = true,
     this.appBar,
     this.title,
     this.floatingActionButtonBuilder,
@@ -48,14 +48,13 @@ class _AppScaffoldState extends State<AppScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: (widget.showDefaultAppBar) ? _buildAppBar() : widget.appBar,
+      appBar: widget.appBar ?? (widget.showAppBar) ? _buildAppBar() : null,
       body: LayoutBuilder(
         builder: (context, constraints) {
           return Container(
             margin: (constraints.maxWidth > 600)
                 ? EdgeInsets.symmetric(horizontal: constraints.maxWidth / 5)
                 : null,
-            color: Colors.white,
             child: widget.body,
             alignment: Alignment.topCenter,
           );
@@ -69,20 +68,32 @@ class _AppScaffoldState extends State<AppScaffold> {
 
   /// Create the [Scaffold]'s [AppBar].
   Widget _buildAppBar() {
+    List<Widget> actions = [];
+
+    if (UserBloc.isLoggedIn) {
+      actions = [
+        IconButton(
+          icon: Icon(Icons.power_settings_new),
+          color: Theme.of(context).accentColor,
+          tooltip: 'Se déconnecter',
+          onPressed: () {
+            Navigator.pushNamedAndRemoveUntil(
+                context, '/auth/signout', (_) => false);
+          },
+        ),
+      ];
+    }
+
     return AppBar(
-      title: (widget.title?.isEmpty ?? false) ? Text(widget.title) : null,
+      title: Text(
+        (widget.title?.isNotEmpty ?? false) ? widget.title : "LifeTools",
+        style: Theme.of(context).textTheme.title.apply(
+              fontWeightDelta: 2,
+              color: Theme.of(context).accentColor,
+            ),
+      ),
       elevation: 0,
-      actions: <Widget>[
-        if (UserBloc.isLoggedIn)
-          IconButton(
-            icon: Icon(Icons.power_settings_new),
-            tooltip: 'Se déconnecter',
-            onPressed: () {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, '/auth/signout', (_) => false);
-            },
-          ),
-      ],
+      actions: actions,
     );
   }
 }

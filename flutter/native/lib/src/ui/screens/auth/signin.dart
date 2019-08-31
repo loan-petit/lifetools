@@ -4,7 +4,6 @@ import 'package:pedantic/pedantic.dart';
 
 import 'package:flutter_app/src/blocs/user.dart';
 import 'package:flutter_app/src/ui/widgets/shared/app_scaffold.dart';
-import 'package:flutter_app/src/ui/widgets/shared/arc_hero/index.dart';
 import 'package:flutter_app/src/ui/widgets/shared/loading_screen.dart';
 import 'package:flutter_app/src/utils/field_validator.dart';
 import 'package:flutter_app/src/utils/graphql/graphql_exception.dart';
@@ -49,45 +48,27 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AppScaffold(
-      showDefaultAppBar: false,
-      body: LoadingScreen(
-        isInAsyncCall: _isLoadingVisible,
-        child: Column(
-          children: <Widget>[
-            Flexible(
-              flex: 1,
-              child: ArcHero(
-                hero: FlutterLogo(
-                  colors: Colors.yellow,
-                  size: MediaQuery.of(context).size.height / 8,
-                ),
-                arcContent: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: <Color>[
-                        Theme.of(context).primaryColor,
-                        Theme.of(context).accentColor,
-                      ],
-                    ),
-                  ),
-                ),
+    final header = Column(
+      children: <Widget>[
+        Text(
+          "Sign In",
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.display1.apply(
+                fontWeightDelta: 3,
               ),
-            ),
-            Flexible(
-              flex: 3,
-              child: _buildForm(),
-            ),
-          ],
         ),
-      ),
+        SizedBox(height: 16.0),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(26.0),
+          child: Container(
+            width: 200.0,
+            height: 8.0,
+            color: Theme.of(context).primaryColor,
+          ),
+        )
+      ],
     );
-  }
 
-  /// Build the sign in form and its widgets.
-  Form _buildForm() {
     final email = TextFormField(
       keyboardType: TextInputType.emailAddress,
       autofocus: true,
@@ -95,15 +76,7 @@ class _SignInScreenState extends State<SignInScreen> {
       validator: FieldValidator.validateEmail,
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-        prefixIcon: Padding(
-          padding: EdgeInsets.only(left: 5.0),
-          child: Icon(
-            Icons.email,
-            color: Colors.grey,
-          ), // icon is 48px widget.
-        ),
         hintText: 'Email',
-        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
       ),
     );
 
@@ -113,31 +86,21 @@ class _SignInScreenState extends State<SignInScreen> {
       validator: FieldValidator.validatePassword,
       textInputAction: TextInputAction.go,
       decoration: InputDecoration(
-        prefixIcon: Padding(
-          padding: EdgeInsets.only(left: 5.0),
-          child: Icon(
-            Icons.lock,
-            color: Colors.grey,
-          ), // icon is 48px widget.
-        ),
         hintText: 'Password',
-        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
       ),
     );
 
-    final signInButton = Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.0),
-      child: RaisedButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
-        ),
-        onPressed: () {
-          _signIn({'email': _email.text, 'password': _password.text});
-        },
-        padding: EdgeInsets.all(12),
-        color: Theme.of(context).primaryColor,
-        child: Text('SIGN IN', style: TextStyle(color: Colors.white)),
+    final signInButton = FlatButton.icon(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(24),
       ),
+      onPressed: () {
+        _signIn({'email': _email.text, 'password': _password.text});
+      },
+      padding: EdgeInsets.all(12),
+      color: Theme.of(context).primaryColor,
+      icon: Icon(Icons.done),
+      label: Text("SIGN IN"),
     );
 
     final errorLabel = Text(
@@ -150,7 +113,7 @@ class _SignInScreenState extends State<SignInScreen> {
     final signUpLabel = FlatButton(
       child: Text(
         'Create an account',
-        style: Theme.of(context).textTheme.body1,
+        style: Theme.of(context).textTheme.body1.apply(fontWeightDelta: 2),
         textAlign: TextAlign.center,
       ),
       onPressed: () {
@@ -158,24 +121,32 @@ class _SignInScreenState extends State<SignInScreen> {
       },
     );
 
-    return Form(
-      key: _formKey,
-      autovalidate: _autoValidate,
-      child: Padding(
-        padding: EdgeInsets.all(24.0),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                email,
-                SizedBox(height: 24.0),
-                password,
-                SizedBox(height: 12.0),
-                signInButton,
-                if (_areCredentialsInvalid) errorLabel,
-                signUpLabel,
-              ],
+    return AppScaffold(
+      body: LoadingScreen(
+        isInAsyncCall: _isLoadingVisible,
+        child: Form(
+          key: _formKey,
+          autovalidate: _autoValidate,
+          child: Padding(
+            padding: EdgeInsets.all(24.0),
+            child: Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    header,
+                    SizedBox(height: 48.0),
+                    email,
+                    SizedBox(height: 24.0),
+                    password,
+                    if (_areCredentialsInvalid) SizedBox(height: 24.0),
+                    if (_areCredentialsInvalid) errorLabel,
+                    SizedBox(height: 48.0),
+                    signInButton,
+                    signUpLabel,
+                  ],
+                ),
+              ),
             ),
           ),
         ),
