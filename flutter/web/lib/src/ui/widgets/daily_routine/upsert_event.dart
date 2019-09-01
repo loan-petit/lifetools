@@ -5,14 +5,14 @@ import 'package:flutter_web/services.dart';
 
 import 'package:pedantic/pedantic.dart';
 
-import 'package:flutter_app/src/blocs/user.dart';
-import 'package:flutter_app/src/blocs/daily_routine.dart';
-import 'package:flutter_app/src/models/daily_routine_event.dart';
-import 'package:flutter_app/src/models/user.dart';
-import 'package:flutter_app/src/ui/widgets/shared/loading_screen.dart';
-import 'package:flutter_app/src/utils/field_validator.dart';
-import 'package:flutter_app/src/utils/graphql/graphql_exception.dart';
-import 'package:flutter_app/src/utils/time.dart';
+import 'package:LifeTools/src/blocs/user.dart';
+import 'package:LifeTools/src/blocs/daily_routine.dart';
+import 'package:LifeTools/src/models/daily_routine_event.dart';
+import 'package:LifeTools/src/models/user.dart';
+import 'package:LifeTools/src/ui/widgets/shared/loading_screen.dart';
+import 'package:LifeTools/src/utils/field_validator.dart';
+import 'package:LifeTools/src/utils/graphql/graphql_exception.dart';
+import 'package:LifeTools/src/utils/time.dart';
 
 /// Display a [Form] to create or update a daily routine event.
 class UpsertDailyRoutineEvent extends StatefulWidget {

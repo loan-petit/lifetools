@@ -1,8 +1,8 @@
 import 'package:rxdart/rxdart.dart';
 
-import 'package:flutter_app/src/models/daily_routine_event.dart';
-import 'package:flutter_app/src/resources/daily_routine_provider.dart';
-import 'package:flutter_app/src/utils/graphql/graphql_exception.dart';
+import 'package:LifeTools/src/models/daily_routine_event.dart';
+import 'package:LifeTools/src/resources/daily_routine_provider.dart';
+import 'package:LifeTools/src/utils/graphql/graphql_exception.dart';
 
 /// Manage the business logic related to the daily routine and its events.
 class DailyRoutineBloc {

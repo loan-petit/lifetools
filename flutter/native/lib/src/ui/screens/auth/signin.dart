@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pedantic/pedantic.dart';
 
-import 'package:flutter_app/src/blocs/user.dart';
-import 'package:flutter_app/src/ui/widgets/shared/app_scaffold.dart';
-import 'package:flutter_app/src/ui/widgets/shared/loading_screen.dart';
-import 'package:flutter_app/src/utils/field_validator.dart';
-import 'package:flutter_app/src/utils/graphql/graphql_exception.dart';
+import 'package:LifeTools/src/blocs/user.dart';
+import 'package:LifeTools/src/ui/widgets/shared/app_scaffold.dart';
+import 'package:LifeTools/src/ui/widgets/shared/loading_screen.dart';
+import 'package:LifeTools/src/utils/field_validator.dart';
+import 'package:LifeTools/src/utils/graphql/graphql_exception.dart';
 
 /// Display a [Form] to the user to retrieve his credentials and sign him in.
 class SignInScreen extends StatefulWidget {

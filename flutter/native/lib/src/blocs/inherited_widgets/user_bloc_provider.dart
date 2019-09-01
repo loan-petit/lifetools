@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_app/src/blocs/user.dart';
+import 'package:LifeTools/src/blocs/user.dart';
 
 /// Widget used to share the [UserBloc] across a part of the widget tree.
 class UserBlocProvider extends InheritedWidget {

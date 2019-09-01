@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/blocs/daily_routine.dart';
-import 'package:flutter_app/src/blocs/inherited_widgets/daily_routine_bloc_provider.dart';
+import 'package:LifeTools/src/blocs/daily_routine.dart';
+import 'package:LifeTools/src/blocs/inherited_widgets/daily_routine_bloc_provider.dart';
 
-import 'package:flutter_app/src/models/daily_routine_event.dart';
-import 'package:flutter_app/src/ui/widgets/daily_routine/upsert_event.dart';
+import 'package:LifeTools/src/models/daily_routine_event.dart';
+import 'package:LifeTools/src/ui/widgets/daily_routine/upsert_event.dart';
 
 /// Build a list event based on a [ListTile].
 class DailyRoutineEvent extends StatefulWidget {

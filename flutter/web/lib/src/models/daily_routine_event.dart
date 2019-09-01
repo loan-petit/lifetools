@@ -1,7 +1,7 @@
 import 'package:flutter_web/material.dart';
 
-import 'package:flutter_app/src/models/user.dart';
-import 'package:flutter_app/src/utils/time.dart';
+import 'package:LifeTools/src/models/user.dart';
+import 'package:LifeTools/src/utils/time.dart';
 
 /// Abstraction of a daily routine event. This class should be build from
 /// GraphQL API responses returning a DailyRoutineEvent.

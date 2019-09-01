@@ -1,4 +1,4 @@
-import 'package:flutter_app/src/models/daily_routine_event.dart';
+import 'package:LifeTools/src/models/daily_routine_event.dart';
 
 /// Abstraction of a user. This class should be build from GraphQL API
 /// responses returning an AuthPayload.

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_app/src/blocs/user.dart';
+import 'package:LifeTools/src/blocs/user.dart';
 
 /// Wrapper around [Scaffold] used as screen UI base.
 ///

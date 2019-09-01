@@ -1,6 +1,7 @@
 import 'package:flutter_web/material.dart';
 
-import 'package:flutter_app/src/router.dart';
+import 'package:LifeTools/src/router.dart';
+import 'package:flutter_web/services.dart';
 
 /// The main [Widget] containing the [MaterialApp] definition.
 class App extends StatelessWidget {
@@ -14,6 +15,10 @@ class App extends StatelessWidget {
       'snow': Color.fromRGBO(249, 249, 249, 1),
       'bananaYellow': Color.fromRGBO(255, 231, 50, 1),
     };
+
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: themeColors['babyPowder'],
+    ));
 
     return MaterialApp(
       title: 'LifeTools',

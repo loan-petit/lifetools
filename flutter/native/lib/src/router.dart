@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_app/src/blocs/inherited_widgets/daily_routine_bloc_provider.dart';
-import 'package:flutter_app/src/blocs/user.dart';
-import 'package:flutter_app/src/ui/screens/auth/signin.dart';
-import 'package:flutter_app/src/ui/screens/auth/signup.dart';
-import 'package:flutter_app/src/ui/screens/daily_routine.dart';
+import 'package:LifeTools/src/blocs/inherited_widgets/daily_routine_bloc_provider.dart';
+import 'package:LifeTools/src/blocs/user.dart';
+import 'package:LifeTools/src/ui/screens/auth/signin.dart';
+import 'package:LifeTools/src/ui/screens/auth/signup.dart';
+import 'package:LifeTools/src/ui/screens/daily_routine.dart';
 
 /// Build the appropriate [MaterialPageRoute] on route navigation.
 class Router {

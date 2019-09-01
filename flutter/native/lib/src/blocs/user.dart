@@ -1,9 +1,9 @@
 import 'package:rxdart/rxdart.dart';
 
-import 'package:flutter_app/src/models/user.dart';
-import 'package:flutter_app/src/resources/user_provider.dart';
-import 'package:flutter_app/src/services/data_persistence_service.dart';
-import 'package:flutter_app/src/utils/graphql/graphql_exception.dart';
+import 'package:LifeTools/src/models/user.dart';
+import 'package:LifeTools/src/resources/user_provider.dart';
+import 'package:LifeTools/src/services/data_persistence_service.dart';
+import 'package:LifeTools/src/utils/graphql/graphql_exception.dart';
 
 /// Manage the business logic related to the users.
 class UserBloc {

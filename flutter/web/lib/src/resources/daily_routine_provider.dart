@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:flutter_app/src/models/daily_routine_event.dart';
-import 'package:flutter_app/src/services/data_persistence_service.dart';
-import 'package:flutter_app/src/utils/graphql/graphql_helper.dart';
+import 'package:LifeTools/src/models/daily_routine_event.dart';
+import 'package:LifeTools/src/services/data_persistence_service.dart';
+import 'package:LifeTools/src/utils/graphql/graphql_helper.dart';
 
 /// Provide CRUD operations, on GraphQL API, related to the daily routine
 /// and its events.

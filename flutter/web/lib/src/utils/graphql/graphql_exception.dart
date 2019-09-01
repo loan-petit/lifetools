@@ -1,4 +1,4 @@
-import 'package:flutter_app/src/environment.dart';
+import 'package:LifeTools/src/environment.dart';
 
 /// [Exception] raised on error for HTTP request to backend GraphQL API.
 class GraphqlException implements Exception {

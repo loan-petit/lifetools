@@ -4,8 +4,8 @@ import 'package:flutter_web/material.dart';
 
 import 'package:http/http.dart' as http;
 
-import 'package:flutter_app/src/environment.dart';
-import 'package:flutter_app/src/utils/graphql/graphql_exception.dart';
+import 'package:LifeTools/src/environment.dart';
+import 'package:LifeTools/src/utils/graphql/graphql_exception.dart';
 
 class GraphqlHelper {
   /// Content-Type header necessary to any GraphQL request.
