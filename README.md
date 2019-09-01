@@ -1,6 +1,24 @@
 # LifeTools
 
-## Start the project
+## About LifeTools
+
+LifeTools is a personal project created for better **management of daily habits
+and daily goals**. It helps you building and sticking to habits that matter to you.
+
+This idea came from a lack of any applications matching my expectations in daily
+routine management. LifeTools is still is in a very early stage. Some crucial
+features will be implemented over time.
+
+Currently, this repository is open-sourced mostly to showcase some of my
+technical skills.
+
+LifeTools isn't currently available on the stores (Play Store and App Store) as
+it still is rough, but it may be one day. Stay tuned. 
+
+## Build the project
+
+Please install Docker and docker-compose before running the following commands.
+([Get started with Docker](https://www.docker.com/get-started))
 
 * For development:
 
@@ -14,47 +32,9 @@
     docker-compose -f docker-compose.prod.yml up -d
     ```
 
-This command will create and start the following containers:
-- **NGINX web server**: "lifetools_nginx"
-- **Prisma API**: "lifetools_prisma"
-- **Flutter application**: "lifetools_flutter"
-- **PostgreSQL database**: "lifetools_postgres"
-- **Certbot**: "lifetools_certbot" *(production only)*
-
-### NGINX Web Server
-
-This server is used as a reverse proxy and as a load balancer.
-It provides access to the Flutter app and the Prisma API to the host.
-
-The used ports are: 
- - 80 for the Flutter application with HTTP protocol. *(redirected to 443 in production)*
- - 443 for the Flutter application with HTTPS protocol. *(production only)*
- - 8081 for the Prisma API.
-
-### Prisma API
-
-The application's backend. It lets us interact with the database through GraphQL endpoint. 
-
-The API port isn't accessible from the host. Instead, use the port 8081 proxied by NGINX.
-
-The whole API documentation is provided at the '/' route in development mode.
-
-### Flutter Application
-
-This is a hybrid application.
-
-The application port isn't accessible from the host. 
-
-To access the application, use the port 80 in development and 443 in production.
-Those are proxied by NGINX.
-
-### PostgreSQL database
-
-The application database is accessible on port 5432. This database is associated with a Docker volume.
-The volume is bind to ./data/postgres/ on host.
-
-### Certbot (production only)
-
-This bot can only be used in a production environment with a public IP.
-We use it to generate an SSL certificate and to update it regularly.
-This certificate is used by NGINX in order to provide HTTPS support.
+These commands will create and start the following containers:
+- **NGINX web server**: lifetools_nginx
+- **Prisma2 GraphQL API**: lifetools_prisma
+- **Flutter application**: lifetools_flutter
+- **PostgreSQL database**: lifetools_postgres
+- **Certbot for Let's Encrypt certificates administration**: lifetools_certbot *(production only)*
