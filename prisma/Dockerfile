@@ -7,7 +7,7 @@ WORKDIR /prisma
 # Install dependencies before pushing the rest of the code in order to use
 # cached dependencies when a file other than the package.json is changed in
 # the current host directory
-RUN npm install -g prisma2 --unsafe-perm
+RUN npm install -g prisma2@2.0.0-preview-8 --unsafe-perm
 RUN mkdir ./prisma/
 COPY ./package.json ./
 COPY ./prisma/schema.prisma ./prisma/

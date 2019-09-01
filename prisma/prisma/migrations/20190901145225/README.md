@@ -1,31 +1,31 @@
-# Migration `20190830194736`
+# Migration `20190901145225`
 
-This migration has been generated at 8/30/2019, 7:47:36 PM.
+This migration has been generated at 9/1/2019, 2:52:25 PM.
 You can check out the [state of the datamodel](./datamodel.prisma) after the migration.
 
 ## Database Steps
 
 ```sql
-CREATE TABLE "public"."User"("id" text NOT NULL  ,"email" text NOT NULL DEFAULT '' ,"password" text NOT NULL DEFAULT '' ,PRIMARY KEY ("id"))
+CREATE TABLE "public"."User"("email" text NOT NULL DEFAULT '' ,"id" text NOT NULL  ,"password" text NOT NULL DEFAULT '' ,PRIMARY KEY ("id"))
 ;
 
-CREATE TABLE "public"."DailyRoutineEvent"("id" text NOT NULL  ,"name" text NOT NULL DEFAULT '' ,"startTime" integer NOT NULL DEFAULT 0 ,"endTime" integer NOT NULL DEFAULT 0 ,PRIMARY KEY ("id"))
+CREATE TABLE "public"."DailyRoutineEvent"("endTime" integer NOT NULL DEFAULT 0 ,"id" text NOT NULL  ,"name" text NOT NULL DEFAULT '' ,"startTime" integer NOT NULL DEFAULT 0 ,PRIMARY KEY ("id"))
 ;
 
 ALTER TABLE "public"."DailyRoutineEvent" ADD COLUMN "owner" text   REFERENCES "public"."User"("id") ON DELETE SET NULL;
 
-CREATE UNIQUE INDEX "User.id._UNIQUE" ON "public"."User"("id")
+CREATE UNIQUE INDEX "User.id" ON "public"."User"("id")
 
-CREATE UNIQUE INDEX "User.email._UNIQUE" ON "public"."User"("email")
+CREATE UNIQUE INDEX "User.email" ON "public"."User"("email")
 
-CREATE UNIQUE INDEX "DailyRoutineEvent.id._UNIQUE" ON "public"."DailyRoutineEvent"("id")
+CREATE UNIQUE INDEX "DailyRoutineEvent.id" ON "public"."DailyRoutineEvent"("id")
 ```
 
 ## Changes
 
 ```diff
 diff --git datamodel.mdl datamodel.mdl
-migration ..20190830194736
+migration ..20190901145225
 --- datamodel.dml
 +++ datamodel.dml
 @@ -1,0 +1,27 @@
@@ -60,11 +60,11 @@ migration ..20190830194736
 
 ## Photon Usage
 
-You can use a specific Photon built for this migration (20190830194736)
+You can use a specific Photon built for this migration (20190901145225)
 in your `before` or `after` migration script like this:
 
 ```ts
-import Photon from '@generated/photon/20190830194736'
+import Photon from '@generated/photon/20190901145225'
 
 const photon = new Photon()
 
