@@ -47,50 +47,60 @@ class _AppScaffoldState extends State<AppScaffold> {
   /// with the UI base.
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: widget.appBar ?? (widget.showAppBar) ? _buildAppBar() : null,
       body: LayoutBuilder(
         builder: (context, constraints) {
           return Container(
             margin: (constraints.maxWidth > 600)
-                ? EdgeInsets.symmetric(horizontal: constraints.maxWidth / 5)
+                ? EdgeInsets.symmetric(horizontal: constraints.maxWidth / 4)
                 : null,
             child: widget.body,
             alignment: Alignment.topCenter,
           );
         },
       ),
-      floatingActionButton: widget.floatingActionButtonBuilder != null
-          ? Builder(builder: widget.floatingActionButtonBuilder)
+      floatingActionButton: 
+      widget.floatingActionButtonBuilder != null
+          ? Container(
+        margin:
+            EdgeInsets.only(right: screenWidth > 600 ? screenWidth / 5 : 0.0),
+        child: Builder(builder: widget.floatingActionButtonBuilder),)
           : null,
     );
   }
 
   /// Create the [Scaffold]'s [AppBar].
   Widget _buildAppBar() {
+    double screenWidth = MediaQuery.of(context).size.width;
     List<Widget> actions = [];
 
     if (UserBloc.isLoggedIn) {
       actions = [
         IconButton(
           icon: Icon(Icons.power_settings_new),
-          color: Theme.of(context).accentColor,
           tooltip: 'Se déconnecter',
           onPressed: () {
             Navigator.pushNamedAndRemoveUntil(
                 context, '/auth/signout', (_) => false);
           },
         ),
+        if (screenWidth > 600) SizedBox(width: screenWidth / 5),
       ];
     }
 
     return AppBar(
-      title: Text(
-        (widget.title?.isNotEmpty ?? false) ? widget.title : "LifeTools",
-        style: Theme.of(context).textTheme.title.apply(
-              fontWeightDelta: 2,
-              color: Theme.of(context).accentColor,
-            ),
+      title: Container(
+        margin:
+            EdgeInsets.only(left: screenWidth > 600 ? screenWidth / 5 : 0.0),
+        child: Text(
+          (widget.title?.isNotEmpty ?? false) ? widget.title : "LifeTools",
+          style: Theme.of(context).textTheme.title.apply(
+                fontWeightDelta: 2,
+              ),
+        ),
       ),
       elevation: 0,
       actions: actions,

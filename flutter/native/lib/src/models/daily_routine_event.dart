@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_app/src/models/user.dart';
+import 'package:flutter_app/src/utils/time.dart';
 
 /// Abstraction of a daily routine event. This class should be build from
 /// GraphQL API responses returning a DailyRoutineEvent.
@@ -38,20 +39,8 @@ class DailyRoutineEventModel {
     return DailyRoutineEventModel(
       id: json['id'],
       name: json['name'],
-      startTime: (json['startTime'] != null)
-          ? TimeOfDay.fromDateTime(
-              DateTime.fromMillisecondsSinceEpoch(
-                json['startTime'] * 1000,
-              ),
-            )
-          : null,
-      endTime: (json['endTime'] != null)
-          ? TimeOfDay.fromDateTime(
-              DateTime.fromMillisecondsSinceEpoch(
-                json['endTime'] * 1000,
-              ),
-            )
-          : null,
+      startTime: Time.secondsToTimeOfDay(json['startTime']),
+      endTime: Time.secondsToTimeOfDay(json['endTime']),
       owner: UserModel.fromJson(json['owner']),
     );
   }

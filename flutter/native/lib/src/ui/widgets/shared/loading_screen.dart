@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-/// Loading screen presented on top of a widget during asynchronous calls.
+/// Loading screen should be presented on top of a widget during
+/// asynchronous calls.
 class LoadingScreen extends StatelessWidget {
   final double width;
   final double height;

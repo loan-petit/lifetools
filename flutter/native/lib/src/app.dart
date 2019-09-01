@@ -8,21 +8,26 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, Color> themeColors = {
+      'babyPowder': Color.fromRGBO(252, 252, 252, 1),
+      'onyx': Color.fromRGBO(56, 56, 56, 1),
+      'snow': Color.fromRGBO(249, 249, 249, 1),
+      'bananaYellow': Color.fromRGBO(255, 231, 50, 1),
+    };
+
     return MaterialApp(
       title: 'Life tools',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.light,
-        scaffoldBackgroundColor: Color.fromRGBO(252, 252, 252, 1),
-        primaryColor: Color.fromRGBO(255, 201, 97, 1),
-        accentColor: Color.fromRGBO(255, 188, 58, 1),
+        scaffoldBackgroundColor: themeColors['babyPowder'],
+        primaryColor: themeColors['bananaYellow'],
+        accentColor: themeColors['snow'],
         appBarTheme: AppBarTheme(color: Colors.transparent),
         fontFamily: 'OpenSans',
-        typography: Typography(
-          platform: Theme.of(context).platform,
-          englishLike: Typography.englishLike2018,
-          dense: Typography.dense2018,
-          tall: Typography.tall2018,
+        textTheme: Typography.englishLike2018.apply(
+          displayColor: themeColors['onyx'],
+          bodyColor: themeColors['onyx'],
         ),
       ),
       initialRoute: '/',

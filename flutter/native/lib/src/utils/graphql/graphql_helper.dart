@@ -1,6 +1,9 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+
 import 'package:http/http.dart' as http;
+
 import 'package:flutter_app/src/environment.dart';
 import 'package:flutter_app/src/utils/graphql/graphql_exception.dart';
 
@@ -33,9 +36,9 @@ class GraphqlHelper {
   /// The [resolverName] is the name of the resolver called.
   /// This property is used to retrieve data from the response.
   static Future<dynamic> request({
-    String body,
+    @required String body,
     Map<String, String> headers = const {},
-    String resolverName,
+    @required String resolverName,
   }) async {
     final http.Response response = await http.post(
       Environment.vars['apiEndpoint'],

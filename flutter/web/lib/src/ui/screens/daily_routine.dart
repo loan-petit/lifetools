@@ -7,6 +7,7 @@ import 'package:flutter_app/src/ui/widgets/daily_routine/event.dart';
 import 'package:flutter_app/src/ui/widgets/daily_routine/upsert_event.dart';
 import 'package:flutter_app/src/ui/widgets/shared/app_scaffold.dart';
 import 'package:flutter_app/src/ui/widgets/shared/loading_screen.dart';
+import 'package:flutter_app/src/utils/time.dart';
 
 /// Display the logged in user's daily routine.
 class DailyRoutine extends StatefulWidget {
@@ -48,9 +49,9 @@ class _DailyRoutineState extends State<DailyRoutine> {
             );
           }
           if (snapshot.hasData) {
-            return _buildEventList(snapshot.data);
+            return _buildDailyRoutine(snapshot.data);
           }
-          return LoadingScreen(child: _buildEventList(snapshot.data));
+          return LoadingScreen(child: _buildDailyRoutine(snapshot.data));
         },
       ),
       floatingActionButtonBuilder: _buildFloatingActionButton,
@@ -58,16 +59,52 @@ class _DailyRoutineState extends State<DailyRoutine> {
   }
 
   /// Build the list of events in the daily routine.
-  Widget _buildEventList(Iterable<DailyRoutineEventModel> data) {
+  Widget _buildDailyRoutine(Iterable<DailyRoutineEventModel> data) {
     if (data == null) return Container();
 
-    final List<DailyRoutineEventModel> dailyRoutine = data.toList();
+    List<DailyRoutineEventModel> dailyRoutine = data.toList();
+    dailyRoutine.sort((a, b) {
+      if (a.startTime != b.startTime) {
+        return Time.timeOfDayToSeconds(a.startTime).compareTo(Time.timeOfDayToSeconds(b.startTime));
+      } else {
+        return Time.timeOfDayToSeconds(a.endTime).compareTo(Time.timeOfDayToSeconds(b.endTime));
+      }
+    });
 
-    return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0),
-      itemCount: dailyRoutine.length,
-      itemBuilder: (BuildContext context, int index) =>
-          DailyRoutineEvent(dailyRoutineEvent: dailyRoutine[index]),
+    final header = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Text(
+          "Daily Routine",
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.display1.apply(
+                fontWeightDelta: 3,
+              ),
+        ),
+        SizedBox(height: 16.0),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(26.0),
+          child: Container(
+            width: 200.0,
+            height: 8.0,
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+        SizedBox(height: 36.0),
+      ],
+    );
+
+    return CustomScrollView(
+      slivers: <Widget>[
+        SliverToBoxAdapter(child: header),
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (_, index) =>
+                DailyRoutineEvent(dailyRoutineEvent: dailyRoutine[index]),
+            childCount: dailyRoutine.length,
+          ),
+        ),
+      ],
     );
   }
 

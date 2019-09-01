@@ -2,15 +2,17 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app/src/models/user.dart';
+
 import 'package:pedantic/pedantic.dart';
 
 import 'package:flutter_app/src/blocs/user.dart';
 import 'package:flutter_app/src/blocs/daily_routine.dart';
 import 'package:flutter_app/src/models/daily_routine_event.dart';
+import 'package:flutter_app/src/models/user.dart';
 import 'package:flutter_app/src/ui/widgets/shared/loading_screen.dart';
 import 'package:flutter_app/src/utils/field_validator.dart';
 import 'package:flutter_app/src/utils/graphql/graphql_exception.dart';
+import 'package:flutter_app/src/utils/time.dart';
 
 /// Display a [Form] to create or update a daily routine event.
 ///
@@ -76,40 +78,60 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
     super.dispose();
   }
 
-  /// Build the sign in [Form] and its widgets.
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       actions: <Widget>[
         if (widget.dailyRoutineEvent != null)
-          IconButton(
+          _buildActionButton(
             onPressed: () {
               _deleteEvent();
             },
-            color: Theme.of(context).accentColor,
-            icon: Icon(Icons.delete),
+            iconData: Icons.clear,
+            labelText: "Delete",
           ),
-        FlatButton(
+        _buildActionButton(
           onPressed: () {
             _upsertEvent({
               'name': _name.text,
-              'startTime': (_startTime.hour * 60 + _startTime.minute) * 60,
-              'endTime': (_endTime.hour * 60 + _endTime.minute) * 60,
+              'startTime': Time.timeOfDayToSeconds(_startTime),
+              'endTime': Time.timeOfDayToSeconds(_endTime),
             });
           },
-          child: Text(
-            "Save",
-            style: Theme.of(context).textTheme.subhead.apply(
-                  color: Theme.of(context).accentColor,
-                  fontWeightDelta: 2,
-                ),
-          ),
+          iconData: (widget.dailyRoutineEvent != null) ? Icons.done : Icons.add,
+          labelText: (widget.dailyRoutineEvent != null) ? "Save" : "Create",
         ),
       ],
       content: _buildForm(),
     );
   }
 
+  /// Create [FlatButton] used for the [AlertDialog.actions].
+  Widget _buildActionButton({
+    @required VoidCallback onPressed,
+    @required IconData iconData,
+    @required String labelText,
+  }) {
+    return FlatButton.icon(
+      onPressed: onPressed,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      color: Theme.of(context).primaryColor,
+      icon: Icon(
+        iconData,
+        color: Theme.of(context).textTheme.body1.color,
+      ),
+      label: Text(
+        labelText,
+        style: Theme.of(context).textTheme.subhead.apply(
+              fontWeightDelta: 2,
+            ),
+      ),
+    );
+  }
+
+  /// Form to create or update a daily routine event.
   Form _buildForm() {
     final name = TextFormField(
       keyboardType: TextInputType.emailAddress,
@@ -129,13 +151,18 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
         FlatButton(
           onPressed: () async {
             _startTime = await showTimePicker(
-              context: context,
-              initialTime: _startTime,
-            );
+                  context: context,
+                  initialTime: _startTime,
+                ) ??
+                _startTime;
             setState(() {
               // Update _startTime with picked time.
             });
           },
+          shape: UnderlineInputBorder(
+            borderSide:
+                BorderSide(color: Theme.of(context).primaryColor, width: 2.0),
+          ),
           child: Text(_startTime.format(context)),
         ),
       ],
@@ -148,13 +175,18 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
         FlatButton(
           onPressed: () async {
             _endTime = await showTimePicker(
-              context: context,
-              initialTime: _endTime,
-            );
+                  context: context,
+                  initialTime: _endTime,
+                ) ??
+                _endTime;
             setState(() {
               // Update _endTime with picked time.
             });
           },
+          shape: UnderlineInputBorder(
+            borderSide:
+                BorderSide(color: Theme.of(context).primaryColor, width: 2.0),
+          ),
           child: Text(_endTime.format(context)),
         ),
       ],
@@ -208,9 +240,6 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
               'data': {
                 ...query,
                 'id': widget.dailyRoutineEvent.id,
-                'owner': {
-                  'connect': {'id': userId}
-                },
               }
             });
           } else {
@@ -245,7 +274,9 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
       await _changeLoadingVisible();
       _retrieveCurrentUserId((userId) async {
         await _dailyRoutineBloc.deleteOneEvent({
-          'where': {'id': widget.dailyRoutineEvent.id}
+          'where': {
+            'id': widget.dailyRoutineEvent.id,
+          }
         });
         await Navigator.pop(context);
       });
@@ -258,6 +289,8 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
     }
   }
 
+  /// Retrieve the [user.id] of the logged in user for subsequent use
+  /// by upsert and delete calls.
   void _retrieveCurrentUserId(void Function(String) callback) {
     StreamSubscription<UserModel> streamSubscription;
 

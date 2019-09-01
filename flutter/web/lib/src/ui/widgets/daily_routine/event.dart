@@ -21,26 +21,16 @@ class _DailyRoutineEventState extends State<DailyRoutineEvent> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 8.0,
-      margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-      child: ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-        leading: _buildLeading(),
-        title: Text(widget.dailyRoutineEvent.name),
-        trailing: IconButton(
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (_) {
-                return UpsertDailyRoutineEvent(
-                    dailyRoutineEvent: widget.dailyRoutineEvent);
-              },
-            );
-          },
-          icon: Icon(
-            Icons.navigate_next,
-            size: 30.0,
-          ),
+      elevation: 2.0,
+      margin: EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0),
+      color: Theme.of(context).accentColor,
+      child: Container(
+        child: ListTile(
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+          leading: _buildLeading(),
+          title: Text(widget.dailyRoutineEvent.name),
+          trailing: _buildTrailing(),
         ),
       ),
     );
@@ -49,15 +39,52 @@ class _DailyRoutineEventState extends State<DailyRoutineEvent> {
   /// Build the [ListTile.leading].
   Widget _buildLeading() {
     return Container(
+      width: 90.0,
       padding: EdgeInsets.only(right: 12.0),
       decoration: BoxDecoration(
-        border: Border(right: BorderSide(width: 1.0, color: Colors.white24)),
+        border: Border(
+          right: BorderSide(width: 2.0, color: Theme.of(context).primaryColor),
+        ),
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Text(widget.dailyRoutineEvent.startTime.format(context)),
-          Text(widget.dailyRoutineEvent.endTime.format(context)),
+          Text(
+            widget.dailyRoutineEvent.startTime.format(context),
+            style: Theme.of(context).textTheme.body1.apply(fontWeightDelta: 2),
+          ),
+          if (widget.dailyRoutineEvent.startTime !=
+              widget.dailyRoutineEvent.endTime)
+            Text(widget.dailyRoutineEvent.endTime.format(context)),
         ],
+      ),
+    );
+  }
+
+  /// Build the [ListTile.trailing].
+  Widget _buildTrailing() {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: Theme.of(context).primaryColor, width: 3.0),
+        ),
+      ),
+      child: IconButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (_) {
+              return UpsertDailyRoutineEvent(
+                  dailyRoutineEvent: widget.dailyRoutineEvent);
+            },
+          );
+        },
+        color: Theme.of(context).textTheme.body1.color,
+        icon: Icon(
+          Icons.navigate_next,
+          size: 30.0,
+        ),
       ),
     );
   }
