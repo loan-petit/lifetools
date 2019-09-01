@@ -15,6 +15,10 @@ technical skills.
 LifeTools isn't currently available on the stores (Play Store and App Store) as
 it still is rough, but it may be one day. Stay tuned. 
 
+## Application Preview
+
+![Preview of LifeTools app](https://github.com/loan-petit/lifetools/blob/media/app_preview.png)
+
 ## Build the project
 
 Please install Docker and docker-compose before running the following commands.
