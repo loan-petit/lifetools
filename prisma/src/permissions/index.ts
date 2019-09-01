@@ -4,23 +4,24 @@ import { getUserId } from '../utils/getUserId'
 const rules = {
   isAuthenticatedUser: rule()((parent, args, context) => {
     const userId = getUserId(context)
+    
     return Boolean(userId)
   }),
-  isCurrentUser: rule()(async (parent, { id }, context) => {
+  isCurrentUser: rule()(async (parent, args, context) => {
     const userId = getUserId(context)
     const user = await context.photon.users.findOne({
       where: {
-        id
+        id: args.where.id
       }
     })
     return userId === user.id
   }),
-  isDailyRoutineEventOwner: rule()(async (parent, { id }, context) => {
+  isDailyRoutineEventOwner: rule()(async (parent, args, context) => {
     const userId = getUserId(context)
     const owner = await context.photon.dailyRoutineEvents
       .findOne({
         where: {
-          id
+          id: args.where.id
         }
       })
       .owner()
