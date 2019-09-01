@@ -110,15 +110,17 @@ class _DailyRoutineState extends State<DailyRoutine> {
 
   Widget _buildFloatingActionButton(BuildContext context) {
     return FloatingActionButton(
-      onPressed: () {
-        showDialog(
+      onPressed: () async {
+        await showDialog(
           context: context,
           builder: (_) {
             return UpsertDailyRoutineEvent();
           },
         );
+        await _dailyRoutineBloc.fetch();
       },
       backgroundColor: Theme.of(context).primaryColor,
+      foregroundColor: Theme.of(context).accentColor,
       tooltip: "Create a new event in your daily routine.",
       child: Icon(Icons.add),
     );

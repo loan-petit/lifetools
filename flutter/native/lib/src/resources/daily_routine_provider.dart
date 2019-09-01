@@ -47,7 +47,8 @@ class DailyRoutineProvider {
   }
 
   /// Fetch a daily routine event based on the provided [query] parameters.
-  Future<DailyRoutineEventModel> fetchOneEvent(Map<String, dynamic> query) async {
+  Future<DailyRoutineEventModel> fetchOneEvent(
+      Map<String, dynamic> query) async {
     String args = GraphqlHelper.mapToParams(query);
     String body = """
       query FetchOneDailyRoutineEvent{
@@ -79,7 +80,6 @@ class DailyRoutineProvider {
         }
       }
     """;
-    print(body);
 
     await GraphqlHelper.request(
       body: body,

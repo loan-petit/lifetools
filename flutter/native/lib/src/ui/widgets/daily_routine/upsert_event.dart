@@ -15,12 +15,13 @@ import 'package:flutter_app/src/utils/graphql/graphql_exception.dart';
 import 'package:flutter_app/src/utils/time.dart';
 
 /// Display a [Form] to create or update a daily routine event.
-///
-/// If you want to update an event, send its ID to the [eventId].
 class UpsertDailyRoutineEvent extends StatefulWidget {
+  /// Daily routine event data.
   final DailyRoutineEventModel dailyRoutineEvent;
 
-  UpsertDailyRoutineEvent({this.dailyRoutineEvent});
+  UpsertDailyRoutineEvent({
+    this.dailyRoutineEvent,
+  });
 
   @override
   _UpsertDailyRoutineEventState createState() =>
@@ -35,18 +36,18 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
   /// Controller for the editable name [TextFormField].
   final _name = TextEditingController();
 
-  /// Editable startTime value.
+  /// Controller of startTime value editable with time picker.
   TimeOfDay _startTime;
 
-  /// Editable endTime value.
+  /// Controller of endTime value editable with time picker.
   TimeOfDay _endTime;
 
   /// If true, validate and update the [TextFormField] error text
   /// after every changes.
   bool _autoValidate = false;
 
-  /// If true, display a [Text] to indicate that an error occured.
-  bool _doesErrorOccured = false;
+  /// Error string. Set to null if there isn't any errors.
+  String _error;
 
   /// If true, display the [LoadingScreen] during asynchronous operations.
   bool _isLoadingVisible = false;
@@ -57,12 +58,20 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
   /// Manages the business logic relation to daily routine event updates.
   final _dailyRoutineBloc = DailyRoutineBloc();
 
-  /// Initialize [_startTime] and [_endTime] depending on
-  /// [widget.dailyRoutineEvent] attribute.
+  /// Initialize form controllers based on [widget.dailyRoutineEvent].
   @override
   void initState() {
     super.initState();
 
+    if (widget.dailyRoutineEvent?.name != null) {
+      _name.value = _name.value.copyWith(
+        text: widget.dailyRoutineEvent.name,
+        selection: TextSelection(
+            baseOffset: widget.dailyRoutineEvent.name.length,
+            extentOffset: widget.dailyRoutineEvent.name.length),
+        composing: TextRange.empty,
+      );
+    }
     _startTime =
         widget.dailyRoutineEvent?.startTime ?? TimeOfDay(hour: 8, minute: 0);
     _endTime =
@@ -92,11 +101,18 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
           ),
         _buildActionButton(
           onPressed: () {
-            _upsertEvent({
-              'name': _name.text,
-              'startTime': Time.timeOfDayToSeconds(_startTime),
-              'endTime': Time.timeOfDayToSeconds(_endTime),
-            });
+            if (Time.timeOfDayToSeconds(_startTime) >
+                Time.timeOfDayToSeconds(_endTime)) {
+              setState(() {
+                _error = "Start time should be before the end time.";
+              });
+            } else {
+              _upsertEvent({
+                'name': _name.text,
+                'startTime': Time.timeOfDayToSeconds(_startTime),
+                'endTime': Time.timeOfDayToSeconds(_endTime),
+              });
+            }
           },
           iconData: (widget.dailyRoutineEvent != null) ? Icons.done : Icons.add,
           labelText: (widget.dailyRoutineEvent != null) ? "Save" : "Create",
@@ -193,7 +209,7 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
     );
 
     final errorLabel = Text(
-      'An unexpected error occured, please retry.',
+      _error ?? '',
       textAlign: TextAlign.center,
       style: Theme.of(context).textTheme.body2.apply(color: Colors.red),
     );
@@ -210,8 +226,8 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
           startTimePicker,
           SizedBox(height: 24.0),
           endTimePicker,
-          if (_doesErrorOccured) SizedBox(height: 24.0),
-          if (_doesErrorOccured) errorLabel,
+          if (_error != null) SizedBox(height: 24.0),
+          if (_error != null) errorLabel,
         ],
       ),
     );
@@ -237,10 +253,8 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
         _retrieveCurrentUserId((userId) async {
           if (widget.dailyRoutineEvent?.id != null) {
             await _dailyRoutineBloc.updateOneEvent({
-              'data': {
-                ...query,
-                'id': widget.dailyRoutineEvent.id,
-              }
+              'where': {'id': widget.dailyRoutineEvent.id},
+              'data': query,
             });
           } else {
             await _dailyRoutineBloc.createOneEvent({
@@ -258,7 +272,7 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
         // Notify the user that an error happend.
         await _changeLoadingVisible();
         setState(() {
-          _doesErrorOccured = true;
+          _error = 'An unexpected error occured, please retry.';
         });
       }
     } else {
@@ -284,7 +298,7 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
       // Notify the user that an error happend.
       await _changeLoadingVisible();
       setState(() {
-        _doesErrorOccured = true;
+        _error = 'An unexpected error occured, please retry.';
       });
     }
   }
@@ -304,7 +318,7 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
         // Notify the user that an error happend.
         await _changeLoadingVisible();
         setState(() {
-          _doesErrorOccured = true;
+          _error = 'An unexpected error occured, please retry.';
         });
       },
       cancelOnError: true,

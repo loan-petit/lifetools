@@ -1,12 +1,13 @@
 import 'package:flutter_web/material.dart';
+import 'package:flutter_app/src/blocs/daily_routine.dart';
+import 'package:flutter_app/src/blocs/inherited_widgets/daily_routine_bloc_provider.dart';
 
 import 'package:flutter_app/src/models/daily_routine_event.dart';
 import 'package:flutter_app/src/ui/widgets/daily_routine/upsert_event.dart';
 
 /// Build a list event based on a [ListTile].
-///
-/// The event data has to be send to [dailyRoutineEvent].
 class DailyRoutineEvent extends StatefulWidget {
+  /// Daily routine event data.
   final DailyRoutineEventModel dailyRoutineEvent;
 
   DailyRoutineEvent({
@@ -23,7 +24,7 @@ class _DailyRoutineEventState extends State<DailyRoutineEvent> {
     return Card(
       elevation: 2.0,
       margin: EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0),
-      color: Theme.of(context).accentColor,
+      color: Theme.of(context).canvasColor,
       child: Container(
         child: ListTile(
           contentPadding:
@@ -71,14 +72,15 @@ class _DailyRoutineEventState extends State<DailyRoutineEvent> {
         ),
       ),
       child: IconButton(
-        onPressed: () {
-          showDialog(
+        onPressed: () async {
+          await showDialog(
             context: context,
             builder: (_) {
               return UpsertDailyRoutineEvent(
                   dailyRoutineEvent: widget.dailyRoutineEvent);
             },
           );
+          await DailyRoutineBlocProvider.of(context).fetch();
         },
         color: Theme.of(context).textTheme.body1.color,
         icon: Icon(

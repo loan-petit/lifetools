@@ -16,13 +16,18 @@ class App extends StatelessWidget {
     };
 
     return MaterialApp(
-      title: 'Life tools',
+      title: 'LifeTools',
+      builder: (context, child) => MediaQuery(
+        data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+        child: child,
+      ),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.light,
         scaffoldBackgroundColor: themeColors['babyPowder'],
         primaryColor: themeColors['bananaYellow'],
-        accentColor: themeColors['snow'],
+        accentColor: themeColors['onyx'],
+        cardColor: themeColors['snow'],
         appBarTheme: AppBarTheme(color: Colors.transparent),
         fontFamily: 'OpenSans',
         textTheme: Typography.englishLike2018.apply(
