@@ -13,27 +13,24 @@ ENV PATH ${PATH}:${FLUTTER_ROOT}/bin:${FLUTTER_ROOT}/bin/cache/dart-sdk/bin
 RUN flutter doctor
 ENV PATH ${PATH}:${HOME}/.pub-cache/bin
 
-# Enable webdev for the build
-RUN flutter pub global activate webdev
+# Enable flutter web
+RUN flutter config --enable-web
 
 WORKDIR /app
 
 # Install dependencies before pushing the rest of the code in order to use
 # cached dependencies when a file other than the package.json is changed in
 # the current host directory
-ADD ./web/pubspec.* /app/
+ADD pubspec.* /app/
 RUN pub get
 
 # Copy code ressources
-ADD ./web/ /app/
-ADD ./nginx.conf /app/
+ADD . /app/
+ADD nginx.conf /app/
 RUN pub get --offline
 
-# Use production environment
-RUN sed -i -e 's/main_dev.dart/main_prod.dart/g' ./web/main.dart
-
 # Build client files which will be served by nginx
-RUN flutter pub global run webdev build
+RUN flutter build web -t lib/main_prod.dart
 
 # Stage 1, based on Nginx, to have only the compiled app, ready for production with Nginx
 FROM nginx:alpine
