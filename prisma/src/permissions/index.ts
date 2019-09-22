@@ -31,12 +31,12 @@ const rules = {
 
 export const permissions = shield({
   Query: {
-    findOneUser: rules.isAuthenticatedUser,
-    findManyUser: rules.isAuthenticatedUser,
+    user: rules.isAuthenticatedUser,
+    users: rules.isAuthenticatedUser,
     me: rules.isAuthenticatedUser,
 
-    findOneDailyRoutineEvent: rules.isAuthenticatedUser,
-    findManyDailyRoutineEvent: rules.isAuthenticatedUser,
+    dailyroutineevent: rules.isAuthenticatedUser,
+    dailyroutineevents: rules.isAuthenticatedUser,
   },
   Mutation: {
     updateOneUser: rules.isCurrentUser,

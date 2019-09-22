@@ -4,11 +4,11 @@ import { me } from './User'
 
 const DefaultQueries = queryType({
   definition (t) {
-    t.crud.findOneUser()
-    t.crud.findManyUser()
+    t.crud.user()
+    t.crud.users()
 
-    t.crud.findOneDailyRoutineEvent()
-    t.crud.findManyDailyRoutineEvent()
+    t.crud.dailyroutineevent()
+    t.crud.dailyroutineevents()
   }
 })
 

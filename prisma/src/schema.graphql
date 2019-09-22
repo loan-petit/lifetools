@@ -117,11 +117,11 @@ input MutationUpdateOneUserWhereInput {
 }
 
 type Query {
-  findManyDailyRoutineEvent(after: String, before: String, first: Int, last: Int, skip: Int): [DailyRoutineEvent!]
-  findManyUser(after: String, before: String, first: Int, last: Int, skip: Int): [User!]
-  findOneDailyRoutineEvent(where: DailyRoutineEventWhereUniqueInput!): DailyRoutineEvent
-  findOneUser(where: UserWhereUniqueInput!): User
+  dailyroutineevent(where: DailyRoutineEventWhereUniqueInput!): DailyRoutineEvent
+  dailyroutineevents(after: String, before: String, first: Int, last: Int, skip: Int): [DailyRoutineEvent!]
   me: AuthPayload!
+  user(where: UserWhereUniqueInput!): User
+  users(after: String, before: String, first: Int, last: Int, skip: Int): [User!]
 }
 
 input StringFilter {

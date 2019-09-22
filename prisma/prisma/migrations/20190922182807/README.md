@@ -1,16 +1,25 @@
-# Migration `20190901145225`
+# Migration `20190922182807`
 
-This migration has been generated at 9/1/2019, 2:52:25 PM.
+This migration has been generated at 9/22/2019, 6:28:07 PM.
 You can check out the [state of the datamodel](./datamodel.prisma) after the migration.
 
 ## Database Steps
 
 ```sql
-CREATE TABLE "public"."User"("email" text NOT NULL DEFAULT '' ,"id" text NOT NULL  ,"password" text NOT NULL DEFAULT '' ,PRIMARY KEY ("id"))
-;
+CREATE TABLE "public"."User" (
+  "email" text NOT NULL DEFAULT '' ,
+  "id" text NOT NULL  ,
+  "password" text NOT NULL DEFAULT '' ,
+  PRIMARY KEY ("id")
+);
 
-CREATE TABLE "public"."DailyRoutineEvent"("endTime" integer NOT NULL DEFAULT 0 ,"id" text NOT NULL  ,"name" text NOT NULL DEFAULT '' ,"startTime" integer NOT NULL DEFAULT 0 ,PRIMARY KEY ("id"))
-;
+CREATE TABLE "public"."DailyRoutineEvent" (
+  "endTime" integer NOT NULL DEFAULT 0 ,
+  "id" text NOT NULL  ,
+  "name" text NOT NULL DEFAULT '' ,
+  "startTime" integer NOT NULL DEFAULT 0 ,
+  PRIMARY KEY ("id")
+);
 
 ALTER TABLE "public"."DailyRoutineEvent" ADD COLUMN "owner" text   REFERENCES "public"."User"("id") ON DELETE SET NULL;
 
@@ -25,7 +34,7 @@ CREATE UNIQUE INDEX "DailyRoutineEvent.id" ON "public"."DailyRoutineEvent"("id")
 
 ```diff
 diff --git datamodel.mdl datamodel.mdl
-migration ..20190901145225
+migration ..20190922182807
 --- datamodel.dml
 +++ datamodel.dml
 @@ -1,0 +1,27 @@
@@ -60,11 +69,11 @@ migration ..20190901145225
 
 ## Photon Usage
 
-You can use a specific Photon built for this migration (20190901145225)
+You can use a specific Photon built for this migration (20190922182807)
 in your `before` or `after` migration script like this:
 
 ```ts
-import Photon from '@generated/photon/20190901145225'
+import Photon from '@generated/photon/20190922182807'
 
 const photon = new Photon()
 
