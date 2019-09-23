@@ -21,10 +21,11 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^0.1.2
   shared_preferences: ^0.5.3+4
+  universal_html: ^1.1.6
   validators: ^2.0.0+1
   http: ^0.12.0+2
-  rxdart: ^0.18.1
-  universal_html: ^1.1.6
+  rxdart: ^0.22.2
+  graphql: ^2.1.0
 
 dev_dependencies:
   flutter_test:

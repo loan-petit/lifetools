@@ -41,7 +41,7 @@ class GoalBloc {
       Iterable<GoalModel> goals =
           await _goalProvider.fetchMany(query);
       _goalsSubject.sink.add(goals);
-    } on GraphqlException catch (e) {
+    } on GraphQLException catch (e) {
       _goalsSubject.sink.addError(e);
     }
   }
@@ -55,7 +55,7 @@ class GoalBloc {
       GoalModel goal =
           await _goalProvider.fetchOne(query);
       _goalSubject.sink.add(goal);
-    } on GraphqlException catch (e) {
+    } on GraphQLException catch (e) {
       _goalSubject.sink.addError(e);
     }
   }

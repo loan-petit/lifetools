@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lifetools/src/blocs/daily_routine.dart';
-import 'package:lifetools/src/blocs/inherited_widgets/daily_routine_bloc_provider.dart';
 
+import 'package:lifetools/src/blocs/inherited_widgets/daily_routine_bloc_provider.dart';
 import 'package:lifetools/src/models/daily_routine_event.dart';
 import 'package:lifetools/src/ui/widgets/daily_routine/upsert_event.dart';
 

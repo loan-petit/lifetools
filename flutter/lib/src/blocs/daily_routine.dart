@@ -39,7 +39,7 @@ class DailyRoutineBloc {
       Iterable<DailyRoutineEventModel> dailyRoutine =
           await _dailyRoutineProvider.fetch();
       _dailyRoutineSubject.sink.add(dailyRoutine);
-    } on GraphqlException catch (e) {
+    } on GraphQLException catch (e) {
       _dailyRoutineSubject.sink.addError(e);
     }
   }
@@ -54,7 +54,7 @@ class DailyRoutineBloc {
       DailyRoutineEventModel dailyRoutineEvent =
           await _dailyRoutineProvider.fetchOneEvent(query);
       _dailyRoutineEventSubject.sink.add(dailyRoutineEvent);
-    } on GraphqlException catch (e) {
+    } on GraphQLException catch (e) {
       _dailyRoutineEventSubject.sink.addError(e);
     }
   }

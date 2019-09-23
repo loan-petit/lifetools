@@ -268,7 +268,7 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
           }
           Navigator.pop(context);
         });
-      } on GraphqlException {
+      } on GraphQLException {
         // Notify the user that an error happend.
         await _changeLoadingVisible();
         setState(() {
@@ -294,7 +294,7 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
         });
         Navigator.pop(context);
       });
-    } on GraphqlException {
+    } on GraphQLException {
       // Notify the user that an error happend.
       await _changeLoadingVisible();
       setState(() {

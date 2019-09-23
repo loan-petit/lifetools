@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:lifetools/src/models/user.dart';
-import 'package:lifetools/src/services/data_persistence_service/index.dart';
 import 'package:lifetools/src/utils/graphql/graphql_helper.dart';
 
 /// Provide CRUD operations, on GraphQL API, related to the users.
@@ -9,17 +8,13 @@ import 'package:lifetools/src/utils/graphql/graphql_helper.dart';
 /// Check out the GraphQL API documentation to get a deeper understanding
 /// of the resolvers and their parameters.
 class UserProvider {
-  /// Service used to access the JWT of the logged in user.
-  final _dataPersistenceService = DataPersistenceService();
-
-  /// Authorization header providing access to GraphQL resolvers
-  /// requesting authentication.
-  Map<String, String> get _authorizationHeader =>
-      {'Authorization': 'Bearer ${_dataPersistenceService.get('id_token')}'};
+  /// Abstract interactions with the [GraphQLClient] and requests to the
+  /// GraphQL API.
+  GraphQLHelper _graphQLHelper = GraphQLHelper();
 
   /// Sign a user in based on his [credentials].
   Future<UserModel> signIn(Map<String, String> credentials) async {
-    String args = GraphqlHelper.mapToParams(credentials);
+    String args = _graphQLHelper.mapToParams(credentials);
     String body = """
       mutation SignIn {
         signin $args {
@@ -29,16 +24,15 @@ class UserProvider {
       }
     """;
 
-    Map<String, dynamic> responseBody = await GraphqlHelper.request(
-      body: body,
-      resolverName: 'signin',
-    );
-    return UserModel.fromJson(responseBody);
+    Map<String, dynamic> responseBody =
+        await _graphQLHelper.request(body: body, isMutation: true);
+
+    return UserModel.fromJson(responseBody['signin']);
   }
 
   /// Sign a user up based on his [credentials].
   Future<UserModel> signUp(Map<String, String> credentials) async {
-    String args = GraphqlHelper.mapToParams(credentials);
+    String args = _graphQLHelper.mapToParams(credentials);
     String body = """
       mutation SignUp {
         signup $args {
@@ -48,11 +42,10 @@ class UserProvider {
       }
     """;
 
-    Map<String, dynamic> responseBody = await GraphqlHelper.request(
-      body: body,
-      resolverName: 'signup',
-    );
-    return UserModel.fromJson(responseBody);
+    Map<String, dynamic> responseBody =
+        await _graphQLHelper.request(body: body, isMutation: true);
+
+    return UserModel.fromJson(responseBody['signup']);
   }
 
   /// Get the user whose JSON Web Token is send in Authorization header.
@@ -70,11 +63,9 @@ class UserProvider {
       }
     """;
 
-    Map<String, dynamic> responseBody = await GraphqlHelper.request(
-      body: body,
-      headers: _authorizationHeader,
-      resolverName: 'me',
-    );
-    return UserModel.fromJson(responseBody);
+    Map<String, dynamic> responseBody =
+        await _graphQLHelper.request(body: body, isQuery: true);
+
+    return UserModel.fromJson(responseBody['me']);
   }
 }

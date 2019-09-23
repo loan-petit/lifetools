@@ -1,32 +1,16 @@
+import 'package:graphql/client.dart';
 import 'package:lifetools/src/environment.dart';
 
-/// [Exception] raised on error for HTTP request to backend GraphQL API.
-class GraphqlException implements Exception {
+/// [Exception] raised on error for HTTP request to GraphQL API.
+class GraphQLException implements Exception {
   final String message;
+  final List<GraphQLError> errors;
 
-  GraphqlException(this.message);
-
-  /// Build this model from the [json] response of the API.
-  factory GraphqlException.fromJson(Map<String, dynamic> json) {
+  GraphQLException({this.message, this.errors})
+      : assert(message != null),
+        assert(errors != null) {
     if (Environment.env == EnvironmentType.DEV) {
-      print(json);
-    }
-
-    if (json['error'] != null) {
-      if (json['error']['errors'] != null) {
-        return GraphqlException(
-          json['error']['errors'][0]['message'],
-        );
-      }
-      return GraphqlException(
-        json['error'],
-      );
-    } else if (json['errors'] != null) {
-      return GraphqlException(
-        json['errors'][0]['message'],
-      );
-    } else {
-      return GraphqlException('Unexpected Error');
+      print(errors);
     }
   }
 }

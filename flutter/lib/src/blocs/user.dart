@@ -1,3 +1,4 @@
+import 'package:lifetools/src/utils/graphql/graphql_helper.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'package:lifetools/src/models/user.dart';
@@ -41,6 +42,7 @@ class UserBloc {
   static void signOut() {
     _dataPersistenceService.remove('id_token');
     _dataPersistenceService.remove('expires_at');
+    GraphQLHelper().init();
   }
 
   /// Retrieve user's credentials and sign him in.
@@ -65,7 +67,7 @@ class UserBloc {
     try {
       UserModel userModel = await _usersProvider.getCurrentUser();
       _usersSubject.sink.add(userModel);
-    } on GraphqlException catch (e) {
+    } on GraphQLException catch (e) {
       _usersSubject.sink.addError(e);
     }
   }
@@ -85,5 +87,6 @@ class UserBloc {
           )
           .toString(),
     );
+    GraphQLHelper().init();
   }
 }

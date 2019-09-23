@@ -173,7 +173,7 @@ class _SignInScreenState extends State<SignInScreen> {
         await _changeLoadingVisible();
         await _userBloc.signIn(credentials);
         await Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
-      } on GraphqlException {
+      } on GraphQLException {
         // Notify the user that an error happend.
         await _changeLoadingVisible();
         setState(() => _areCredentialsInvalid = true);
