@@ -12,10 +12,12 @@ generator nexus_prisma {
 }
 
 model User {
-  id           String             @default(cuid()) @id @unique
-  email        String             @unique
+  id           String              @default(cuid()) @id @unique
+  createdAt    DateTime            @default(now())
+  email        String              @unique
   password     String
   dailyRoutine DailyRoutineEvent[]
+  goals        Goal[]
 }
 
 model DailyRoutineEvent {
@@ -24,4 +26,12 @@ model DailyRoutineEvent {
   startTime Int
   endTime   Int
   owner     User
+}
+
+model Goal {
+  id          String   @default(cuid()) @id @unique
+  name        String
+  date        DateTime
+  isCompleted Boolean
+  owner       User
 }

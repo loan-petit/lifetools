@@ -43,7 +43,7 @@ class DailyRoutineProvider {
     );
 
     return responseBody['user']['dailyRoutine'].map<DailyRoutineEventModel>(
-        (mediaList) => DailyRoutineEventModel.fromJson(mediaList));
+        (event) => DailyRoutineEventModel.fromJson(event));
   }
 
   /// Fetch a daily routine event based on the provided [query] parameters.
@@ -51,7 +51,7 @@ class DailyRoutineProvider {
       Map<String, dynamic> query) async {
     String args = GraphqlHelper.mapToParams(query);
     String body = """
-      query FetchOneDailyRoutineEvent{
+      query FetchDailyRoutineEvent {
         dailyroutineevent $args {
           id
           name
@@ -64,7 +64,7 @@ class DailyRoutineProvider {
     Map<String, dynamic> responseBody = await GraphqlHelper.request(
       body: body,
       headers: _authorizationHeader,
-      resolverName: 'findOneDailyRoutineEvent',
+      resolverName: 'dailyroutineevent',
     );
 
     return DailyRoutineEventModel.fromJson(responseBody);

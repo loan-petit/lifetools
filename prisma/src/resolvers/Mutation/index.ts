@@ -10,6 +10,10 @@ const DefaultMutations = mutationType({
     t.crud.createOneDailyRoutineEvent()
     t.crud.updateOneDailyRoutineEvent()
     t.crud.deleteOneDailyRoutineEvent()
+
+    t.crud.createOneGoal()
+    t.crud.updateOneGoal()
+    t.crud.deleteOneGoal()
   }
 })
 

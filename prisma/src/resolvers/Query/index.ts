@@ -9,6 +9,9 @@ const DefaultQueries = queryType({
 
     t.crud.dailyroutineevent()
     t.crud.dailyroutineevents()
+
+    t.crud.goal()
+    t.crud.goals()
   }
 })
 

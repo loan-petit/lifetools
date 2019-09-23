@@ -266,7 +266,7 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
               },
             });
           }
-          Navigator.pop(context);
+          await Navigator.pop(context);
         });
       } on GraphqlException {
         // Notify the user that an error happend.
@@ -292,7 +292,7 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
             'id': widget.dailyRoutineEvent.id,
           }
         });
-        Navigator.pop(context);
+        await Navigator.pop(context);
       });
     } on GraphqlException {
       // Notify the user that an error happend.

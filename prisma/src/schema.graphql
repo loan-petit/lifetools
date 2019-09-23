@@ -24,6 +24,11 @@ input DailyRoutineEventCreateInput {
   startTime: Int!
 }
 
+input DailyRoutineEventCreateManyWithoutDailyRoutineInput {
+  connect: [DailyRoutineEventWhereUniqueInput!]
+  create: [DailyRoutineEventCreateWithoutOwnerInput!]
+}
+
 input DailyRoutineEventCreateWithoutOwnerInput {
   endTime: Int!
   id: ID
@@ -85,6 +90,91 @@ input DailyRoutineEventWhereUniqueInput {
   id: ID
 }
 
+"""DateTime"""
+scalar DateTime
+
+type Goal {
+  date: DateTime!
+  id: ID!
+  isCompleted: Boolean!
+  name: String!
+  owner: User!
+}
+
+input GoalCreateInput {
+  date: DateTime!
+  id: ID
+  isCompleted: Boolean!
+  name: String!
+  owner: UserCreateOneWithoutOwnerInput!
+}
+
+input GoalCreateManyWithoutGoalsInput {
+  connect: [GoalWhereUniqueInput!]
+  create: [GoalCreateWithoutOwnerInput!]
+}
+
+input GoalCreateWithoutOwnerInput {
+  date: DateTime!
+  id: ID
+  isCompleted: Boolean!
+  name: String!
+}
+
+input GoalUpdateInput {
+  date: DateTime
+  id: ID
+  isCompleted: Boolean
+  name: String
+  owner: UserUpdateOneRequiredWithoutGoalsInput
+}
+
+input GoalUpdateManyDataInput {
+  date: DateTime
+  id: ID
+  isCompleted: Boolean
+  name: String
+}
+
+input GoalUpdateManyWithoutOwnerInput {
+  connect: [GoalWhereUniqueInput!]
+  create: [GoalCreateWithoutOwnerInput!]
+  delete: [GoalWhereUniqueInput!]
+  deleteMany: [MutationUpdateOneUserWhereInput!]
+  disconnect: [GoalWhereUniqueInput!]
+  set: [GoalWhereUniqueInput!]
+  update: [GoalUpdateWithWhereUniqueWithoutOwnerInput!]
+  updateMany: [GoalUpdateManyWithWhereNestedInput!]
+  upsert: [GoalUpsertWithWhereUniqueWithoutOwnerInput!]
+}
+
+input GoalUpdateManyWithWhereNestedInput {
+  data: GoalUpdateManyDataInput!
+  where: MutationUpdateOneUserWhereInput!
+}
+
+input GoalUpdateWithoutOwnerDataInput {
+  date: DateTime
+  id: ID
+  isCompleted: Boolean
+  name: String
+}
+
+input GoalUpdateWithWhereUniqueWithoutOwnerInput {
+  data: GoalUpdateWithoutOwnerDataInput!
+  where: GoalWhereUniqueInput!
+}
+
+input GoalUpsertWithWhereUniqueWithoutOwnerInput {
+  create: GoalCreateWithoutOwnerInput!
+  update: GoalUpdateWithoutOwnerDataInput!
+  where: GoalWhereUniqueInput!
+}
+
+input GoalWhereUniqueInput {
+  id: ID
+}
+
 input IntFilter {
   equals: Int
   gt: Int
@@ -98,11 +188,14 @@ input IntFilter {
 
 type Mutation {
   createOneDailyRoutineEvent(data: DailyRoutineEventCreateInput!): DailyRoutineEvent!
+  createOneGoal(data: GoalCreateInput!): Goal!
   deleteOneDailyRoutineEvent(where: DailyRoutineEventWhereUniqueInput!): DailyRoutineEvent
+  deleteOneGoal(where: GoalWhereUniqueInput!): Goal
   deleteOneUser(where: UserWhereUniqueInput!): User
   signin(email: String, password: String): AuthPayload!
   signup(email: String, password: String, passwordConfirmation: String): AuthPayload!
   updateOneDailyRoutineEvent(data: DailyRoutineEventUpdateInput!, where: DailyRoutineEventWhereUniqueInput!): DailyRoutineEvent
+  updateOneGoal(data: GoalUpdateInput!, where: GoalWhereUniqueInput!): Goal
   updateOneUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
 }
 
@@ -119,6 +212,8 @@ input MutationUpdateOneUserWhereInput {
 type Query {
   dailyroutineevent(where: DailyRoutineEventWhereUniqueInput!): DailyRoutineEvent
   dailyroutineevents(after: String, before: String, first: Int, last: Int, skip: Int): [DailyRoutineEvent!]
+  goal(where: GoalWhereUniqueInput!): Goal
+  goals(after: String, before: String, first: Int, last: Int, skip: Int): [Goal!]
   me: AuthPayload!
   user(where: UserWhereUniqueInput!): User
   users(after: String, before: String, first: Int, last: Int, skip: Int): [User!]
@@ -149,14 +244,26 @@ input UserCreateOneWithoutOwnerInput {
 }
 
 input UserCreateWithoutDailyRoutineInput {
+  createdAt: DateTime
+  email: String!
+  goals: GoalCreateManyWithoutGoalsInput
+  id: ID
+  password: String!
+}
+
+input UserCreateWithoutGoalsInput {
+  createdAt: DateTime
+  dailyRoutine: DailyRoutineEventCreateManyWithoutDailyRoutineInput
   email: String!
   id: ID
   password: String!
 }
 
 input UserUpdateInput {
+  createdAt: DateTime
   dailyRoutine: DailyRoutineEventUpdateManyWithoutOwnerInput
   email: String
+  goals: GoalUpdateManyWithoutOwnerInput
   id: ID
   password: String
 }
@@ -168,7 +275,24 @@ input UserUpdateOneRequiredWithoutDailyRoutineInput {
   upsert: UserUpsertWithoutDailyRoutineInput
 }
 
+input UserUpdateOneRequiredWithoutGoalsInput {
+  connect: UserWhereUniqueInput
+  create: UserCreateWithoutGoalsInput
+  update: UserUpdateWithoutGoalsDataInput
+  upsert: UserUpsertWithoutGoalsInput
+}
+
 input UserUpdateWithoutDailyRoutineDataInput {
+  createdAt: DateTime
+  email: String
+  goals: GoalUpdateManyWithoutOwnerInput
+  id: ID
+  password: String
+}
+
+input UserUpdateWithoutGoalsDataInput {
+  createdAt: DateTime
+  dailyRoutine: DailyRoutineEventUpdateManyWithoutOwnerInput
   email: String
   id: ID
   password: String
@@ -177,6 +301,11 @@ input UserUpdateWithoutDailyRoutineDataInput {
 input UserUpsertWithoutDailyRoutineInput {
   create: UserCreateWithoutDailyRoutineInput!
   update: UserUpdateWithoutDailyRoutineDataInput!
+}
+
+input UserUpsertWithoutGoalsInput {
+  create: UserCreateWithoutGoalsInput!
+  update: UserUpdateWithoutGoalsDataInput!
 }
 
 input UserWhereUniqueInput {

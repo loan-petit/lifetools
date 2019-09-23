@@ -27,6 +27,17 @@ const rules = {
       .owner()
     return userId === owner.id
   }),
+  isGoalOwner: rule()(async (parent, args, context) => {
+    const userId = getUserId(context)
+    const owner = await context.photon.goals
+      .findOne({
+        where: {
+          id: args.where.id
+        }
+      })
+      .owner()
+    return userId === owner.id
+  }),
 }
 
 export const permissions = shield({
@@ -37,6 +48,9 @@ export const permissions = shield({
 
     dailyroutineevent: rules.isAuthenticatedUser,
     dailyroutineevents: rules.isAuthenticatedUser,
+
+    goal: rules.isAuthenticatedUser,
+    goals: rules.isAuthenticatedUser,
   },
   Mutation: {
     updateOneUser: rules.isCurrentUser,
@@ -45,5 +59,9 @@ export const permissions = shield({
     createOneDailyRoutineEvent: rules.isAuthenticatedUser,
     updateOneDailyRoutineEvent: rules.isDailyRoutineEventOwner,
     deleteOneDailyRoutineEvent: rules.isDailyRoutineEventOwner,
+
+    createOneGoal: rules.isAuthenticatedUser,
+    updateOneGoal: rules.isGoalOwner,
+    deleteOneGoal: rules.isGoalOwner,
   }
 })

@@ -6,7 +6,8 @@ import 'package:lifetools/src/utils/graphql/graphql_exception.dart';
 
 /// Manage the business logic related to the daily routine and its events.
 class DailyRoutineBloc {
-  /// Provider of the authentication requests, responsible of making API calls.
+  /// Provider of the daily routine related requests, responsible
+  /// of making API calls.
   final DailyRoutineProvider _dailyRoutineProvider = DailyRoutineProvider();
 
   /// Sink and Streams controller for the daily routine.
@@ -25,7 +26,7 @@ class DailyRoutineBloc {
   Observable<DailyRoutineEventModel> get event =>
       _dailyRoutineEventSubject.stream;
 
-  /// Dispose of the the [_usersSubject] to close all open streams.
+  /// Dispose of every [PublishSubject] to close all open streams.
   dispose() {
     _dailyRoutineSubject.close();
     _dailyRoutineEventSubject.close();
@@ -66,7 +67,7 @@ class DailyRoutineBloc {
     await _dailyRoutineProvider.createOneEvent(query);
   }
 
-  /// Create a daily routine event.
+  /// Update a daily routine event.
   ///
   /// The [query] key and values must match the JSON key and values needed
   /// by the GraphQL API for the 'updateOneDailyRoutineEvent' resolver.
@@ -74,7 +75,7 @@ class DailyRoutineBloc {
     await _dailyRoutineProvider.updateOneEvent(query);
   }
 
-  /// Create a daily routine event.
+  /// Delete a daily routine event.
   ///
   /// The [query] key and values must match the JSON key and values needed
   /// by the GraphQL API for the 'deleteOneDailyRoutineEvent' resolver.
