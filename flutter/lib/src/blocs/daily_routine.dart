@@ -34,10 +34,25 @@ class DailyRoutineBloc {
 
   /// Fetch the daily routine of the logged in user and add it to
   /// the [_dailyRoutineSubject.sink].
-  Future<void> fetch() async {
+  ///
+  /// Specify the [userId] of a user to retrieve its daily routine.
+  /// If you want to retrieve the daily routine of the logged in user,
+  /// you should instead set [fromCurrentUser] to true.
+  ///
+  /// If some events have been created or removed from the database,
+  /// you may want to update the cache. To do this, set [updateCache] to true.
+  Future<void> fetch({
+    String userId,
+    bool fromCurrentUser = false,
+    bool updateCache = false,
+  }) async {
     try {
       Iterable<DailyRoutineEventModel> dailyRoutine =
-          await _dailyRoutineProvider.fetch();
+          await _dailyRoutineProvider.fetch(
+        userId: userId,
+        fromCurrentUser: fromCurrentUser,
+        updateCache: updateCache,
+      );
       _dailyRoutineSubject.sink.add(dailyRoutine);
     } on GraphQLException catch (e) {
       _dailyRoutineSubject.sink.addError(e);
@@ -49,10 +64,19 @@ class DailyRoutineBloc {
   ///
   /// The [query] key and values must match the JSON key and values needed
   /// by the GraphQL API for the 'findOneDailyRoutineEvent' resolver.
-  Future<void> fetchOneEvent(Map<String, dynamic> query) async {
+  ///
+  /// If some events have been created or removed from the database,
+  /// you may want to update the cache. To do this, set [updateCache] to true.
+  Future<void> fetchOneEvent(
+    Map<String, dynamic> query, {
+    bool updateCache = false,
+  }) async {
     try {
       DailyRoutineEventModel dailyRoutineEvent =
-          await _dailyRoutineProvider.fetchOneEvent(query);
+          await _dailyRoutineProvider.fetchOneEvent(
+        query,
+        updateCache: updateCache,
+      );
       _dailyRoutineEventSubject.sink.add(dailyRoutineEvent);
     } on GraphQLException catch (e) {
       _dailyRoutineEventSubject.sink.addError(e);

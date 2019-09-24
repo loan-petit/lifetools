@@ -23,7 +23,7 @@ class _DailyRoutineState extends State<DailyRoutine> {
   @override
   void didChangeDependencies() {
     _dailyRoutineBloc = DailyRoutineBlocProvider.of(context);
-    _dailyRoutineBloc.fetch();
+    _dailyRoutineBloc.fetch(fromCurrentUser: true);
 
     super.didChangeDependencies();
   }
@@ -48,10 +48,15 @@ class _DailyRoutineState extends State<DailyRoutine> {
               ),
             );
           }
-          if (snapshot.hasData) {
-            return _buildDailyRoutine(snapshot.data);
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return LoadingScreen(child: _buildDailyRoutine(snapshot.data));
+            case ConnectionState.none:
+            case ConnectionState.active:
+            case ConnectionState.done:
+              return _buildDailyRoutine(snapshot.data);
           }
-          return LoadingScreen(child: _buildDailyRoutine(snapshot.data));
+          return null; // unreachable
         },
       ),
       floatingActionButtonBuilder: _buildFloatingActionButton,
@@ -110,6 +115,7 @@ class _DailyRoutineState extends State<DailyRoutine> {
     );
   }
 
+  /// Build a floating action button used to create a new DailyRoutineEvent.
   Widget _buildFloatingActionButton(BuildContext context) {
     return FloatingActionButton(
       onPressed: () async {
@@ -119,7 +125,10 @@ class _DailyRoutineState extends State<DailyRoutine> {
             return UpsertDailyRoutineEvent();
           },
         );
-        await _dailyRoutineBloc.fetch();
+        await _dailyRoutineBloc.fetch(
+          fromCurrentUser: true,
+          updateCache: true,
+        );
       },
       backgroundColor: Theme.of(context).primaryColor,
       foregroundColor: Theme.of(context).accentColor,

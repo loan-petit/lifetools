@@ -14,8 +14,8 @@ class UserProvider {
 
   /// Sign a user in based on his [credentials].
   Future<UserModel> signIn(Map<String, String> credentials) async {
-    String args = _graphQLHelper.mapToParams(credentials);
-    String body = """
+    final String args = _graphQLHelper.mapToParams(credentials);
+    final String body = """
       mutation SignIn {
         signin $args {
           token
@@ -24,16 +24,16 @@ class UserProvider {
       }
     """;
 
-    Map<String, dynamic> responseBody =
+    final Map<String, dynamic> result =
         await _graphQLHelper.request(body: body, isMutation: true);
 
-    return UserModel.fromJson(responseBody['signin']);
+    return UserModel.fromJson(result['signin']);
   }
 
   /// Sign a user up based on his [credentials].
   Future<UserModel> signUp(Map<String, String> credentials) async {
-    String args = _graphQLHelper.mapToParams(credentials);
-    String body = """
+    final String args = _graphQLHelper.mapToParams(credentials);
+    final String body = """
       mutation SignUp {
         signup $args {
           token
@@ -42,30 +42,39 @@ class UserProvider {
       }
     """;
 
-    Map<String, dynamic> responseBody =
+    final Map<String, dynamic> result =
         await _graphQLHelper.request(body: body, isMutation: true);
 
-    return UserModel.fromJson(responseBody['signup']);
+    return UserModel.fromJson(result['signup']);
   }
 
   /// Get the user whose JSON Web Token is send in Authorization header.
   /// This user is the logged in one.
-  Future<UserModel> getCurrentUser() async {
-    String body = """
+  ///
+  /// If the user has changed since the last log in, you may want to update
+  /// the cache. To do this, set [updateCache] to true.
+  Future<UserModel> getCurrentUser({
+    bool updateCache = false,
+  }) async {
+    final String body = """
       query GetUserFromToken {
         me {
           token
           expiresIn
           user {
+            __typename
             id
           }
         }
       }
     """;
 
-    Map<String, dynamic> responseBody =
-        await _graphQLHelper.request(body: body, isQuery: true);
+    final Map<String, dynamic> result = await _graphQLHelper.request(
+      body: body,
+      isQuery: true,
+      updateCache: updateCache,
+    );
 
-    return UserModel.fromJson(responseBody['me']);
+    return UserModel.fromJson(result['me']);
   }
 }

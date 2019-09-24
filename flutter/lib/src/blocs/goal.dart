@@ -10,20 +10,17 @@ class GoalBloc {
   final GoalProvider _goalProvider = GoalProvider();
 
   /// Sink and Streams controller for a goal.
-  final PublishSubject<GoalModel> _goalSubject =
-      PublishSubject<GoalModel>();
+  final PublishSubject<GoalModel> _goalSubject = PublishSubject<GoalModel>();
 
   /// Stream of goal.
-  Observable<GoalModel> get goal =>
-      _goalSubject.stream;
+  Observable<GoalModel> get goal => _goalSubject.stream;
 
   /// Sink and Streams controller for multiple goals.
   final PublishSubject<Iterable<GoalModel>> _goalsSubject =
       PublishSubject<Iterable<GoalModel>>();
 
   /// Stream of multiple goals.
-  Observable<Iterable<GoalModel>> get goals =>
-      _goalsSubject.stream;
+  Observable<Iterable<GoalModel>> get goals => _goalsSubject.stream;
 
   /// Dispose of every [PublishSubject] to close all open streams.
   dispose() {
@@ -33,13 +30,21 @@ class GoalBloc {
 
   /// Fetch multiples goals of a user and add it to
   /// the [_goalsSubject.sink].
-  /// 
+  ///
   /// The [query] key and values must match the JSON key and values needed
   /// by the GraphQL API for the 'goals' resolver.
-  Future<void> fetchMany(Map<String, dynamic> query) async {
+  ///
+  /// If some goals have been created or removed from the database,
+  /// you may want to update the cache. To do this, set [updateCache] to true.
+  Future<void> fetchMany(
+    Map<String, dynamic> query, {
+    bool updateCache = false,
+  }) async {
     try {
-      Iterable<GoalModel> goals =
-          await _goalProvider.fetchMany(query);
+      Iterable<GoalModel> goals = await _goalProvider.fetchMany(
+        query,
+        updateCache: updateCache,
+      );
       _goalsSubject.sink.add(goals);
     } on GraphQLException catch (e) {
       _goalsSubject.sink.addError(e);
@@ -50,10 +55,18 @@ class GoalBloc {
   ///
   /// The [query] key and values must match the JSON key and values needed
   /// by the GraphQL API for the 'goal' resolver.
-  Future<void> fetchOne(Map<String, dynamic> query) async {
+  ///
+  /// If some goals have been created or removed from the database,
+  /// you may want to update the cache. To do this, set [updateCache] to true.
+  Future<void> fetchOne(
+    Map<String, dynamic> query, {
+    bool updateCache = false,
+  }) async {
     try {
-      GoalModel goal =
-          await _goalProvider.fetchOne(query);
+      GoalModel goal = await _goalProvider.fetchOne(
+        query,
+        updateCache: updateCache,
+      );
       _goalSubject.sink.add(goal);
     } on GraphQLException catch (e) {
       _goalSubject.sink.addError(e);

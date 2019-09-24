@@ -250,24 +250,15 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
         // has to wait for the end of the asynchronous calls.
         unawaited(SystemChannels.textInput.invokeMethod('TextInput.hide'));
         await _changeLoadingVisible();
-        _retrieveCurrentUserId((userId) async {
-          if (widget.dailyRoutineEvent?.id != null) {
-            await _dailyRoutineBloc.updateOneEvent({
-              'where': {'id': widget.dailyRoutineEvent.id},
-              'data': query,
-            });
-          } else {
-            await _dailyRoutineBloc.createOneEvent({
-              'data': {
-                ...query,
-                'owner': {
-                  'connect': {'id': userId}
-                },
-              },
-            });
-          }
-          Navigator.pop(context);
-        });
+        if (widget.dailyRoutineEvent?.id != null) {
+          await _dailyRoutineBloc.updateOneEvent({
+            'where': {'id': widget.dailyRoutineEvent.id},
+            'data': query,
+          });
+        } else {
+          await _dailyRoutineBloc.createOneEvent({'data': query});
+        }
+        Navigator.pop(context);
       } on GraphQLException {
         // Notify the user that an error happend.
         await _changeLoadingVisible();
@@ -286,14 +277,12 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
       // Hide keyboard as the user won't update the event.
       unawaited(SystemChannels.textInput.invokeMethod('TextInput.hide'));
       await _changeLoadingVisible();
-      _retrieveCurrentUserId((userId) async {
-        await _dailyRoutineBloc.deleteOneEvent({
-          'where': {
-            'id': widget.dailyRoutineEvent.id,
-          }
-        });
-        Navigator.pop(context);
+      await _dailyRoutineBloc.deleteOneEvent({
+        'where': {
+          'id': widget.dailyRoutineEvent.id,
+        }
       });
+      Navigator.pop(context);
     } on GraphQLException {
       // Notify the user that an error happend.
       await _changeLoadingVisible();
@@ -301,27 +290,5 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
         _error = 'An unexpected error occured, please retry.';
       });
     }
-  }
-
-  /// Retrieve the [user.id] of the logged in user for subsequent use
-  /// by upsert and delete calls.
-  void _retrieveCurrentUserId(void Function(String) callback) {
-    StreamSubscription<UserModel> streamSubscription;
-
-    _userBloc.getCurrentUser();
-    streamSubscription = _userBloc.user.listen(
-      (UserModel data) {
-        streamSubscription.cancel();
-        callback(data.id);
-      },
-      onError: (error) async {
-        // Notify the user that an error happend.
-        await _changeLoadingVisible();
-        setState(() {
-          _error = 'An unexpected error occured, please retry.';
-        });
-      },
-      cancelOnError: true,
-    );
   }
 }

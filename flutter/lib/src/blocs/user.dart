@@ -13,22 +13,22 @@ class UserBloc {
   static final _dataPersistenceService = DataPersistenceService();
 
   /// Provider CRUD operations for
-  final UserProvider _usersProvider = UserProvider();
+  final UserProvider _userProvider = UserProvider();
 
   /// Sink and Streams controller.
-  final PublishSubject<UserModel> _usersSubject = PublishSubject<UserModel>();
+  final PublishSubject<UserModel> _userSubject = PublishSubject<UserModel>();
 
   /// Stream of user.
-  Observable<UserModel> get user => _usersSubject.stream;
+  Observable<UserModel> get user => _userSubject.stream;
 
-  /// Dispose of the the [_usersSubject] to close all open streams.
+  /// Dispose of the the [_userSubject] to close all open streams.
   dispose() {
-    _usersSubject.close();
+    _userSubject.close();
   }
 
   /// True if the user is logged in, false otherwise.
   static bool get isLoggedIn {
-    String idToken = _dataPersistenceService.get('id_token');
+    String idToken = _dataPersistenceService.get('jwt_token');
     String expiresAt = _dataPersistenceService.get('expires_at');
 
     if ((idToken?.isEmpty ?? true) || (expiresAt?.isEmpty ?? true)) {
@@ -40,7 +40,7 @@ class UserBloc {
 
   /// Sign the user out by removing is JWT token from the LocalStorage.
   static void signOut() {
-    _dataPersistenceService.remove('id_token');
+    _dataPersistenceService.remove('jwt_token');
     _dataPersistenceService.remove('expires_at');
     GraphQLHelper().init();
   }
@@ -50,7 +50,7 @@ class UserBloc {
   /// The informations needed by the GraphQL API to sign the user in
   /// are stored in [credentials].
   Future<void> signIn(Map<String, String> credentials) async {
-    UserModel userModel = await _usersProvider.signIn(credentials);
+    UserModel userModel = await _userProvider.signIn(credentials);
     _storeJwt(userModel.token, userModel.expiresIn);
   }
 
@@ -59,16 +59,22 @@ class UserBloc {
   /// The informations needed by the GraphQL API to sign the user up
   /// are stored in [credentials].
   Future<void> signUp(Map<String, String> credentials) async {
-    await _usersProvider.signUp(credentials);
+    await _userProvider.signUp(credentials);
   }
 
   /// Retrieve informations about the current user.
-  Future<void> getCurrentUser() async {
+  ///
+  /// If the user has changed since the last log in, you may want to update
+  /// the cache. To do this, set [updateCache] to true.
+  Future<void> getCurrentUser({
+    bool updateCache = false,
+  }) async {
     try {
-      UserModel userModel = await _usersProvider.getCurrentUser();
-      _usersSubject.sink.add(userModel);
+      UserModel userModel =
+          await _userProvider.getCurrentUser(updateCache: updateCache);
+      _userSubject.sink.add(userModel);
     } on GraphQLException catch (e) {
-      _usersSubject.sink.addError(e);
+      _userSubject.sink.addError(e);
     }
   }
 
@@ -78,7 +84,7 @@ class UserBloc {
   ///
   /// The expiration date is determined based on the [expiresIn] time.
   void _storeJwt(String token, int expiresIn) {
-    _dataPersistenceService.set('id_token', token);
+    _dataPersistenceService.set('jwt_token', token);
     _dataPersistenceService.set(
       'expires_at',
       DateTime.now()

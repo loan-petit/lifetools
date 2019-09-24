@@ -80,7 +80,10 @@ class _DailyRoutineEventState extends State<DailyRoutineEvent> {
                   dailyRoutineEvent: widget.dailyRoutineEvent);
             },
           );
-          await DailyRoutineBlocProvider.of(context).fetch();
+          await DailyRoutineBlocProvider.of(context).fetch(
+            fromCurrentUser: true,
+            updateCache: true,
+          );
         },
         color: Theme.of(context).textTheme.body1.color,
         icon: Icon(

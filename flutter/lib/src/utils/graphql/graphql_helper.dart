@@ -24,7 +24,7 @@ class GraphQLHelper {
     // requesting authentication.
     final AuthLink _authLink = AuthLink(
       getToken: () async =>
-          'Bearer ${DataPersistenceService().get('id_token')}',
+          'Bearer ${DataPersistenceService().get('jwt_token')}',
     );
 
     return _authLink.concat(_httpLink);
@@ -32,6 +32,10 @@ class GraphQLHelper {
 
   /// Client needed to interact with the GraphQL API.
   GraphQLClient _client;
+
+  final OptimisticCache cache = OptimisticCache(
+    dataIdFromObject: typenameDataIdFromObject,
+  );
 
   factory GraphQLHelper() {
     return _singleton;
@@ -43,7 +47,7 @@ class GraphQLHelper {
   void init() {
     _client = GraphQLClient(
       link: _link,
-      cache: InMemoryCache(),
+      cache: cache,
     );
   }
 
@@ -69,20 +73,35 @@ class GraphQLHelper {
   /// The [body] will be used as [QueryOptions.document] and
   /// [MutationOptions.document] depending on the [isQuery] and
   /// [isMutation] values.
+  /// 
+  /// If some objects have been created or removed from the database,
+  /// you may want to update the cache of related queries. To do this,
+  /// set [updateCache] to true.
   Future<Map<String, dynamic>> request({
     @required String body,
     bool isQuery = false,
     bool isMutation = false,
+    bool updateCache = false,
   }) async {
     assert(isQuery == true || isMutation == true);
     assert(body != null);
 
     QueryResult result;
     if (isQuery) {
-      final QueryOptions options = QueryOptions(document: body);
+      final QueryOptions options = QueryOptions(
+        document: body,
+        fetchPolicy: (updateCache)
+            ? FetchPolicy.cacheAndNetwork
+            : FetchPolicy.cacheFirst,
+      );
       result = await _client.query(options);
     } else if (isMutation) {
-      final MutationOptions options = MutationOptions(document: body);
+      final MutationOptions options = MutationOptions(
+        document: body,
+        fetchPolicy: (updateCache)
+            ? FetchPolicy.cacheAndNetwork
+            : FetchPolicy.cacheFirst,
+      );
       result = await _client.mutate(options);
     }
 
