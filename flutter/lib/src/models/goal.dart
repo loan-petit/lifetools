@@ -34,7 +34,7 @@ class GoalModel {
     return GoalModel(
       id: json['id'],
       name: json['name'],
-      date: json['date'],
+      date: DateTime.parse(json['date']).toLocal(),
       isCompleted: json['isCompleted'],
       owner: UserModel.fromJson(json['owner']),
     );

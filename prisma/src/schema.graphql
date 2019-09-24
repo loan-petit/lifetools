@@ -104,7 +104,7 @@ type Goal {
 input GoalCreateInput {
   date: DateTime!
   id: ID
-  isCompleted: Boolean!
+  isCompleted: Boolean
   name: String!
   owner: UserCreateOneWithoutOwnerInput!
 }
@@ -117,7 +117,7 @@ input GoalCreateManyWithoutGoalsInput {
 input GoalCreateWithoutOwnerInput {
   date: DateTime!
   id: ID
-  isCompleted: Boolean!
+  isCompleted: Boolean
   name: String!
 }
 
@@ -235,6 +235,7 @@ input StringFilter {
 
 type User {
   dailyRoutine(after: String, before: String, first: Int, last: Int, skip: Int): [DailyRoutineEvent!]
+  goals(after: String, before: String, first: Int, last: Int, skip: Int): [Goal!]
   id: ID!
 }
 

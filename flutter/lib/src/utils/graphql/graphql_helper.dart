@@ -73,12 +73,13 @@ class GraphQLHelper {
   /// The [body] will be used as [QueryOptions.document] and
   /// [MutationOptions.document] depending on the [isQuery] and
   /// [isMutation] values.
-  /// 
+  ///
   /// If some objects have been created or removed from the database,
   /// you may want to update the cache of related queries. To do this,
   /// set [updateCache] to true.
   Future<Map<String, dynamic>> request({
     @required String body,
+    Map<String, dynamic> variables,
     bool isQuery = false,
     bool isMutation = false,
     bool updateCache = false,
@@ -93,6 +94,7 @@ class GraphQLHelper {
         fetchPolicy: (updateCache)
             ? FetchPolicy.cacheAndNetwork
             : FetchPolicy.cacheFirst,
+        variables: variables,
       );
       result = await _client.query(options);
     } else if (isMutation) {
@@ -101,6 +103,7 @@ class GraphQLHelper {
         fetchPolicy: (updateCache)
             ? FetchPolicy.cacheAndNetwork
             : FetchPolicy.cacheFirst,
+        variables: variables,
       );
       result = await _client.mutate(options);
     }

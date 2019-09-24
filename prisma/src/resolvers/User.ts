@@ -5,5 +5,6 @@ export const User = objectType({
   definition (t) {
     t.model.id()
     t.model.dailyRoutine()
+    t.model.goals()
   }
 })

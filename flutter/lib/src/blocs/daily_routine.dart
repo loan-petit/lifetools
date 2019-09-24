@@ -35,21 +35,21 @@ class DailyRoutineBloc {
   /// Fetch the daily routine of the logged in user and add it to
   /// the [_dailyRoutineSubject.sink].
   ///
-  /// Specify the [userId] of a user to retrieve its daily routine.
+  /// Specify the [ownerId] of a user to retrieve its daily routine.
   /// If you want to retrieve the daily routine of the logged in user,
   /// you should instead set [fromCurrentUser] to true.
   ///
   /// If some events have been created or removed from the database,
   /// you may want to update the cache. To do this, set [updateCache] to true.
   Future<void> fetch({
-    String userId,
+    String ownerId,
     bool fromCurrentUser = false,
     bool updateCache = false,
   }) async {
     try {
       Iterable<DailyRoutineEventModel> dailyRoutine =
           await _dailyRoutineProvider.fetch(
-        userId: userId,
+        ownerId: ownerId,
         fromCurrentUser: fromCurrentUser,
         updateCache: updateCache,
       );
@@ -59,22 +59,19 @@ class DailyRoutineBloc {
     }
   }
 
-  /// Fetch a daily routine event and add it to
+  /// Fetch a daily routine event matching the provided [id] and add it to
   /// the [_dailyRoutineEventSubject.sink].
-  ///
-  /// The [query] key and values must match the JSON key and values needed
-  /// by the GraphQL API for the 'findOneDailyRoutineEvent' resolver.
   ///
   /// If some events have been created or removed from the database,
   /// you may want to update the cache. To do this, set [updateCache] to true.
   Future<void> fetchOneEvent(
-    Map<String, dynamic> query, {
+    String id, {
     bool updateCache = false,
   }) async {
     try {
       DailyRoutineEventModel dailyRoutineEvent =
           await _dailyRoutineProvider.fetchOneEvent(
-        query,
+        id,
         updateCache: updateCache,
       );
       _dailyRoutineEventSubject.sink.add(dailyRoutineEvent);
@@ -85,25 +82,24 @@ class DailyRoutineBloc {
 
   /// Create a daily routine event.
   ///
-  /// The [query] key and values must match the JSON key and values needed
-  /// by the GraphQL API for the 'createOneDailyRoutineEvent' resolver.
-  Future<void> createOneEvent(Map<String, dynamic> query) async {
-    await _dailyRoutineProvider.createOneEvent(query);
+  /// The [data] key and values must match the JSON key and values needed
+  /// by the GraphQL API for the 'createOneDailyRoutineEvent' resolver's
+  /// data of type DailyRoutineEventCreateInput.
+  Future<void> createOneEvent(Map<String, dynamic> data) async {
+    await _dailyRoutineProvider.createOneEvent(data);
   }
 
-  /// Update a daily routine event.
+  /// Update a daily routine event whose ID matches [whereId].
   ///
-  /// The [query] key and values must match the JSON key and values needed
-  /// by the GraphQL API for the 'updateOneDailyRoutineEvent' resolver.
-  Future<void> updateOneEvent(Map<String, dynamic> query) async {
-    await _dailyRoutineProvider.updateOneEvent(query);
+  /// The [data] key and values must match the JSON key and values needed
+  /// by the GraphQL API for the 'updateOneDailyRoutineEvent' resolver's
+  /// data of type DailyRoutineEventUpdateInput.
+  Future<void> updateOneEvent(String whereId, Map<String, dynamic> data) async {
+    await _dailyRoutineProvider.updateOneEvent(whereId, data);
   }
 
-  /// Delete a daily routine event.
-  ///
-  /// The [query] key and values must match the JSON key and values needed
-  /// by the GraphQL API for the 'deleteOneDailyRoutineEvent' resolver.
-  Future<void> deleteOneEvent(Map<String, dynamic> query) async {
-    await _dailyRoutineProvider.deleteOneEvent(query);
+  /// Delete a daily routine event matching the provided [id].
+  Future<void> deleteOneEvent(String id) async {
+    await _dailyRoutineProvider.deleteOneEvent(id);
   }
 }

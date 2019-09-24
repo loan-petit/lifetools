@@ -1,29 +1,28 @@
 import 'package:flutter/material.dart';
 
-import 'package:lifetools/src/blocs/daily_routine.dart';
-import 'package:lifetools/src/blocs/inherited_widgets/daily_routine_bloc_provider.dart';
-import 'package:lifetools/src/models/daily_routine_event.dart';
-import 'package:lifetools/src/ui/widgets/daily_routine/event.dart';
-import 'package:lifetools/src/ui/widgets/daily_routine/upsert_event.dart';
+import 'package:lifetools/src/blocs/goal.dart';
+import 'package:lifetools/src/blocs/inherited_widgets/goal_bloc_provider.dart';
+import 'package:lifetools/src/models/goal.dart';
+import 'package:lifetools/src/ui/widgets/goals/goal.dart';
+import 'package:lifetools/src/ui/widgets/goals/upsert_goal.dart';
 import 'package:lifetools/src/ui/widgets/shared/app_scaffold.dart';
 import 'package:lifetools/src/ui/widgets/shared/loading_screen.dart';
-import 'package:lifetools/src/utils/time.dart';
 
-/// Display the daily routine of a user.
-class DailyRoutine extends StatefulWidget {
+/// Display the goals of a user.
+class Goals extends StatefulWidget {
   @override
-  _DailyRoutineState createState() => _DailyRoutineState();
+  _GoalsState createState() => _GoalsState();
 }
 
-class _DailyRoutineState extends State<DailyRoutine> {
-  /// Manage the business logic related to the daily routine.
-  DailyRoutineBloc _dailyRoutineBloc;
+class _GoalsState extends State<Goals> {
+  /// Manage the business logic related to the goals.
+  GoalBloc _goalBloc;
 
-  /// Retrieve the daily routine.
+  /// Retrieve the goals.
   @override
   void didChangeDependencies() {
-    _dailyRoutineBloc = DailyRoutineBlocProvider.of(context);
-    _dailyRoutineBloc.fetch(fromCurrentUser: true);
+    _goalBloc = GoalsBlocProvider.of(context);
+    _goalBloc.fetchMany(fromCurrentUser: true);
 
     super.didChangeDependencies();
   }
@@ -32,14 +31,14 @@ class _DailyRoutineState extends State<DailyRoutine> {
   Widget build(BuildContext context) {
     return AppScaffold(
       body: StreamBuilder(
-        stream: _dailyRoutineBloc.dailyRoutine,
+        stream: _goalBloc.goals,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasError) {
             return Padding(
               padding:
                   const EdgeInsets.symmetric(vertical: 24.0, horizontal: 12.0),
               child: Text(
-                "An error occured during the retrieval of your daily routine.",
+                "An error occured during the retrieval of your goals.",
                 textAlign: TextAlign.center,
                 style: Theme.of(context)
                     .textTheme
@@ -50,11 +49,11 @@ class _DailyRoutineState extends State<DailyRoutine> {
           }
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
-              return LoadingScreen(child: _buildDailyRoutine(snapshot.data));
+              return LoadingScreen(child: _buildGoals(snapshot.data));
             case ConnectionState.none:
             case ConnectionState.active:
             case ConnectionState.done:
-              return _buildDailyRoutine(snapshot.data);
+              return _buildGoals(snapshot.data);
           }
           return null; // unreachable
         },
@@ -63,26 +62,17 @@ class _DailyRoutineState extends State<DailyRoutine> {
     );
   }
 
-  /// Build the list of events in the daily routine.
-  Widget _buildDailyRoutine(Iterable<DailyRoutineEventModel> data) {
+  /// Build the list of goals.
+  Widget _buildGoals(Iterable<GoalModel> data) {
     if (data == null) return Container();
 
-    List<DailyRoutineEventModel> dailyRoutine = data.toList();
-    dailyRoutine.sort((a, b) {
-      if (a.startTime != b.startTime) {
-        return Time.timeOfDayToSeconds(a.startTime)
-            .compareTo(Time.timeOfDayToSeconds(b.startTime));
-      } else {
-        return Time.timeOfDayToSeconds(a.endTime)
-            .compareTo(Time.timeOfDayToSeconds(b.endTime));
-      }
-    });
+    List<GoalModel> goals = data.toList();
 
     final header = Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Text(
-          "Daily Routine",
+          "Goals",
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.display1.apply(
                 fontWeightDelta: 3,
@@ -106,26 +96,25 @@ class _DailyRoutineState extends State<DailyRoutine> {
         SliverToBoxAdapter(child: header),
         SliverList(
           delegate: SliverChildBuilderDelegate(
-            (_, index) =>
-                DailyRoutineEvent(dailyRoutineEvent: dailyRoutine[index]),
-            childCount: dailyRoutine.length,
+            (_, index) => Goal(goal: goals[index]),
+            childCount: goals.length,
           ),
         ),
       ],
     );
   }
 
-  /// Build a floating action button used to create a new DailyRoutineEvent.
+  /// Build a floating action button used to create a new goal.
   Widget _buildFloatingActionButton(BuildContext context) {
     return FloatingActionButton(
       onPressed: () async {
         await showDialog(
           context: context,
           builder: (_) {
-            return UpsertDailyRoutineEvent();
+            return UpsertGoal();
           },
         );
-        await _dailyRoutineBloc.fetch(
+        await _goalBloc.fetchMany(
           fromCurrentUser: true,
           updateCache: true,
         );

@@ -14,36 +14,48 @@ class UserProvider {
 
   /// Sign a user in based on his [credentials].
   Future<UserModel> signIn(Map<String, String> credentials) async {
-    final String args = _graphQLHelper.mapToParams(credentials);
     final String body = """
-      mutation SignIn {
-        signin $args {
+      mutation SignIn(\$email: String!, \$password: String!) {
+        signin(email: \$email, password: \$password) {
           token
           expiresIn
         }
       }
     """;
 
-    final Map<String, dynamic> result =
-        await _graphQLHelper.request(body: body, isMutation: true);
+    final Map<String, dynamic> result = await _graphQLHelper.request(
+      body: body,
+      variables: credentials,
+      isMutation: true,
+    );
 
     return UserModel.fromJson(result['signin']);
   }
 
   /// Sign a user up based on his [credentials].
   Future<UserModel> signUp(Map<String, String> credentials) async {
-    final String args = _graphQLHelper.mapToParams(credentials);
     final String body = """
-      mutation SignUp {
-        signup $args {
+      mutation SignUp(
+        \$email: String!
+        \$password: String!
+        \$passwordConfirmation: String!
+      ) {
+        signup(
+          email: \email
+          password: \$password
+          passwordConfirmation: \$passwordConfirmation
+        ) {
           token
           expiresIn
         }
       }
     """;
 
-    final Map<String, dynamic> result =
-        await _graphQLHelper.request(body: body, isMutation: true);
+    final Map<String, dynamic> result = await _graphQLHelper.request(
+      body: body,
+      variables: credentials,
+      isMutation: true,
+    );
 
     return UserModel.fromJson(result['signup']);
   }
@@ -57,7 +69,7 @@ class UserProvider {
     bool updateCache = false,
   }) async {
     final String body = """
-      query GetUserFromToken {
+      query GetUserFromJwt {
         me {
           token
           expiresIn

@@ -15,47 +15,62 @@ class GoalProvider {
   /// GraphQL API.
   GraphQLHelper _graphQLHelper = GraphQLHelper();
 
-  /// Fetch multiple goals based on the provided [query] parameters.
+  /// Fetch multiple goals based on the provided [variables] parameters.
+  ///
+  /// Specify the [userId] of a user to retrieve his goals.
+  /// If you want to retrieve the goals of the logged in user,
+  /// you should instead set [fromCurrentUser] to true.
   ///
   /// If some goals have been created or removed from the database,
   /// you may want to update the cache. To do this, set [updateCache] to true.
-  Future<Iterable<GoalModel>> fetchMany(
-    Map<String, dynamic> query, {
+  Future<Iterable<GoalModel>> fetchMany({
+    String ownerId,
+    bool fromCurrentUser = false,
     bool updateCache = false,
   }) async {
-    final String args = _graphQLHelper.mapToParams(query);
+    assert(ownerId != null || fromCurrentUser == true);
+
+    if (fromCurrentUser == true) {
+      ownerId = (await UserProvider().getCurrentUser()).id;
+    }
+
     final String body = """
-      query FetchGoals {
-        goals $args {
-          id
-          name
-          date
-          isCompleted
+      query FetchGoals(\$ownerId: ID!) {
+        user(where: { id: \$ownerId }) {
+          goals {
+            __typename
+            id
+            name
+            date
+            isCompleted
+          }
         }
       }
     """;
 
     Map<String, dynamic> result = await _graphQLHelper.request(
       body: body,
+      variables: {'ownerId': ownerId},
       isQuery: true,
       updateCache: updateCache,
     );
 
-    return result['goals'].map<GoalModel>((goal) => GoalModel.fromJson(goal));
+    return result['user']['goals']
+        .map<GoalModel>((goal) => GoalModel.fromJson(goal));
   }
 
-  /// Fetch a goal based on the provided [query] parameters.
+  /// Fetch a goal matching the provided [id].
   ///
   /// If some goals have been created or removed from the database,
   /// you may want to update the cache. To do this, set [updateCache] to true.
   Future<GoalModel> fetchOne(
-    Map<String, dynamic> query, {
+    String id, {
     bool updateCache = false,
   }) async {
-    final String args = _graphQLHelper.mapToParams(query);
     final String body = """
-      query FetchGoal {
-        goal $args {
+      query Goal(\$id: ID!) {
+        goal(id: \$id) {
+          __typename
           id
           name
           date
@@ -66,6 +81,7 @@ class GoalProvider {
 
     final Map<String, dynamic> result = await _graphQLHelper.request(
       body: body,
+      variables: {'id': id},
       isQuery: true,
       updateCache: updateCache,
     );
@@ -73,51 +89,99 @@ class GoalProvider {
     return GoalModel.fromJson(result['goal']);
   }
 
-  /// Create a goal based on the provided [query] parameters.
-  Future<void> createOne(Map<String, dynamic> query) async {
+  /// Create a goal based on the provided [data].
+  Future<void> createOne(Map<String, dynamic> data) async {
     final String currentUserId = (await UserProvider().getCurrentUser()).id;
-    final String args = _graphQLHelper.mapToParams({
-      ...query,
-      'owner': {
-        'connect': {'id': currentUserId}
-      },
-    });
     final String body = """
-      mutation CreateOneGoal {
-        createOneGoal $args {
+      mutation CreateOneGoal(
+        \$name: String!
+        \$date: DateTime!
+        \$ownerId: ID!
+      ) {
+        createOneGoal(
+          data: {
+            name: \$name
+            date: \$date
+            owner: {
+              connect: { id: \$ownerId }
+            }
+          }
+        ) {
+          __typename
           id
+          name
+          date
+          isCompleted
         }
       }
     """;
 
-    await _graphQLHelper.request(body: body, isMutation: true);
+    await _graphQLHelper.request(
+      body: body,
+      variables: {...data, 'ownerId': currentUserId},
+      isMutation: true,
+    );
   }
 
-  /// Update a goal based on the provided [query] parameters.
-  Future<void> updateOne(Map<String, dynamic> query) async {
-    final String args = _graphQLHelper.mapToParams(query);
+  /// Update a goal whose ID matches [whereId].
+  ///
+  /// The goal data will be updated based on the provided [data].
+  Future<void> updateOne(String whereId, Map<String, dynamic> data) async {
     final String body = """
-      mutation UpdateOneGoal {
-        updateOneGoal $args {
+      mutation UpdateOneGoal(
+        \$whereId: ID!
+        \$name: String
+        \$date: DateTime!
+      ) {
+        updateOneGoal(
+          where: {
+            id: \$whereId
+          }
+          data: {
+            name: \$name
+            date: \$date
+          }
+        ) {
+          __typename
           id
+          name
+          date
+          isCompleted
         }
       }
     """;
 
-    await _graphQLHelper.request(body: body, isMutation: true);
+    await _graphQLHelper.request(
+      body: body,
+      variables: {'whereId': whereId, ...data},
+      isMutation: true,
+    );
   }
 
-  /// Delete a goal based on the provided [query] parameters.
-  Future<void> deleteOne(Map<String, dynamic> query) async {
-    final String args = _graphQLHelper.mapToParams(query);
+  /// Delete a goal matching the provided [id].
+  Future<void> deleteOne(String id) async {
     final String body = """
-      mutation DeleteOneGoal {
-        deleteOneGoal $args {
+      mutation DeleteOneGoal(
+        \$id: ID!
+      ) {
+        deleteOneGoal(
+          where: {
+            id: \$id
+          }
+        ) {
+          __typename
           id
+          name
+          date
+          isCompleted
         }
       }
     """;
 
-    await _graphQLHelper.request(body: body, isMutation: true);
+    await _graphQLHelper.request(
+      body: body,
+      variables: {'id': id},
+      isMutation: true,
+    );
   }
 }

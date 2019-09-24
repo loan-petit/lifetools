@@ -32,6 +32,6 @@ model Goal {
   id          String   @default(cuid()) @id @unique
   name        String
   date        DateTime
-  isCompleted Boolean
+  isCompleted Boolean  @default(false)
   owner       User
 }

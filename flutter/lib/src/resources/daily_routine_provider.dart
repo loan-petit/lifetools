@@ -17,81 +17,60 @@ class DailyRoutineProvider {
 
   /// Fetch the daily routine of a user.
   ///
-  /// Specify the [userId] of a user to retrieve its daily routine.
+  /// Specify the [userId] of a user to retrieve his daily routine.
   /// If you want to retrieve the daily routine of the logged in user,
   /// you should instead set [fromCurrentUser] to true.
   ///
   /// If some events have been created or removed from the database,
   /// you may want to update the cache. To do this, set [updateCache] to true.
   Future<Iterable<DailyRoutineEventModel>> fetch({
-    String userId,
+    String ownerId,
     bool fromCurrentUser = false,
     bool updateCache = false,
   }) async {
-    assert(userId != null || fromCurrentUser == true);
+    assert(ownerId != null || fromCurrentUser == true);
 
-    List<dynamic> dailyRoutine;
-
-    if (userId != null) {
-      // Retrieve the daily routine of a specific user.
-      final String body = """
-        query FetchDailyRoutine {
-          user (id: $userId) {
-            dailyRoutine {
-              __typename
-              id
-              name
-              startTime
-              endTime
-            }
-          }
-        }
-      """;
-      dailyRoutine = (await _graphQLHelper.request(
-        body: body,
-        isQuery: true,
-        updateCache: updateCache,
-      ))['user']['dailyRoutine'];
-    } else if (fromCurrentUser == true) {
-      // Retrieve the daily routine of the logged in user.
-      final String body = """
-        query FetchDailyRoutine {
-          me {
-            user {
-              dailyRoutine {
-                __typename
-                id
-                name
-                startTime
-                endTime
-              }
-            }
-          }
-        }
-      """;
-      dailyRoutine = (await _graphQLHelper.request(
-        body: body,
-        isQuery: true,
-        updateCache: updateCache,
-      ))['me']['user']['dailyRoutine'];
+    if (fromCurrentUser == true) {
+      ownerId = (await UserProvider().getCurrentUser()).id;
     }
+
+    // Retrieve the daily routine of a specific user.
+    final String body = """
+      query DailyRoutine(\$ownerId: ID!) {
+        user(where: { id: \$ownerId }) {
+          dailyRoutine {
+            __typename
+            id
+            name
+            startTime
+            endTime
+          }
+        }
+      }
+    """;
+
+    final List<dynamic> dailyRoutine = (await _graphQLHelper.request(
+      body: body,
+      variables: {'ownerId': ownerId},
+      isQuery: true,
+      updateCache: updateCache,
+    ))['user']['dailyRoutine'];
 
     return dailyRoutine.map<DailyRoutineEventModel>(
         (event) => DailyRoutineEventModel.fromJson(event));
   }
 
-  /// Fetch a daily routine event based on the provided [query] parameters.
+  /// Fetch a daily routine event matching the provided [id].
   ///
   /// If some events have been created or removed from the database,
   /// you may want to update the cache. To do this, set [updateCache] to true.
   Future<DailyRoutineEventModel> fetchOneEvent(
-    Map<String, dynamic> query, {
+    String id, {
     bool updateCache = false,
   }) async {
-    final String args = _graphQLHelper.mapToParams(query);
     final String body = """
-      query FetchDailyRoutineEvent {
-        dailyroutineevent $args {
+      query DailyRoutineEvent(\$id: ID!) {
+        dailyroutineevent(id: \$id) {
           __typename
           id
           name
@@ -103,6 +82,7 @@ class DailyRoutineProvider {
 
     final Map<String, dynamic> result = await _graphQLHelper.request(
       body: body,
+      variables: {'id': id},
       isQuery: true,
       updateCache: updateCache,
     );
@@ -110,21 +90,26 @@ class DailyRoutineProvider {
     return DailyRoutineEventModel.fromJson(result['dailyroutineevent']);
   }
 
-  /// Create a daily routine event based on the provided [query] parameters.
-  Future<void> createOneEvent(Map<String, dynamic> query) async {
+  /// Create a daily routine event based on the provided [data].
+  Future<void> createOneEvent(Map<String, dynamic> data) async {
     final String currentUserId = (await UserProvider().getCurrentUser()).id;
-    final String args = _graphQLHelper.mapToParams({
-      ...query,
-      'data': {
-        ...query['data'],
-        'owner': {
-          'connect': {'id': currentUserId}
-        },
-      }
-    });
     final String body = """
-      mutation CreateOneDailyRoutineEvent {
-        createOneDailyRoutineEvent $args {
+      mutation CreateOneDailyRoutineEvent(
+        \$name: String!
+        \$startTime: Int!
+        \$endTime: Int!
+        \$ownerId: ID!
+      ) {
+        createOneDailyRoutineEvent(
+          data: {
+            name: \$name
+            startTime: \$startTime
+            endTime: \$endTime
+            owner: {
+              connect: { id: \$ownerId }
+            }
+          }
+        ) {
           __typename
           id
           name
@@ -134,15 +119,34 @@ class DailyRoutineProvider {
       }
     """;
 
-    await _graphQLHelper.request(body: body, isMutation: true);
+    await _graphQLHelper.request(
+      body: body,
+      variables: {...data, 'ownerId': currentUserId},
+      isMutation: true,
+    );
   }
 
-  /// Update a daily routine event based on the provided [query] parameters.
-  Future<void> updateOneEvent(Map<String, dynamic> query) async {
-    final String args = _graphQLHelper.mapToParams(query);
+  /// Update a daily routine event whose ID matches [whereId].
+  ///
+  /// The event data will be updated based on the provided [data].
+  Future<void> updateOneEvent(String whereId, Map<String, dynamic> data) async {
     final String body = """
-      mutation UpdateOneDailyRoutineEvent {
-        updateOneDailyRoutineEvent $args {
+      mutation UpdateOneDailyRoutineEvent(
+        \$whereId: ID!
+        \$name: String
+        \$startTime: Int
+        \$endTime: Int
+      ) {
+        updateOneDailyRoutineEvent(
+          where: {
+            id: \$whereId
+          }
+          data: {
+            name: \$name
+            startTime: \$startTime
+            endTime: \$endTime
+          }
+        ) {
           __typename
           id
           name
@@ -152,15 +156,24 @@ class DailyRoutineProvider {
       }
     """;
 
-    await _graphQLHelper.request(body: body, isMutation: true);
+    await _graphQLHelper.request(
+      body: body,
+      variables: {'whereId': whereId, ...data},
+      isMutation: true,
+    );
   }
 
-  /// Delete a daily routine event based on the provided [query] parameters.
-  Future<void> deleteOneEvent(Map<String, dynamic> query) async {
-    final String args = _graphQLHelper.mapToParams(query);
+  /// Delete a daily routine event matching the provided [id].
+  Future<void> deleteOneEvent(String id) async {
     final String body = """
-      mutation DeleteOneDailyRoutineEvent {
-        deleteOneDailyRoutineEvent $args {
+      mutation DeleteOneDailyRoutineEvent(
+        \$id: ID!
+      ) {
+        deleteOneDailyRoutineEvent(
+          where: {
+            id: \$id
+          }
+        ) {
           __typename
           id
           name
@@ -170,6 +183,10 @@ class DailyRoutineProvider {
       }
     """;
 
-    await _graphQLHelper.request(body: body, isMutation: true);
+    await _graphQLHelper.request(
+      body: body,
+      variables: {'id': id},
+      isMutation: true,
+    );
   }
 }

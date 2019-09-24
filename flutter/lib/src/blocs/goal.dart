@@ -31,18 +31,21 @@ class GoalBloc {
   /// Fetch multiples goals of a user and add it to
   /// the [_goalsSubject.sink].
   ///
-  /// The [query] key and values must match the JSON key and values needed
-  /// by the GraphQL API for the 'goals' resolver.
+  /// Specify the [ownerId] of a user to retrieve his goals.
+  /// If you want to retrieve the goals of the logged in user,
+  /// you should instead set [fromCurrentUser] to true.
   ///
   /// If some goals have been created or removed from the database,
   /// you may want to update the cache. To do this, set [updateCache] to true.
-  Future<void> fetchMany(
-    Map<String, dynamic> query, {
+  Future<void> fetchMany({
+    String ownerId,
+    bool fromCurrentUser = false,
     bool updateCache = false,
   }) async {
     try {
       Iterable<GoalModel> goals = await _goalProvider.fetchMany(
-        query,
+        ownerId: ownerId,
+        fromCurrentUser: fromCurrentUser,
         updateCache: updateCache,
       );
       _goalsSubject.sink.add(goals);
@@ -51,20 +54,18 @@ class GoalBloc {
     }
   }
 
-  /// Fetch a goal and add it to the [_goalSubject.sink].
-  ///
-  /// The [query] key and values must match the JSON key and values needed
-  /// by the GraphQL API for the 'goal' resolver.
+  /// Fetch a goal matching the provided [id] and add it to
+  /// the [_dailyRoutineEventSubject.sink].
   ///
   /// If some goals have been created or removed from the database,
   /// you may want to update the cache. To do this, set [updateCache] to true.
   Future<void> fetchOne(
-    Map<String, dynamic> query, {
+    String id, {
     bool updateCache = false,
   }) async {
     try {
       GoalModel goal = await _goalProvider.fetchOne(
-        query,
+        id,
         updateCache: updateCache,
       );
       _goalSubject.sink.add(goal);
@@ -73,27 +74,26 @@ class GoalBloc {
     }
   }
 
-  /// Create a new goal.
+  /// Create a goal.
   ///
-  /// The [query] key and values must match the JSON key and values needed
-  /// by the GraphQL API for the 'createOneGoal' resolver.
-  Future<void> createOne(Map<String, dynamic> query) async {
-    await _goalProvider.createOne(query);
+  /// The [data] key and values must match the JSON key and values needed
+  /// by the GraphQL API for the 'createOneGoal' resolver's data of
+  /// type GoalCreateInput.
+  Future<void> createOne(Map<String, dynamic> data) async {
+    await _goalProvider.createOne(data);
   }
 
-  /// Update a goal.
+  /// Update a goal whose ID matches [whereId].
   ///
-  /// The [query] key and values must match the JSON key and values needed
-  /// by the GraphQL API for the 'updateOneGoal' resolver.
-  Future<void> updateOne(Map<String, dynamic> query) async {
-    await _goalProvider.updateOne(query);
+  /// The [data] key and values must match the JSON key and values needed
+  /// by the GraphQL API for the 'updateOneGoal' resolver's
+  /// data of type GoalUpdateInput.
+  Future<void> updateOne(String whereId, Map<String, dynamic> data) async {
+    await _goalProvider.updateOne(whereId, data);
   }
 
-  /// Delete a goal.
-  ///
-  /// The [query] key and values must match the JSON key and values needed
-  /// by the GraphQL API for the 'deleteOneGoal' resolver.
-  Future<void> deleteOne(Map<String, dynamic> query) async {
-    await _goalProvider.deleteOne(query);
+  /// Delete a goal matching the provided [id].
+  Future<void> deleteOne(String id) async {
+    await _goalProvider.deleteOne(id);
   }
 }

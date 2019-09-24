@@ -1,32 +1,32 @@
 import 'dart:async';
 
+import 'package:intl/intl.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lifetools/src/blocs/goal.dart';
 
 import 'package:pedantic/pedantic.dart';
 
-import 'package:lifetools/src/blocs/daily_routine.dart';
-import 'package:lifetools/src/models/daily_routine_event.dart';
+import 'package:lifetools/src/models/goal.dart';
 import 'package:lifetools/src/ui/widgets/shared/loading_screen.dart';
 import 'package:lifetools/src/utils/field_validator.dart';
 import 'package:lifetools/src/utils/graphql/graphql_exception.dart';
-import 'package:lifetools/src/utils/time.dart';
 
-/// Display a [Form] to create or update a daily routine event.
-class UpsertDailyRoutineEvent extends StatefulWidget {
-  /// Daily routine event data.
-  final DailyRoutineEventModel dailyRoutineEvent;
+/// Display a [Form] to create or update a goal.
+class UpsertGoal extends StatefulWidget {
+  /// Goal data.
+  final GoalModel goal;
 
-  UpsertDailyRoutineEvent({
-    this.dailyRoutineEvent,
+  UpsertGoal({
+    this.goal,
   });
 
   @override
-  _UpsertDailyRoutineEventState createState() =>
-      _UpsertDailyRoutineEventState();
+  _UpsertGoalState createState() => _UpsertGoalState();
 }
 
-class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
+class _UpsertGoalState extends State<UpsertGoal> {
   /// Create a [GlobalKey] that uniquely identifies the [Form] widget
   /// and allows its validation.
   final _formKey = GlobalKey<FormState>();
@@ -34,11 +34,8 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
   /// Controller for the editable name [TextFormField].
   final _name = TextEditingController();
 
-  /// Controller of startTime value editable with time picker.
-  TimeOfDay _startTime;
-
-  /// Controller of endTime value editable with time picker.
-  TimeOfDay _endTime;
+  /// Controller of date value editable with time picker.
+  DateTime _date;
 
   /// If true, validate and update the [TextFormField] error text
   /// after every changes.
@@ -50,33 +47,31 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
   /// If true, display the [LoadingScreen] during asynchronous operations.
   bool _isLoadingVisible = false;
 
-  /// Manages the business logic related to daily routine event updates.
-  final _dailyRoutineBloc = DailyRoutineBloc();
+  /// Manages the business logic related to goal updates.
+  final _goalBloc = GoalBloc();
 
-  /// Initialize form controllers based on [widget.dailyRoutineEvent].
+  /// Initialize form controllers based on [widget.goalEvent].
   @override
   void initState() {
     super.initState();
 
-    if (widget.dailyRoutineEvent?.name != null) {
+    if (widget.goal?.name != null) {
       _name.value = _name.value.copyWith(
-        text: widget.dailyRoutineEvent.name,
+        text: widget.goal.name,
         selection: TextSelection(
-            baseOffset: widget.dailyRoutineEvent.name.length,
-            extentOffset: widget.dailyRoutineEvent.name.length),
+            baseOffset: widget.goal.name.length,
+            extentOffset: widget.goal.name.length),
         composing: TextRange.empty,
       );
     }
-    _startTime =
-        widget.dailyRoutineEvent?.startTime ?? TimeOfDay(hour: 8, minute: 0);
-    _endTime =
-        widget.dailyRoutineEvent?.endTime ?? TimeOfDay(hour: 8, minute: 0);
+
+    _date = widget.goal?.date ?? DateTime.now();
   }
 
-  /// Dispose of the [DailyRoutineBloc].
+  /// Dispose of the [UserBloc] and the [GoalBloc].
   @override
   void dispose() {
-    _dailyRoutineBloc.dispose();
+    _goalBloc.dispose();
 
     super.dispose();
   }
@@ -86,7 +81,7 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
     return AlertDialog(
       actions: <Widget>[
         // Delete button
-        if (widget.dailyRoutineEvent != null)
+        if (widget.goal != null)
           _buildActionButton(
             onPressed: () {
               _deleteEvent();
@@ -97,21 +92,13 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
         // Create/Save button
         _buildActionButton(
           onPressed: () {
-            if (Time.timeOfDayToSeconds(_startTime) >
-                Time.timeOfDayToSeconds(_endTime)) {
-              setState(() {
-                _error = "Start time should be before the end time.";
-              });
-            } else {
-              _upsertEvent({
-                'name': _name.text,
-                'startTime': Time.timeOfDayToSeconds(_startTime),
-                'endTime': Time.timeOfDayToSeconds(_endTime),
-              });
-            }
+            _upsertEvent({
+              'name': _name.text,
+              'date': _date.toUtc().toIso8601String(),
+            });
           },
-          iconData: (widget.dailyRoutineEvent != null) ? Icons.done : Icons.add,
-          labelText: (widget.dailyRoutineEvent != null) ? "Save" : "Create",
+          iconData: (widget.goal != null) ? Icons.done : Icons.add,
+          labelText: (widget.goal != null) ? "Save" : "Create",
         ),
       ],
       content: _buildForm(),
@@ -156,50 +143,32 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
       ),
     );
 
-    final startTimePicker = Row(
+    final datePicker = Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text("Start Time"),
+        Text("Date"),
+        SizedBox(width: 5),
         FlatButton(
           onPressed: () async {
-            _startTime = await showTimePicker(
-                  context: context,
-                  initialTime: _startTime,
-                ) ??
-                _startTime;
-            setState(() {
-              // Update _startTime with picked time.
-            });
+            if (_date.compareTo(DateTime(_date.year, _date.month, _date.day)) >=
+                0) {
+              _date = await showDatePicker(
+                    context: context,
+                    initialDate: _date,
+                    firstDate: DateTime.now(),
+                    lastDate: _date.add(Duration(days: 14)),
+                  ) ??
+                  _date;
+              setState(() {
+                // Update _date with picked date.
+              });
+            }
           },
           shape: UnderlineInputBorder(
             borderSide:
                 BorderSide(color: Theme.of(context).primaryColor, width: 2.0),
           ),
-          child: Text(_startTime.format(context)),
-        ),
-      ],
-    );
-
-    final endTimePicker = Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Text("End Time"),
-        FlatButton(
-          onPressed: () async {
-            _endTime = await showTimePicker(
-                  context: context,
-                  initialTime: _endTime,
-                ) ??
-                _endTime;
-            setState(() {
-              // Update _endTime with picked time.
-            });
-          },
-          shape: UnderlineInputBorder(
-            borderSide:
-                BorderSide(color: Theme.of(context).primaryColor, width: 2.0),
-          ),
-          child: Text(_endTime.format(context)),
+          child: Text(DateFormat.yMMMMEEEEd().format(_date)),
         ),
       ],
     );
@@ -219,9 +188,7 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
         children: <Widget>[
           name,
           SizedBox(height: 24.0),
-          startTimePicker,
-          SizedBox(height: 24.0),
-          endTimePicker,
+          datePicker,
           if (_error != null) SizedBox(height: 24.0),
           if (_error != null) errorLabel,
         ],
@@ -237,8 +204,8 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
 
   /// Upsert an event and manage UI changes before, during and after the operation.
   ///
-  /// Send [data] to the [DailyRoutineBloc] which will handle
-  /// the business logic needed to create or update an event.
+  /// Send [data] to the [GoalBloc] which will handle
+  /// the business logic needed to create or update a goal.
   Future<void> _upsertEvent(Map<String, dynamic> data) async {
     if (_formKey.currentState.validate()) {
       try {
@@ -246,13 +213,10 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
         // has to wait for the end of the asynchronous calls.
         unawaited(SystemChannels.textInput.invokeMethod('TextInput.hide'));
         await _changeLoadingVisible();
-        if (widget.dailyRoutineEvent?.id != null) {
-          await _dailyRoutineBloc.updateOneEvent(
-            widget.dailyRoutineEvent.id,
-            data,
-          );
+        if (widget.goal?.id != null) {
+          await _goalBloc.updateOne(widget.goal.id, data);
         } else {
-          await _dailyRoutineBloc.createOneEvent(data);
+          await _goalBloc.createOne(data);
         }
         Navigator.pop(context);
       } on GraphQLException {
@@ -267,14 +231,13 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
     }
   }
 
-  /// Delete the event and manage UI changes before, during and after
-  /// the operation.
+  /// Delete an event and manage UI changes before, during and after the operation.
   Future<void> _deleteEvent() async {
     try {
       // Hide keyboard as the user won't update the event.
       unawaited(SystemChannels.textInput.invokeMethod('TextInput.hide'));
       await _changeLoadingVisible();
-      await _dailyRoutineBloc.deleteOneEvent(widget.dailyRoutineEvent.id);
+      await _goalBloc.deleteOne(widget.goal.id);
       Navigator.pop(context);
     } on GraphQLException {
       // Notify the user that an error happend.

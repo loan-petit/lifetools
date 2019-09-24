@@ -12,6 +12,11 @@
       "embedded": false
     },
     {
+      "stepType": "CreateModel",
+      "name": "Goal",
+      "embedded": false
+    },
+    {
       "stepType": "CreateField",
       "model": "User",
       "name": "id",
@@ -28,6 +33,23 @@
         "Expression": [
           "cuid",
           "String",
+          []
+        ]
+      }
+    },
+    {
+      "stepType": "CreateField",
+      "model": "User",
+      "name": "createdAt",
+      "type": {
+        "Base": "DateTime"
+      },
+      "arity": "required",
+      "isUnique": false,
+      "default": {
+        "Expression": [
+          "now",
+          "DateTime",
           []
         ]
       }
@@ -61,6 +83,21 @@
           "to": "DailyRoutineEvent",
           "to_fields": [],
           "name": "DailyRoutineEventToUser",
+          "on_delete": "None"
+        }
+      },
+      "arity": "list",
+      "isUnique": false
+    },
+    {
+      "stepType": "CreateField",
+      "model": "User",
+      "name": "goals",
+      "type": {
+        "Relation": {
+          "to": "Goal",
+          "to_fields": [],
+          "name": "GoalToUser",
           "on_delete": "None"
         }
       },
@@ -129,6 +166,77 @@
             "id"
           ],
           "name": "DailyRoutineEventToUser",
+          "on_delete": "None"
+        }
+      },
+      "arity": "required",
+      "isUnique": false
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Goal",
+      "name": "id",
+      "type": {
+        "Base": "String"
+      },
+      "arity": "required",
+      "isUnique": true,
+      "id": {
+        "strategy": "Auto",
+        "sequence": null
+      },
+      "default": {
+        "Expression": [
+          "cuid",
+          "String",
+          []
+        ]
+      }
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Goal",
+      "name": "name",
+      "type": {
+        "Base": "String"
+      },
+      "arity": "required",
+      "isUnique": false
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Goal",
+      "name": "date",
+      "type": {
+        "Base": "DateTime"
+      },
+      "arity": "required",
+      "isUnique": false
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Goal",
+      "name": "isCompleted",
+      "type": {
+        "Base": "Boolean"
+      },
+      "arity": "required",
+      "isUnique": false,
+      "default": {
+        "Boolean": false
+      }
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Goal",
+      "name": "owner",
+      "type": {
+        "Relation": {
+          "to": "User",
+          "to_fields": [
+            "id"
+          ],
+          "name": "GoalToUser",
           "on_delete": "None"
         }
       },

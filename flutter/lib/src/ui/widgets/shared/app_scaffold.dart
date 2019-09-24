@@ -62,6 +62,7 @@ class _AppScaffoldState extends State<AppScaffold> {
           );
         },
       ),
+      bottomNavigationBar: UserBloc.isLoggedIn ? _buildBottom() : null,
       floatingActionButton: widget.floatingActionButtonBuilder != null
           ? Container(
               margin: EdgeInsets.only(
@@ -81,7 +82,7 @@ class _AppScaffoldState extends State<AppScaffold> {
       actions = [
         IconButton(
           icon: Icon(Icons.power_settings_new),
-          tooltip: 'Se déconnecter',
+          tooltip: 'Log out',
           onPressed: () {
             Navigator.pushNamedAndRemoveUntil(
                 context, '/auth/signout', (_) => false);
@@ -96,7 +97,7 @@ class _AppScaffoldState extends State<AppScaffold> {
         margin:
             EdgeInsets.only(left: screenWidth > 600 ? screenWidth / 5 : 0.0),
         child: Text(
-          (widget.title?.isNotEmpty ?? false) ? widget.title : "lifetools",
+          (widget.title?.isNotEmpty ?? false) ? widget.title : "LifeTools",
           style: Theme.of(context).textTheme.title.apply(
                 fontWeightDelta: 2,
               ),
@@ -104,6 +105,33 @@ class _AppScaffoldState extends State<AppScaffold> {
       ),
       elevation: 0,
       actions: actions,
+    );
+  }
+
+  Widget _buildBottom() {
+    return Container(
+      height: 55.0,
+      child: BottomAppBar(
+        color: Theme.of(context).cardColor,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            IconButton(
+              icon: Icon(Icons.home, color: Theme.of(context).accentColor),
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, '/');
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.check_circle,
+                  color: Theme.of(context).accentColor),
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, '/goals');
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

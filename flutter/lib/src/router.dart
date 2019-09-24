@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:lifetools/src/blocs/inherited_widgets/daily_routine_bloc_provider.dart';
+import 'package:lifetools/src/blocs/inherited_widgets/goal_bloc_provider.dart';
 import 'package:lifetools/src/blocs/user.dart';
 import 'package:lifetools/src/ui/screens/auth/signin.dart';
 import 'package:lifetools/src/ui/screens/auth/signup.dart';
 import 'package:lifetools/src/ui/screens/daily_routine.dart';
+import 'package:lifetools/src/ui/screens/goals.dart';
 
 /// Build the appropriate [MaterialPageRoute] on route navigation.
 class Router {
@@ -29,6 +31,12 @@ class Router {
         case '/auth/signout':
           UserBloc.signOut();
           break;
+        // Display the goals
+        case '/goals':
+          return MaterialPageRoute(
+            settings: settings,
+            builder: (_) => GoalsBlocProvider(child: Goals()),
+          );
         // Display the daily routine
         default:
           return MaterialPageRoute(

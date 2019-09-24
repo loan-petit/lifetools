@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "(export $(grep '^POSTGRES_URL' .env | xargs) && ts-node-dev --no-notify --respawn --transpileOnly ./src)",
-    "seed": "ts-node prisma/seed.ts",
+    "seed": "(export $(grep '^POSTGRES_URL' .env | xargs) && ts-node prisma/seed.ts)",
     "postinstall": "prisma2 generate",
     "format": "prettier --write '**/*.ts' '**/*.json' && standard '**/*.ts' --fix"
   },

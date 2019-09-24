@@ -20,17 +20,23 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^0.1.2
+
+  pedantic: ^1.7.0
+  intl: ^0.16.0
+
   shared_preferences: ^0.5.3+4
   universal_html: ^1.1.6
-  validators: ^2.0.0+1
-  http: ^0.12.0+2
-  rxdart: ^0.22.2
+
   graphql: ^2.1.0
+  rxdart: ^0.22.2
+  http: ^0.12.0+2
+
+  validators: ^2.0.0+1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  pedantic: ^1.7.0
+
 
 flutter:
   uses-material-design: true
