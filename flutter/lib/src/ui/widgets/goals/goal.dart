@@ -60,11 +60,10 @@ class _GoalState extends State<Goal> {
     }
 
     return Container(
-      width: 90.0,
       padding: EdgeInsets.only(right: 12.0),
       decoration: BoxDecoration(
         border: Border(
-          right: BorderSide(width: 2.0, color: Theme.of(context).primaryColor),
+          right: BorderSide(width: 4.0, color: Theme.of(context).primaryColor),
         ),
       ),
       child: IconButton(
@@ -92,25 +91,30 @@ class _GoalState extends State<Goal> {
     return Container(
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: Theme.of(context).primaryColor, width: 3.0),
+          bottom: BorderSide(color: Theme.of(context).primaryColor, width: 4.0),
         ),
       ),
       child: IconButton(
         onPressed: () async {
-          await showDialog(
-            context: context,
-            builder: (_) {
-              return UpsertGoal(goal: widget.goal);
-            },
-          );
-          await GoalsBlocProvider.of(context).fetchMany(
-            fromCurrentUser: true,
-            updateCache: true,
-          );
+          DateTime now = DateTime.now();
+          if (widget.goal.date
+                  .compareTo(DateTime(now.year, now.month, now.day)) >=
+              0) {
+            await showDialog(
+              context: context,
+              builder: (_) {
+                return UpsertGoal(goal: widget.goal);
+              },
+            );
+            await GoalsBlocProvider.of(context).fetchMany(
+              fromCurrentUser: true,
+              updateCache: true,
+            );
+          }
         },
         color: Theme.of(context).textTheme.body1.color,
         icon: Icon(
-          Icons.navigate_next,
+          Icons.edit,
           size: 30.0,
         ),
       ),

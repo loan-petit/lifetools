@@ -40,11 +40,10 @@ class _DailyRoutineEventState extends State<DailyRoutineEvent> {
   /// Build the [ListTile.leading].
   Widget _buildLeading() {
     return Container(
-      width: 90.0,
       padding: EdgeInsets.only(right: 12.0),
       decoration: BoxDecoration(
         border: Border(
-          right: BorderSide(width: 2.0, color: Theme.of(context).primaryColor),
+          right: BorderSide(width: 4.0, color: Theme.of(context).primaryColor),
         ),
       ),
       child: Column(
@@ -68,7 +67,7 @@ class _DailyRoutineEventState extends State<DailyRoutineEvent> {
     return Container(
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: Theme.of(context).primaryColor, width: 3.0),
+          bottom: BorderSide(color: Theme.of(context).primaryColor, width: 4.0),
         ),
       ),
       child: IconButton(
@@ -87,7 +86,7 @@ class _DailyRoutineEventState extends State<DailyRoutineEvent> {
         },
         color: Theme.of(context).textTheme.body1.color,
         icon: Icon(
-          Icons.navigate_next,
+          Icons.edit,
           size: 30.0,
         ),
       ),

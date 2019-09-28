@@ -94,16 +94,29 @@ class _AppScaffoldState extends State<AppScaffold> {
 
     return AppBar(
       title: Container(
-        margin:
-            EdgeInsets.only(left: screenWidth > 600 ? screenWidth / 5 : 0.0),
-        child: Text(
-          (widget.title?.isNotEmpty ?? false) ? widget.title : "LifeTools",
-          style: Theme.of(context).textTheme.title.apply(
-                fontWeightDelta: 2,
-              ),
+        margin: EdgeInsets.only(
+          left: screenWidth > 600 ? screenWidth / 5 : 0.0,
+        ),
+        child: RichText(
+          text: TextSpan(
+            style: Theme.of(context).textTheme.title.apply(fontWeightDelta: 2),
+            children: <TextSpan>[
+              TextSpan(
+                  text: (widget.title?.isNotEmpty ?? false)
+                      ? widget.title
+                      : 'Life'),
+              if (widget.title?.isNotEmpty ?? true)
+                TextSpan(
+                  text: 'Tools',
+                  style: Theme.of(context).textTheme.title.apply(
+                      fontWeightDelta: 2,
+                      color: Theme.of(context).primaryColor),
+                ),
+            ],
+          ),
         ),
       ),
-      elevation: 0,
+      elevation: 1.0,
       actions: actions,
     );
   }

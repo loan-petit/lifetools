@@ -27,6 +27,14 @@ class _GoalsState extends State<Goals> {
     super.didChangeDependencies();
   }
 
+  /// Dispose of the [GoalBloc].
+  @override
+  void dispose() {
+    _goalBloc.dispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
@@ -71,6 +79,7 @@ class _GoalsState extends State<Goals> {
     final header = Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
+        SizedBox(height: 16.0),
         Text(
           "Goals",
           textAlign: TextAlign.center,

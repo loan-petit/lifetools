@@ -71,6 +71,7 @@ class _UpsertGoalState extends State<UpsertGoal> {
   /// Dispose of the [UserBloc] and the [GoalBloc].
   @override
   void dispose() {
+    _name.dispose();
     _goalBloc.dispose();
 
     super.dispose();
@@ -150,25 +151,23 @@ class _UpsertGoalState extends State<UpsertGoal> {
         SizedBox(width: 5),
         FlatButton(
           onPressed: () async {
-            if (_date.compareTo(DateTime(_date.year, _date.month, _date.day)) >=
-                0) {
-              _date = await showDatePicker(
-                    context: context,
-                    initialDate: _date,
-                    firstDate: DateTime.now(),
-                    lastDate: _date.add(Duration(days: 14)),
-                  ) ??
-                  _date;
-              setState(() {
-                // Update _date with picked date.
-              });
-            }
+            DateTime now = DateTime.now();
+            _date = await showDatePicker(
+                  context: context,
+                  initialDate: _date,
+                  firstDate: DateTime(now.year, now.month, now.day),
+                  lastDate: _date.add(Duration(days: 14)),
+                ) ??
+                _date;
+            setState(() {
+              // Update _date with picked date.
+            });
           },
           shape: UnderlineInputBorder(
             borderSide:
                 BorderSide(color: Theme.of(context).primaryColor, width: 2.0),
           ),
-          child: Text(DateFormat.yMMMMEEEEd().format(_date)),
+          child: Text(DateFormat.yMEd().format(_date)),
         ),
       ],
     );

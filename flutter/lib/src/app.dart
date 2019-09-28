@@ -12,7 +12,6 @@ class App extends StatelessWidget {
     final Map<String, Color> themeColors = {
       'babyPowder': Color.fromRGBO(252, 252, 252, 1),
       'onyx': Color.fromRGBO(56, 56, 56, 1),
-      'snow': Color.fromRGBO(249, 249, 249, 1),
       'bananaYellow': Color.fromRGBO(255, 231, 50, 1),
     };
 
@@ -21,7 +20,7 @@ class App extends StatelessWidget {
     ));
 
     return MaterialApp(
-      title: 'lifetools',
+      title: 'LifeTools',
       builder: (context, child) => MediaQuery(
         data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
         child: child,
@@ -32,8 +31,8 @@ class App extends StatelessWidget {
         scaffoldBackgroundColor: themeColors['babyPowder'],
         primaryColor: themeColors['bananaYellow'],
         accentColor: themeColors['onyx'],
-        cardColor: themeColors['snow'],
-        appBarTheme: AppBarTheme(color: Colors.transparent),
+        cardColor: themeColors['babyPowder'],
+        appBarTheme: AppBarTheme(color: themeColors['babyPowder']),
         fontFamily: 'OpenSans',
         textTheme: Typography.englishLike2018.apply(
           displayColor: themeColors['onyx'],

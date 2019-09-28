@@ -28,6 +28,14 @@ class _DailyRoutineState extends State<DailyRoutine> {
     super.didChangeDependencies();
   }
 
+  /// Dispose of the [DailyRoutineBloc].
+  @override
+  void dispose() {
+    _dailyRoutineBloc.dispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
@@ -81,6 +89,7 @@ class _DailyRoutineState extends State<DailyRoutine> {
     final header = Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
+        SizedBox(height: 16.0),
         Text(
           "Daily Routine",
           textAlign: TextAlign.center,

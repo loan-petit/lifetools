@@ -42,6 +42,8 @@ class _SignInScreenState extends State<SignInScreen> {
   /// Dispose of the [UserBloc].
   @override
   void dispose() {
+    _email.dispose();
+    _password.dispose();
     _userBloc.dispose();
 
     super.dispose();

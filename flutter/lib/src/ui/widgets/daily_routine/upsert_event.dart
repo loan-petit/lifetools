@@ -76,6 +76,7 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
   /// Dispose of the [DailyRoutineBloc].
   @override
   void dispose() {
+    _name.dispose();
     _dailyRoutineBloc.dispose();
 
     super.dispose();
