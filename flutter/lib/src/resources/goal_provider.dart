@@ -131,7 +131,8 @@ class GoalProvider {
       mutation UpdateOneGoal(
         \$whereId: ID!
         \$name: String
-        \$date: DateTime!
+        \$date: DateTime
+        \$isCompleted: Boolean
       ) {
         updateOneGoal(
           where: {
@@ -140,6 +141,7 @@ class GoalProvider {
           data: {
             name: \$name
             date: \$date
+            isCompleted: \$isCompleted
           }
         ) {
           __typename
@@ -155,6 +157,7 @@ class GoalProvider {
       body: body,
       variables: {'whereId': whereId, ...data},
       isMutation: true,
+      updateCache: true,
     );
   }
 

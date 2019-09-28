@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
+import 'package:lifetools/src/blocs/goal.dart';
 import 'package:lifetools/src/blocs/inherited_widgets/goal_bloc_provider.dart';
 import 'package:lifetools/src/models/goal.dart';
 import 'package:lifetools/src/ui/widgets/goals/upsert_goal.dart';
+import 'package:pedantic/pedantic.dart';
 
 /// Build a goal based on a [ListTile].
 class Goal extends StatefulWidget {
@@ -18,6 +20,17 @@ class Goal extends StatefulWidget {
 }
 
 class _GoalState extends State<Goal> {
+  /// Manage the business logic related to the goals.
+  GoalBloc _goalBloc;
+
+  /// Retrieve the goals.
+  @override
+  void didChangeDependencies() {
+    _goalBloc = GoalsBlocProvider.of(context);
+
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -38,6 +51,14 @@ class _GoalState extends State<Goal> {
 
   /// Build the [ListTile.leading].
   Widget _buildLeading() {
+    String semanticLabel;
+
+    if (widget.goal.isCompleted) {
+      semanticLabel = 'Goal reached';
+    } else {
+      semanticLabel = 'Goal to reach';
+    }
+
     return Container(
       width: 90.0,
       padding: EdgeInsets.only(right: 12.0),
@@ -46,7 +67,23 @@ class _GoalState extends State<Goal> {
           right: BorderSide(width: 2.0, color: Theme.of(context).primaryColor),
         ),
       ),
-      child: Icon(Icons.check),
+      child: IconButton(
+        icon: Icon(
+          (widget.goal.isCompleted)
+              ? Icons.check_box
+              : Icons.check_box_outline_blank,
+          semanticLabel: semanticLabel,
+        ),
+        onPressed: () async {
+          await _goalBloc.updateOne(
+            widget.goal.id,
+            {'isCompleted': !widget.goal.isCompleted},
+          );
+          unawaited(
+            _goalBloc.fetchMany(fromCurrentUser: true, updateCache: true),
+          );
+        },
+      ),
     );
   }
 

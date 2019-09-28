@@ -160,6 +160,7 @@ class DailyRoutineProvider {
       body: body,
       variables: {'whereId': whereId, ...data},
       isMutation: true,
+      updateCache: true,
     );
   }
 
