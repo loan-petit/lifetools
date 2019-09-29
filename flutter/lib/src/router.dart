@@ -7,6 +7,7 @@ import 'package:lifetools/src/ui/screens/auth/signin.dart';
 import 'package:lifetools/src/ui/screens/auth/signup.dart';
 import 'package:lifetools/src/ui/screens/daily_routine.dart';
 import 'package:lifetools/src/ui/screens/goals.dart';
+import 'package:lifetools/src/ui/screens/profile.dart';
 
 /// Build the appropriate [MaterialPageRoute] on route navigation.
 class Router {
@@ -38,10 +39,17 @@ class Router {
             builder: (_) => GoalsBlocProvider(child: Goals()),
           );
         // Display the daily routine
-        default:
+        case '/daily-routine':
           return MaterialPageRoute(
             settings: settings,
             builder: (_) => DailyRoutineBlocProvider(child: DailyRoutine()),
+          );
+        // Display the profile of a user
+        case '/profile':
+        default:
+          return MaterialPageRoute(
+            settings: settings,
+            builder: (_) => ProfileScreen(),
           );
       }
     }
