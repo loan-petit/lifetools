@@ -49,6 +49,10 @@ class Router {
         default:
           return MaterialPageRoute(
             settings: settings,
+            builder: (_) => DailyRoutineBlocProvider(child: DailyRoutine()),
+          );
+          return MaterialPageRoute(
+            settings: settings,
             builder: (_) => ProfileScreen(),
           );
       }

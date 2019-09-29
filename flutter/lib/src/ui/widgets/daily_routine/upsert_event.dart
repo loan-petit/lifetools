@@ -130,7 +130,7 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
-      color: Theme.of(context).primaryColor,
+      color: Theme.of(context).colorScheme.primary,
       icon: Icon(
         iconData,
         color: Theme.of(context).textTheme.body1.color,
@@ -174,7 +174,7 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
           },
           shape: UnderlineInputBorder(
             borderSide:
-                BorderSide(color: Theme.of(context).primaryColor, width: 2.0),
+                BorderSide(color: Theme.of(context).colorScheme.primary, width: 2.0),
           ),
           child: Text(_startTime.format(context)),
         ),
@@ -198,7 +198,7 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
           },
           shape: UnderlineInputBorder(
             borderSide:
-                BorderSide(color: Theme.of(context).primaryColor, width: 2.0),
+                BorderSide(color: Theme.of(context).colorScheme.primary, width: 2.0),
           ),
           child: Text(_endTime.format(context)),
         ),

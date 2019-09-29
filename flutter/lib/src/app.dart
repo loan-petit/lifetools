@@ -9,14 +9,24 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, Color> themeColors = {
-      'babyPowder': Color.fromRGBO(252, 252, 252, 1),
-      'onyx': Color.fromRGBO(56, 56, 56, 1),
-      'bananaYellow': Color.fromRGBO(255, 231, 50, 1),
-    };
+    final colorScheme = ColorScheme(
+      brightness: Brightness.dark,
+      primary: Color.fromRGBO(255, 233, 68, 1),
+      primaryVariant: Color.fromRGBO(255, 233, 68, 1),
+      secondary: Color.fromRGBO(255, 231, 50, 1),
+      secondaryVariant: Color.fromRGBO(255, 231, 50, 1),
+      surface: Color.fromRGBO(3, 27, 43, 1),
+      background: Color.fromRGBO(2, 24, 38, 1),
+      error: Colors.red,
+      onPrimary: Color.fromRGBO(56, 56, 56, 1),
+      onSecondary: Color.fromRGBO(56, 56, 56, 1),
+      onSurface: Color.fromRGBO(245, 245, 245, 1),
+      onBackground: Color.fromRGBO(245, 245, 245, 1),
+      onError: Color.fromRGBO(245, 245, 245, 1),
+    );
 
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: themeColors['babyPowder'],
+      statusBarColor: colorScheme.background,
     ));
 
     return MaterialApp(
@@ -27,16 +37,18 @@ class App extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        brightness: Brightness.light,
-        scaffoldBackgroundColor: themeColors['babyPowder'],
-        primaryColor: themeColors['bananaYellow'],
-        accentColor: themeColors['onyx'],
-        cardColor: themeColors['babyPowder'],
-        appBarTheme: AppBarTheme(color: themeColors['babyPowder']),
+        brightness: Brightness.dark,
+        primaryColor: colorScheme.primary,
+        accentColor: colorScheme.secondary,
+        cardColor: colorScheme.surface,
+        appBarTheme: AppBarTheme(color: Colors.transparent),
+        scaffoldBackgroundColor: colorScheme.background,
+        backgroundColor: colorScheme.background,
+        colorScheme: colorScheme,
         fontFamily: 'OpenSans',
         textTheme: Typography.englishLike2018.apply(
-          displayColor: themeColors['onyx'],
-          bodyColor: themeColors['onyx'],
+          displayColor: colorScheme.onBackground,
+          bodyColor: colorScheme.onBackground,
         ),
       ),
       initialRoute: '/',

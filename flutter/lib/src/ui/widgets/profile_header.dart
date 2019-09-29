@@ -84,7 +84,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
     );
 
     return Container(
-      color: Theme.of(context).primaryColor,
+      color: Theme.of(context).colorScheme.primary,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,

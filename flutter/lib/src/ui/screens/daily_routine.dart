@@ -95,15 +95,16 @@ class _DailyRoutineState extends State<DailyRoutine> {
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.display1.apply(
                 fontWeightDelta: 3,
+                color: Theme.of(context).colorScheme.primary,
               ),
         ),
         SizedBox(height: 16.0),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(26.0),
-          child: Container(
-            width: 200.0,
-            height: 8.0,
-            color: Theme.of(context).primaryColor,
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12.0),
+          child: Text(
+            "\"You will never change your life until you change something you do daily.\"",
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.title,
           ),
         ),
         SizedBox(height: 36.0),
@@ -139,8 +140,8 @@ class _DailyRoutineState extends State<DailyRoutine> {
           updateCache: true,
         );
       },
-      backgroundColor: Theme.of(context).primaryColor,
-      foregroundColor: Theme.of(context).accentColor,
+      backgroundColor: Theme.of(context).colorScheme.primary,
+      foregroundColor: Theme.of(context).colorScheme.onPrimary,
       tooltip: "Create a new event in your daily routine.",
       child: Icon(Icons.add),
     );

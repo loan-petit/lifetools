@@ -36,7 +36,6 @@ class _GoalState extends State<Goal> {
     return Card(
       elevation: 2.0,
       margin: EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0),
-      color: Theme.of(context).canvasColor,
       child: Container(
         child: ListTile(
           contentPadding:
@@ -63,7 +62,7 @@ class _GoalState extends State<Goal> {
       padding: EdgeInsets.only(right: 12.0),
       decoration: BoxDecoration(
         border: Border(
-          right: BorderSide(width: 4.0, color: Theme.of(context).primaryColor),
+          right: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2.0),
         ),
       ),
       child: IconButton(
@@ -91,7 +90,7 @@ class _GoalState extends State<Goal> {
     return Container(
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: Theme.of(context).primaryColor, width: 4.0),
+          bottom: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2.0),
         ),
       ),
       child: IconButton(

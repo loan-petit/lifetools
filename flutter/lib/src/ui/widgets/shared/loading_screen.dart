@@ -36,7 +36,7 @@ class LoadingScreen extends StatelessWidget {
           children: [
             child,
             Opacity(
-              child: ModalBarrier(dismissible: false, color: Colors.white),
+              child: ModalBarrier(dismissible: false, color: Theme.of(context).colorScheme.background),
               opacity: 0.7,
             ),
             Center(child: CircularProgressIndicator())

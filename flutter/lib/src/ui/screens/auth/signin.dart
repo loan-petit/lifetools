@@ -51,25 +51,20 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final header = Column(
-      children: <Widget>[
-        Text(
-          "Sign In",
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.display1.apply(
-                fontWeightDelta: 3,
-              ),
-        ),
-        SizedBox(height: 16.0),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(26.0),
-          child: Container(
-            width: 200.0,
-            height: 8.0,
-            color: Theme.of(context).primaryColor,
+    final header = RichText(
+      textAlign: TextAlign.center,
+      text: TextSpan(
+        style: Theme.of(context).textTheme.display2.apply(fontWeightDelta: 2),
+        children: <TextSpan>[
+          TextSpan(text: 'Life'),
+          TextSpan(
+            text: 'Tools',
+            style: Theme.of(context).textTheme.display2.apply(
+                fontWeightDelta: 2,
+                color: Theme.of(context).colorScheme.primary),
           ),
-        )
-      ],
+        ],
+      ),
     );
 
     final email = TextFormField(
@@ -79,7 +74,7 @@ class _SignInScreenState extends State<SignInScreen> {
       validator: FieldValidator.validateEmail,
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-        hintText: 'Email',
+        labelText: 'Email',
       ),
     );
 
@@ -89,11 +84,11 @@ class _SignInScreenState extends State<SignInScreen> {
       validator: FieldValidator.validatePassword,
       textInputAction: TextInputAction.go,
       decoration: InputDecoration(
-        hintText: 'Password',
+        labelText: 'Password',
       ),
     );
 
-    final signInButton = FlatButton.icon(
+    final signInButton = FlatButton(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24),
       ),
@@ -101,23 +96,40 @@ class _SignInScreenState extends State<SignInScreen> {
         _signIn({'email': _email.text, 'password': _password.text});
       },
       padding: EdgeInsets.all(12),
-      color: Theme.of(context).primaryColor,
-      icon: Icon(Icons.done),
-      label: Text("SIGN IN"),
+      color: Theme.of(context).colorScheme.primary,
+      child: Text(
+        "SIGN IN",
+        style: Theme.of(context).textTheme.button.apply(
+              fontWeightDelta: 2,
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+      ),
     );
 
     final errorLabel = Text(
       'Invalid email or password.',
       textAlign: TextAlign.center,
-      style: Theme.of(context).textTheme.body2.apply(color: Colors.red),
+      style: Theme.of(context)
+          .textTheme
+          .body2
+          .apply(color: Theme.of(context).colorScheme.error),
     );
 
     // If the user doesn't have an account he has to sign up before.
     final signUpLabel = FlatButton(
-      child: Text(
-        'Create an account',
-        style: Theme.of(context).textTheme.body1.apply(fontWeightDelta: 2),
-        textAlign: TextAlign.center,
+      child: RichText(
+        text: TextSpan(
+          style: Theme.of(context).textTheme.body1.apply(fontWeightDelta: 2),
+          children: <TextSpan>[
+            TextSpan(text: "Don't have an account? "),
+            TextSpan(
+              text: 'Sign up.',
+              style: Theme.of(context).textTheme.body1.apply(
+                  fontWeightDelta: 2,
+                  color: Theme.of(context).colorScheme.primary),
+            ),
+          ],
+        ),
       ),
       onPressed: () {
         Navigator.pushReplacementNamed(context, '/auth/signup');
@@ -125,6 +137,7 @@ class _SignInScreenState extends State<SignInScreen> {
     );
 
     return AppScaffold(
+      showAppBar: false,
       body: LoadingScreen(
         isInAsyncCall: _isLoadingVisible,
         child: Form(
@@ -146,6 +159,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     if (_areCredentialsInvalid) errorLabel,
                     SizedBox(height: 48.0),
                     signInButton,
+                    SizedBox(height: 12.0),
                     signUpLabel,
                   ],
                 ),

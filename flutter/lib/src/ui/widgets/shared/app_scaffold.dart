@@ -110,13 +110,13 @@ class _AppScaffoldState extends State<AppScaffold> {
                   text: 'Tools',
                   style: Theme.of(context).textTheme.title.apply(
                       fontWeightDelta: 2,
-                      color: Theme.of(context).primaryColor),
+                      color: Theme.of(context).colorScheme.primary),
                 ),
             ],
           ),
         ),
       ),
-      elevation: 1.0,
+      elevation: 0,
       actions: actions,
     );
   }
@@ -132,7 +132,7 @@ class _AppScaffoldState extends State<AppScaffold> {
             IconButton(
               icon: Icon(Icons.home, color: Theme.of(context).accentColor),
               onPressed: () {
-                Navigator.pushReplacementNamed(context, '/');
+                Navigator.pushReplacementNamed(context, '/daily-routine');
               },
             ),
             IconButton(

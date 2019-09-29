@@ -55,25 +55,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final header = Column(
-      children: <Widget>[
-        Text(
-          "Create an account",
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.display1.apply(
-                fontWeightDelta: 3,
-              ),
-        ),
-        SizedBox(height: 16.0),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(26.0),
-          child: Container(
-            width: 200.0,
-            height: 8.0,
-            color: Theme.of(context).primaryColor,
+    final header = RichText(
+      textAlign: TextAlign.center,
+      text: TextSpan(
+        style: Theme.of(context).textTheme.display2.apply(fontWeightDelta: 2),
+        children: <TextSpan>[
+          TextSpan(text: 'Life'),
+          TextSpan(
+            text: 'Tools',
+            style: Theme.of(context).textTheme.display2.apply(
+                fontWeightDelta: 2,
+                color: Theme.of(context).colorScheme.primary),
           ),
-        )
-      ],
+        ],
+      ),
     );
 
     final email = TextFormField(
@@ -83,7 +78,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       validator: FieldValidator.validateEmail,
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-        hintText: 'Email',
+        labelText: 'Email',
       ),
     );
 
@@ -93,7 +88,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       validator: FieldValidator.validatePassword,
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-        hintText: 'Password',
+        labelText: 'Password',
       ),
     );
 
@@ -103,11 +98,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
       validator: FieldValidator.validatePassword,
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-        hintText: 'Confirm your password',
+        labelText: 'Confirm your password',
       ),
     );
 
-    final signUpButton = FlatButton.icon(
+    final signUpButton = FlatButton(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24),
       ),
@@ -119,23 +114,40 @@ class _SignUpScreenState extends State<SignUpScreen> {
         });
       },
       padding: EdgeInsets.all(12),
-      color: Theme.of(context).primaryColor,
-      icon: Icon(Icons.done),
-      label: Text("SIGN UP"),
+      color: Theme.of(context).colorScheme.primary,
+      child: Text(
+        "SIGN UP",
+        style: Theme.of(context).textTheme.button.apply(
+              fontWeightDelta: 2,
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+      ),
     );
 
     final errorLabel = Text(
       'Invalid email or password.',
       textAlign: TextAlign.center,
-      style: Theme.of(context).textTheme.body2.apply(color: Colors.red),
+      style: Theme.of(context)
+          .textTheme
+          .body2
+          .apply(color: Theme.of(context).colorScheme.error),
     );
 
     // If the user already has an account, he has to sign in instead.
     final signInLabel = FlatButton(
-      child: Text(
-        'Already have an account ? Sign In.',
-        style: Theme.of(context).textTheme.body1.apply(fontWeightDelta: 2),
-        textAlign: TextAlign.center,
+      child: RichText(
+        text: TextSpan(
+          style: Theme.of(context).textTheme.body1.apply(fontWeightDelta: 2),
+          children: <TextSpan>[
+            TextSpan(text: 'Already have an account? '),
+            TextSpan(
+              text: 'Sign in.',
+              style: Theme.of(context).textTheme.body1.apply(
+                  fontWeightDelta: 2,
+                  color: Theme.of(context).colorScheme.primary),
+            ),
+          ],
+        ),
       ),
       onPressed: () {
         Navigator.pushReplacementNamed(context, '/auth/signin');
@@ -143,6 +155,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
 
     return AppScaffold(
+      showAppBar: false,
       body: LoadingScreen(
         isInAsyncCall: _isLoadingVisible,
         child: Form(
@@ -153,6 +166,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             child: Center(
               child: SingleChildScrollView(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     header,
@@ -166,6 +180,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     if (_areCredentialsInvalid) errorLabel,
                     SizedBox(height: 48.0),
                     signUpButton,
+                    SizedBox(height: 12.0),
                     signInLabel,
                   ],
                 ),

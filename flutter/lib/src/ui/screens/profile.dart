@@ -24,7 +24,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               SliverToBoxAdapter(child: ProfileHeader()),
               _buildSliverHeader(
                 Container(
-                  color: Theme.of(context).primaryColor,
+                  color: Theme.of(context).colorScheme.primary,
                   child: TabBar(
                     tabs: [
                       Tab(icon: Icon(Icons.history), text: "My history"),
