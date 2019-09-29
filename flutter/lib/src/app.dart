@@ -41,9 +41,11 @@ class App extends StatelessWidget {
         primaryColor: colorScheme.primary,
         accentColor: colorScheme.secondary,
         cardColor: colorScheme.surface,
-        appBarTheme: AppBarTheme(color: Colors.transparent),
+        canvasColor: colorScheme.background,
         scaffoldBackgroundColor: colorScheme.background,
         backgroundColor: colorScheme.background,
+        appBarTheme: AppBarTheme(color: Colors.transparent),
+        primaryIconTheme: IconThemeData(color: colorScheme.onBackground),
         colorScheme: colorScheme,
         fontFamily: 'OpenSans',
         textTheme: Typography.englishLike2018.apply(

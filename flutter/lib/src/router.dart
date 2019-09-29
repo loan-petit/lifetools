@@ -33,27 +33,23 @@ class Router {
           UserBloc.signOut();
           break;
         // Display the goals
-        case '/goals':
+        case '/goals-events':
           return MaterialPageRoute(
             settings: settings,
             builder: (_) => GoalsBlocProvider(child: Goals()),
           );
-        // Display the daily routine
-        case '/daily-routine':
-          return MaterialPageRoute(
-            settings: settings,
-            builder: (_) => DailyRoutineBlocProvider(child: DailyRoutine()),
-          );
         // Display the profile of a user
         case '/profile':
+          return MaterialPageRoute(
+            settings: settings,
+            builder: (_) => ProfileScreen(),
+          );
+        // Display the daily routine
+        case '/daily-routine':
         default:
           return MaterialPageRoute(
             settings: settings,
             builder: (_) => DailyRoutineBlocProvider(child: DailyRoutine()),
-          );
-          return MaterialPageRoute(
-            settings: settings,
-            builder: (_) => ProfileScreen(),
           );
       }
     }

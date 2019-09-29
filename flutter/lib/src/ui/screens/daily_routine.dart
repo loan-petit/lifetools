@@ -5,7 +5,7 @@ import 'package:lifetools/src/blocs/inherited_widgets/daily_routine_bloc_provide
 import 'package:lifetools/src/models/daily_routine_event.dart';
 import 'package:lifetools/src/ui/widgets/daily_routine/event.dart';
 import 'package:lifetools/src/ui/widgets/daily_routine/upsert_event.dart';
-import 'package:lifetools/src/ui/widgets/shared/app_scaffold.dart';
+import 'package:lifetools/src/ui/widgets/shared/scaffold/index.dart';
 import 'package:lifetools/src/ui/widgets/shared/loading_screen.dart';
 import 'package:lifetools/src/utils/time.dart';
 

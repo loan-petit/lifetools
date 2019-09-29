@@ -5,7 +5,7 @@ import 'package:lifetools/src/blocs/inherited_widgets/goal_bloc_provider.dart';
 import 'package:lifetools/src/models/goal.dart';
 import 'package:lifetools/src/ui/widgets/goals/goal.dart';
 import 'package:lifetools/src/ui/widgets/goals/upsert_goal.dart';
-import 'package:lifetools/src/ui/widgets/shared/app_scaffold.dart';
+import 'package:lifetools/src/ui/widgets/shared/scaffold/index.dart';
 import 'package:lifetools/src/ui/widgets/shared/loading_screen.dart';
 
 /// Display the goals of a user.

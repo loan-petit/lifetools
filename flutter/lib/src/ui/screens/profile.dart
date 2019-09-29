@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:lifetools/src/ui/widgets/profile_header.dart';
-import 'package:lifetools/src/ui/widgets/shared/app_scaffold.dart';
+import 'package:lifetools/src/ui/widgets/shared/scaffold/index.dart';
 import 'package:lifetools/src/ui/widgets/shared/app_sliver_persistent_header_delegate.dart';
 
 /// Display the profile of a user.

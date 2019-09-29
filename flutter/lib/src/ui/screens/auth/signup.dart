@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:pedantic/pedantic.dart';
 
 import 'package:lifetools/src/blocs/user.dart';
-import 'package:lifetools/src/ui/widgets/shared/app_scaffold.dart';
+import 'package:lifetools/src/ui/widgets/shared/scaffold/index.dart';
 import 'package:lifetools/src/ui/widgets/shared/loading_screen.dart';
 import 'package:lifetools/src/utils/field_validator.dart';
 import 'package:lifetools/src/utils/graphql/graphql_exception.dart';

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:lifetools/src/blocs/user.dart';
+import 'package:lifetools/src/ui/widgets/shared/scaffold/drawer.dart';
 
 /// Wrapper around [Scaffold] used as screen UI base.
 ///
@@ -51,6 +52,7 @@ class _AppScaffoldState extends State<AppScaffold> {
 
     return Scaffold(
       appBar: widget.appBar ?? (widget.showAppBar) ? _buildAppBar() : null,
+      drawer: AppDrawer(),
       body: LayoutBuilder(
         builder: (context, constraints) {
           return Container(
@@ -62,7 +64,6 @@ class _AppScaffoldState extends State<AppScaffold> {
           );
         },
       ),
-      bottomNavigationBar: UserBloc.isLoggedIn ? _buildBottom() : null,
       floatingActionButton: widget.floatingActionButtonBuilder != null
           ? Container(
               margin: EdgeInsets.only(
@@ -118,33 +119,6 @@ class _AppScaffoldState extends State<AppScaffold> {
       ),
       elevation: 0,
       actions: actions,
-    );
-  }
-
-  Widget _buildBottom() {
-    return Container(
-      height: 55.0,
-      child: BottomAppBar(
-        color: Theme.of(context).cardColor,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.home, color: Theme.of(context).accentColor),
-              onPressed: () {
-                Navigator.pushReplacementNamed(context, '/daily-routine');
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.check_circle,
-                  color: Theme.of(context).accentColor),
-              onPressed: () {
-                Navigator.pushReplacementNamed(context, '/goals');
-              },
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
