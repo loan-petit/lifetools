@@ -33,7 +33,7 @@ class _AppDrawerState extends State<AppDrawer> {
             ),
       ),
       onPressed: () {
-        Navigator.pushReplacementNamed(context, '/logout');
+        Navigator.pushReplacementNamed(context, '/auth/signout');
       },
     );
 
@@ -47,9 +47,9 @@ class _AppDrawerState extends State<AppDrawer> {
           SizedBox(height: 32.0),
           buildMenuItem(Icons.account_circle, 'Profile', '/profile'),
           SizedBox(height: 8.0),
-          buildMenuItem(Icons.work, 'Goals & Events', '/goals-events'),
-          SizedBox(height: 8.0),
           buildMenuItem(Icons.timelapse, 'Daily Routine', '/daily-routine'),
+          SizedBox(height: 8.0),
+          buildMenuItem(Icons.work, 'Goals', '/goals'),
           SizedBox(height: 32.0),
           logoutButton,
         ],

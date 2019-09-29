@@ -120,12 +120,13 @@ class _UpsertGoalState extends State<UpsertGoal> {
       color: Theme.of(context).colorScheme.primary,
       icon: Icon(
         iconData,
-        color: Theme.of(context).textTheme.body1.color,
+        color: Theme.of(context).colorScheme.onPrimary,
       ),
       label: Text(
         labelText,
         style: Theme.of(context).textTheme.subhead.apply(
               fontWeightDelta: 2,
+              color: Theme.of(context).colorScheme.onPrimary,
             ),
       ),
     );
@@ -140,7 +141,7 @@ class _UpsertGoalState extends State<UpsertGoal> {
       validator: FieldValidator.validateText,
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-        hintText: 'Event name',
+        labelText: 'Title',
       ),
     );
 
@@ -151,21 +152,14 @@ class _UpsertGoalState extends State<UpsertGoal> {
         SizedBox(width: 5),
         FlatButton(
           onPressed: () async {
-            DateTime now = DateTime.now();
-            _date = await showDatePicker(
-                  context: context,
-                  initialDate: _date,
-                  firstDate: DateTime(now.year, now.month, now.day),
-                  lastDate: _date.add(Duration(days: 14)),
-                ) ??
-                _date;
+            _date = await _showDatePicker(_date) ?? _date;
             setState(() {
               // Update _date with picked date.
             });
           },
           shape: UnderlineInputBorder(
-            borderSide:
-                BorderSide(color: Theme.of(context).colorScheme.primary, width: 2.0),
+            borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.primary, width: 2.0),
           ),
           child: Text(DateFormat.yMEd().format(_date)),
         ),
@@ -192,6 +186,25 @@ class _UpsertGoalState extends State<UpsertGoal> {
           if (_error != null) errorLabel,
         ],
       ),
+    );
+  }
+
+  /// Wrapper around [showTimePicker] used apply a theme on the time picker.
+  Future<DateTime> _showDatePicker(DateTime initialDate) {
+    DateTime now = DateTime.now();
+
+    return showDatePicker(
+      context: context,
+      initialDate: initialDate,
+      firstDate: DateTime(now.year, now.month, now.day),
+      lastDate: initialDate.add(Duration(days: 14)),
+      builder: (BuildContext context, Widget child) {
+        return Theme(
+          data: Theme.of(context)
+              .copyWith(primaryColorBrightness: Brightness.dark),
+          child: child,
+        );
+      },
     );
   }
 

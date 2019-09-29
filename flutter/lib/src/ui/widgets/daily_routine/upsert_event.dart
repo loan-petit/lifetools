@@ -68,9 +68,9 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
       );
     }
     _startTime =
-        widget.dailyRoutineEvent?.startTime ?? TimeOfDay(hour: 8, minute: 0);
+        widget.dailyRoutineEvent?.startTime ?? TimeOfDay(hour: 12, minute: 0);
     _endTime =
-        widget.dailyRoutineEvent?.endTime ?? TimeOfDay(hour: 8, minute: 0);
+        widget.dailyRoutineEvent?.endTime ?? TimeOfDay(hour: 12, minute: 0);
   }
 
   /// Dispose of the [DailyRoutineBloc].
@@ -133,12 +133,13 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
       color: Theme.of(context).colorScheme.primary,
       icon: Icon(
         iconData,
-        color: Theme.of(context).textTheme.body1.color,
+        color: Theme.of(context).colorScheme.onPrimary,
       ),
       label: Text(
         labelText,
         style: Theme.of(context).textTheme.subhead.apply(
               fontWeightDelta: 2,
+              color: Theme.of(context).colorScheme.onPrimary,
             ),
       ),
     );
@@ -153,7 +154,7 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
       validator: FieldValidator.validateText,
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-        hintText: 'Event name',
+        labelText: 'Title',
       ),
     );
 
@@ -163,18 +164,14 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
         Text("Start Time"),
         FlatButton(
           onPressed: () async {
-            _startTime = await showTimePicker(
-                  context: context,
-                  initialTime: _startTime,
-                ) ??
-                _startTime;
+            _startTime = await _showTimePicker(_startTime) ?? _startTime;
             setState(() {
               // Update _startTime with picked time.
             });
           },
           shape: UnderlineInputBorder(
-            borderSide:
-                BorderSide(color: Theme.of(context).colorScheme.primary, width: 2.0),
+            borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.primary, width: 2.0),
           ),
           child: Text(_startTime.format(context)),
         ),
@@ -187,18 +184,14 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
         Text("End Time"),
         FlatButton(
           onPressed: () async {
-            _endTime = await showTimePicker(
-                  context: context,
-                  initialTime: _endTime,
-                ) ??
-                _endTime;
+            _endTime = await _showTimePicker(_endTime) ?? _endTime;
             setState(() {
               // Update _endTime with picked time.
             });
           },
           shape: UnderlineInputBorder(
-            borderSide:
-                BorderSide(color: Theme.of(context).colorScheme.primary, width: 2.0),
+            borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.primary, width: 2.0),
           ),
           child: Text(_endTime.format(context)),
         ),
@@ -227,6 +220,21 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
           if (_error != null) errorLabel,
         ],
       ),
+    );
+  }
+
+  /// Wrapper around [showTimePicker] used apply a theme on the time picker.
+  Future<TimeOfDay> _showTimePicker(TimeOfDay initialTime) {
+    return showTimePicker(
+      context: context,
+      initialTime: initialTime,
+      builder: (BuildContext context, Widget child) {
+        return Theme(
+          data: Theme.of(context)
+              .copyWith(primaryColorBrightness: Brightness.dark),
+          child: child,
+        );
+      },
     );
   }
 

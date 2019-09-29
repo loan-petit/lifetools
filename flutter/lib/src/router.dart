@@ -21,10 +21,12 @@ class Router {
         case '/auth/signin':
           return MaterialPageRoute(
               settings: settings, builder: (_) => SignInScreen());
+
         // Sign a user up
         default:
           return MaterialPageRoute(
               settings: settings, builder: (_) => SignUpScreen());
+
       }
     } else if (UserBloc.isLoggedIn) {
       switch (settings.name) {
@@ -32,25 +34,29 @@ class Router {
         case '/auth/signout':
           UserBloc.signOut();
           break;
+
         // Display the goals
-        case '/goals-events':
+        case '/goals':
           return MaterialPageRoute(
             settings: settings,
-            builder: (_) => GoalsBlocProvider(child: Goals()),
+            builder: (_) => GoalsBlocProvider(child: GoalsScreen()),
           );
+
         // Display the profile of a user
         case '/profile':
           return MaterialPageRoute(
             settings: settings,
             builder: (_) => ProfileScreen(),
           );
+
         // Display the daily routine
         case '/daily-routine':
         default:
           return MaterialPageRoute(
             settings: settings,
-            builder: (_) => DailyRoutineBlocProvider(child: DailyRoutine()),
+            builder: (_) => DailyRoutineBlocProvider(child: DailyRoutineScreen()),
           );
+
       }
     }
     // Sign a user up

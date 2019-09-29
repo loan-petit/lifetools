@@ -5,7 +5,7 @@ import 'package:lifetools/src/models/daily_routine_event.dart';
 import 'package:lifetools/src/ui/widgets/daily_routine/upsert_event.dart';
 import 'package:lifetools/src/utils/time.dart';
 
-/// Build a list event based on a [ListTile].
+/// Build a daily routine event based on a [ListTile].
 class DailyRoutineEvent extends StatefulWidget {
   /// Daily routine event data.
   final DailyRoutineEventModel dailyRoutineEvent;

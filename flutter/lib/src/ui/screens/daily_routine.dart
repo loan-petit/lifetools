@@ -10,12 +10,12 @@ import 'package:lifetools/src/ui/widgets/shared/loading_screen.dart';
 import 'package:lifetools/src/utils/time.dart';
 
 /// Display the daily routine of a user.
-class DailyRoutine extends StatefulWidget {
+class DailyRoutineScreen extends StatefulWidget {
   @override
-  _DailyRoutineState createState() => _DailyRoutineState();
+  _DailyRoutineScreenState createState() => _DailyRoutineScreenState();
 }
 
-class _DailyRoutineState extends State<DailyRoutine> {
+class _DailyRoutineScreenState extends State<DailyRoutineScreen> {
   /// Manage the business logic related to the daily routine.
   DailyRoutineBloc _dailyRoutineBloc;
 

@@ -9,12 +9,12 @@ import 'package:lifetools/src/ui/widgets/shared/scaffold/index.dart';
 import 'package:lifetools/src/ui/widgets/shared/loading_screen.dart';
 
 /// Display the goals of a user.
-class Goals extends StatefulWidget {
+class GoalsScreen extends StatefulWidget {
   @override
-  _GoalsState createState() => _GoalsState();
+  _GoalsScreenState createState() => _GoalsScreenState();
 }
 
-class _GoalsState extends State<Goals> {
+class _GoalsScreenState extends State<GoalsScreen> {
   /// Manage the business logic related to the goals.
   GoalBloc _goalBloc;
 
@@ -81,7 +81,7 @@ class _GoalsState extends State<Goals> {
       children: <Widget>[
         SizedBox(height: 16.0),
         Text(
-          "Tasks & Events",
+          "Goals",
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.display1.apply(
                 fontWeightDelta: 3,

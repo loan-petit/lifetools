@@ -77,21 +77,6 @@ class _AppScaffoldState extends State<AppScaffold> {
   /// Create the [Scaffold]'s [AppBar].
   Widget _buildAppBar() {
     double screenWidth = MediaQuery.of(context).size.width;
-    List<Widget> actions = [];
-
-    if (UserBloc.isLoggedIn) {
-      actions = [
-        IconButton(
-          icon: Icon(Icons.power_settings_new),
-          tooltip: 'Log out',
-          onPressed: () {
-            Navigator.pushNamedAndRemoveUntil(
-                context, '/auth/signout', (_) => false);
-          },
-        ),
-        if (screenWidth > 600) SizedBox(width: screenWidth / 5),
-      ];
-    }
 
     return AppBar(
       title: Container(
@@ -118,7 +103,6 @@ class _AppScaffoldState extends State<AppScaffold> {
         ),
       ),
       elevation: 0,
-      actions: actions,
     );
   }
 }

@@ -9,6 +9,8 @@ void main() async {
   // Setup production environment
   Environment.prod();
 
+  WidgetsFlutterBinding.ensureInitialized();
+
   // Initialize services and helpers
   await DataPersistenceService().init();
   GraphQLHelper().init();
