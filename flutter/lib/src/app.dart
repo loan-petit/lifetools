@@ -27,6 +27,8 @@ class App extends StatelessWidget {
 
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: colorScheme.background,
+      statusBarBrightness: Brightness.dark,
+      statusBarIconBrightness: Brightness.light,
     ));
 
     return MaterialApp(
@@ -47,7 +49,7 @@ class App extends StatelessWidget {
         scaffoldBackgroundColor: colorScheme.background,
         dialogBackgroundColor: colorScheme.background,
         backgroundColor: colorScheme.background,
-        appBarTheme: AppBarTheme(color: Colors.transparent),
+        appBarTheme: AppBarTheme(color: colorScheme.background, brightness: Brightness.dark),
         primaryIconTheme: IconThemeData(color: colorScheme.onBackground),
         colorScheme: colorScheme,
         fontFamily: 'OpenSans',

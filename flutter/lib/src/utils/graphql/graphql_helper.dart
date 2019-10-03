@@ -5,7 +5,7 @@ import 'package:meta/meta.dart';
 import 'package:graphql/client.dart';
 
 import 'package:lifetools/src/environment.dart';
-import 'package:lifetools/src/services/data_persistence_service/web.dart';
+import 'package:lifetools/src/services/data_persistence_service/index.dart';
 import 'package:lifetools/src/utils/graphql/graphql_exception.dart';
 
 /// Helper for the GraphQLClient and for the GraphQL API.

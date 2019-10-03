@@ -52,17 +52,19 @@ class _AppScaffoldState extends State<AppScaffold> {
 
     return Scaffold(
       appBar: widget.appBar ?? (widget.showAppBar) ? _buildAppBar() : null,
-      drawer: AppDrawer(),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return Container(
-            margin: (constraints.maxWidth > 600)
-                ? EdgeInsets.symmetric(horizontal: constraints.maxWidth / 4)
-                : null,
-            child: widget.body,
-            alignment: Alignment.topCenter,
-          );
-        },
+      drawer: SafeArea(child: AppDrawer()),
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return Container(
+              margin: (constraints.maxWidth > 600)
+                  ? EdgeInsets.symmetric(horizontal: constraints.maxWidth / 4)
+                  : null,
+              child: widget.body,
+              alignment: Alignment.topCenter,
+            );
+          },
+        ),
       ),
       floatingActionButton: widget.floatingActionButtonBuilder != null
           ? Container(
