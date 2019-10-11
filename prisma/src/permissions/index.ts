@@ -4,7 +4,7 @@ import { getUserId } from '../utils/getUserId'
 const rules = {
   isAuthenticatedUser: rule()((parent, args, context) => {
     const userId = getUserId(context)
-    
+
     return Boolean(userId)
   }),
   isCurrentUser: rule()(async (parent, args, context) => {
@@ -37,7 +37,7 @@ const rules = {
       })
       .owner()
     return userId === owner.id
-  }),
+  })
 }
 
 export const permissions = shield({
@@ -46,11 +46,11 @@ export const permissions = shield({
     users: rules.isAuthenticatedUser,
     me: rules.isAuthenticatedUser,
 
-    dailyroutineevent: rules.isAuthenticatedUser,
-    dailyroutineevents: rules.isAuthenticatedUser,
+    dailyRoutineEvent: rules.isAuthenticatedUser,
+    dailyRoutineEvents: rules.isAuthenticatedUser,
 
     goal: rules.isAuthenticatedUser,
-    goals: rules.isAuthenticatedUser,
+    goals: rules.isAuthenticatedUser
   },
   Mutation: {
     updateOneUser: rules.isCurrentUser,
@@ -62,6 +62,6 @@ export const permissions = shield({
 
     createOneGoal: rules.isAuthenticatedUser,
     updateOneGoal: rules.isGoalOwner,
-    deleteOneGoal: rules.isGoalOwner,
+    deleteOneGoal: rules.isGoalOwner
   }
 })

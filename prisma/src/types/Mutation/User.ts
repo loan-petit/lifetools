@@ -11,11 +11,7 @@ export const signup = mutationField('signup', {
     password: stringArg(),
     passwordConfirmation: stringArg()
   },
-  resolve: async (
-    parent,
-    { email, password, passwordConfirmation },
-    ctx
-  ) => {
+  resolve: async (parent, { email, password, passwordConfirmation }, ctx) => {
     if (password !== passwordConfirmation) {
       throw new Error("'password' must match 'passwordConfirmation'")
     }

@@ -7,15 +7,17 @@ WORKDIR /prisma
 # Install dependencies before pushing the rest of the code in order to use
 # cached dependencies when a file other than the package.json is changed in
 # the current host directory
-RUN npm install -g prisma2@2.0.0-preview-13 --unsafe-perm
 RUN mkdir ./prisma/
 COPY ./package.json ./
 COPY ./prisma/schema.prisma ./prisma/
 COPY ./.prod.env ./.env
-RUN npm install --unsafe-perm
+RUN npm install
 
 # Copy code ressources
 COPY . .
 
+# Generate Photon and Nexus clients.
+RUN npm run generate
+
 # Start GraphQL API
-CMD ["npm", "start"]
+CMD ["npm", "run", "dev"]

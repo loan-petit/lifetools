@@ -24,11 +24,11 @@ dependencies:
   pedantic: ^1.8.0+1
   intl: ^0.16.0
 
-  shared_preferences: ^0.5.3+4
+  shared_preferences: ^0.5.4+6
   universal_html: ^1.1.6
 
   graphql: ^2.1.0
-  rxdart: ^0.22.2
+  rxdart: ^0.22.6
   http: ^0.12.0+2
 
   validators: ^2.0.0+1
@@ -36,7 +36,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
 
 flutter:
   uses-material-design: true

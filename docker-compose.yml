@@ -41,15 +41,20 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./data/postgres:/var/lib/postgresql/data
+      - "db-data:/var/lib/postgresql/data"
 
   flutter:
     build: 
       context: ./flutter/
       args:
-        FLUTTER_VERSION: v1.10.6
+        FLUTTER_VERSION: v1.12.15
     image: lifetools_flutter:latest
     container_name: lifetools_flutter
     restart: always
     expose:
       - "80"
+
+volumes:
+  db-data:
+  certbot-conf:
+  certbot-www:

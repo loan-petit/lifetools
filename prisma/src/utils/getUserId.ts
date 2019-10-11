@@ -2,7 +2,9 @@ import { verify } from "jsonwebtoken";
 import { Context } from "../types";
 
 export const JWT_SECRET =
-  process.env.NODE_ENV === "production" ? process.env.JWT_SECRET : "prisma-secret";
+  process.env.NODE_ENV === "production"
+    ? process.env.JWT_SECRET
+    : "prisma-secret";
 
 interface Token {
   userId: string;

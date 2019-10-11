@@ -41,7 +41,7 @@ class UserProvider {
         \$passwordConfirmation: String!
       ) {
         signup(
-          email: \email
+          email: \$email
           password: \$password
           passwordConfirmation: \$passwordConfirmation
         ) {
@@ -51,6 +51,8 @@ class UserProvider {
       }
     """;
 
+print(body);
+print(credentials);
     final Map<String, dynamic> result = await _graphQLHelper.request(
       body: body,
       variables: credentials,

@@ -45,8 +45,6 @@ class _AppDrawerState extends State<AppDrawer> {
           SizedBox(height: 16.0),
           header,
           SizedBox(height: 32.0),
-          buildMenuItem(Icons.account_circle, 'Profile', '/profile'),
-          SizedBox(height: 8.0),
           buildMenuItem(Icons.timelapse, 'Daily Routine', '/daily-routine'),
           SizedBox(height: 8.0),
           buildMenuItem(Icons.work, 'Goals', '/goals'),
