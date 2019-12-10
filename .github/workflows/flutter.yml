@@ -1,0 +1,31 @@
+name: Flutter app CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - uses: subosito/flutter-action@v1
+      with:
+        channel: 'dev'
+    - name: Enable web
+      run: flutter config --enable-web
+    - name: Get packages
+      run: flutter pub get
+      working-directory: ./flutter/
+    - name: Build web app
+      run: flutter build web -t lib/main_prod.dart
+      working-directory: ./flutter/
+    - name: Build Android app
+      run: flutter build apk --split-per-abi -t lib/main_prod.dart
+      working-directory: ./flutter/
