@@ -1,0 +1,7 @@
+- name: Clone repository
+  shell: git clone "https://github.com/loan-petit/lifetools.git"
+
+- name: Start project
+  command: docker-compose up -d --build --force-recreate
+  args:
+    chdir: ./lifetools
