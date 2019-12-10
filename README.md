@@ -42,3 +42,9 @@ These commands will create and start the following containers:
 - **Flutter application**: lifetools_flutter
 - **PostgreSQL database**: lifetools_postgres
 - **Certbot for Let's Encrypt certificates administration**: lifetools_certbot *(production only)*
+
+## Found this project useful?
+
+Please consider giving it a star. :star:
+
+You can also share it with your friends via social media.
