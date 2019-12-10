@@ -22,7 +22,7 @@ Before you submit your Merge Request (MR) consider the following guidelines:
 commits by squashing them, but do not change the commit history if you're
 working on shared branches though.
 - Push the commit(s) to your working branch.
-- Submit a merge request (MR) to the `develop` branch in the main GitLab project.
+- Submit a merge request (MR) to the `develop` branch in the main GitHub project.
 - Your merge request needs at least 1 approval, but feel free to require more.
 - The MR title should describe the change you want to make.
 - The MR description should give a reason for your change.
@@ -42,7 +42,7 @@ into two smaller MRs? Can you submit only the backend/API code? Can you start
 with a very simple UI? Can you do just a part of the refactor?
 
 Small MRs which are more easily reviewed, lead to higher code quality which is
-more important to GitLab than having a minimal commit log. The smaller an MR is,
+more important to GitHub than having a minimal commit log. The smaller an MR is,
 the more likely it will be merged quickly. After that you can send more MRs to
 enhance and expand the feature.
 
