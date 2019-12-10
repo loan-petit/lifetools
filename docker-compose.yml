@@ -56,5 +56,3 @@ services:
 
 volumes:
   db-data:
-  certbot-conf:
-  certbot-www:
