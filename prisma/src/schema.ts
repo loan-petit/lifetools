@@ -7,19 +7,19 @@ export const schema = makeSchema({
   plugins: [nexusPrismaPlugin()],
   outputs: {
     schema: __dirname + '/generated/schema.graphql',
-    typegen: __dirname + '/generated/nexus.ts',
+    typegen: __dirname + '/generated/nexus.ts'
   },
   typegenAutoConfig: {
     sources: [
       {
         source: '@prisma/photon',
-        alias: 'photon',
+        alias: 'photon'
       },
       {
         source: require.resolve('./context'),
-        alias: 'Context',
-      },
+        alias: 'Context'
+      }
     ],
-    contextType: 'Context.Context',
-  },
+    contextType: 'Context.Context'
+  }
 })

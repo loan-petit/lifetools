@@ -6,11 +6,11 @@ import { createContext } from './context'
 new GraphQLServer({
   schema,
   context: createContext,
-  middlewares: [permissions],
+  middlewares: [permissions]
 }).start(
-  { playground: process.env.NODE_ENV === "production" ? false : "/" },
+  { playground: process.env.NODE_ENV === 'production' ? false : '/' },
   () =>
-  console.log(
-    `🚀 Server ready at: http://localhost:4000\n⭐️ See sample queries: http://pris.ly/e/ts/graphql-auth#5-using-the-graphql-api`,
-  ),
+    console.log(
+      '🚀 Server ready at: http://localhost:4000\n⭐️ See sample queries: http://pris.ly/e/ts/graphql-auth#5-using-the-graphql-api'
+    )
 )
