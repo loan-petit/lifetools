@@ -16,8 +16,11 @@ RUN npm install
 # Copy code ressources
 COPY . .
 
-# Generate Photon and Nexus clients.
+# Generate Photon and Nexus clients
 RUN npm run generate
 
+# Build API for production
+RUN npm run build
+
 # Start GraphQL API
-CMD ["npm", "run", "dev"]
+CMD ["npm", "start"]
