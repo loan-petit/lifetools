@@ -11,10 +11,10 @@ if ! [ -x "$(command -v docker-compose)" ]; then
   exit 1
 fi
 
-DOMAINS=(xxxxxx.app www.xxxxxx.app) # TODO: Fill DOMAINS
+DOMAINS=(XXXX.app www.XXXX.app) # TODO: Fill DOMAINS
 RSA_KEY_SIZE=4096
 DATA_PATH="./data/certbot"
-EMAIL="xxxxxxx" # TODO: Fill EMAIL
+EMAIL="XXXX" # TODO: Fill EMAIL
 STAGING=0 # Set to 1 if you're testing your setup to avoid hitting request limits
 
 if [ -d "$DATA_PATH" ]; then
