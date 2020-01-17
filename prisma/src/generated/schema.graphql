@@ -227,8 +227,8 @@ type Mutation {
   deleteOneDailyRoutineEvent(where: DailyRoutineEventWhereUniqueInput!): DailyRoutineEvent
   deleteOneGoal(where: GoalWhereUniqueInput!): Goal
   deleteOneUser(where: UserWhereUniqueInput!): User
-  signin(email: String!, password: String!): AuthPayload!
-  signup(email: String!, password: String!, passwordConfirmation: String!): AuthPayload!
+  signin(password: String!, username: String!): AuthPayload!
+  signup(password: String!, passwordConfirmation: String!, username: String!): AuthPayload!
   updateOneDailyRoutineEvent(data: DailyRoutineEventUpdateInput!, where: DailyRoutineEventWhereUniqueInput!): DailyRoutineEvent
   updateOneGoal(data: GoalUpdateInput!, where: GoalWhereUniqueInput!): Goal
   updateOneUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
@@ -271,27 +271,27 @@ input UserCreateOneWithoutOwnerInput {
 
 input UserCreateWithoutDailyRoutineInput {
   createdAt: DateTime
-  email: String!
   goals: GoalCreateManyWithoutGoalsInput
   id: ID
   password: String!
+  username: String!
 }
 
 input UserCreateWithoutGoalsInput {
   createdAt: DateTime
   dailyRoutine: DailyRoutineEventCreateManyWithoutDailyRoutineInput
-  email: String!
   id: ID
   password: String!
+  username: String!
 }
 
 input UserUpdateInput {
   createdAt: DateTime
   dailyRoutine: DailyRoutineEventUpdateManyWithoutOwnerInput
-  email: String
   goals: GoalUpdateManyWithoutOwnerInput
   id: ID
   password: String
+  username: String
 }
 
 input UserUpdateOneRequiredWithoutDailyRoutineInput {
@@ -310,18 +310,18 @@ input UserUpdateOneRequiredWithoutGoalsInput {
 
 input UserUpdateWithoutDailyRoutineDataInput {
   createdAt: DateTime
-  email: String
   goals: GoalUpdateManyWithoutOwnerInput
   id: ID
   password: String
+  username: String
 }
 
 input UserUpdateWithoutGoalsDataInput {
   createdAt: DateTime
   dailyRoutine: DailyRoutineEventUpdateManyWithoutOwnerInput
-  email: String
   id: ID
   password: String
+  username: String
 }
 
 input UserUpsertWithoutDailyRoutineInput {
@@ -335,6 +335,6 @@ input UserUpsertWithoutGoalsInput {
 }
 
 input UserWhereUniqueInput {
-  email: String
   id: ID
+  username: String
 }

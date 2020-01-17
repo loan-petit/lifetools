@@ -207,25 +207,25 @@ export interface NexusGenInputs {
   }
   UserCreateWithoutDailyRoutineInput: { // input type
     createdAt?: any | null; // DateTime
-    email: string; // String!
     goals?: NexusGenInputs['GoalCreateManyWithoutGoalsInput'] | null; // GoalCreateManyWithoutGoalsInput
     id?: string | null; // ID
     password: string; // String!
+    username: string; // String!
   }
   UserCreateWithoutGoalsInput: { // input type
     createdAt?: any | null; // DateTime
     dailyRoutine?: NexusGenInputs['DailyRoutineEventCreateManyWithoutDailyRoutineInput'] | null; // DailyRoutineEventCreateManyWithoutDailyRoutineInput
-    email: string; // String!
     id?: string | null; // ID
     password: string; // String!
+    username: string; // String!
   }
   UserUpdateInput: { // input type
     createdAt?: any | null; // DateTime
     dailyRoutine?: NexusGenInputs['DailyRoutineEventUpdateManyWithoutOwnerInput'] | null; // DailyRoutineEventUpdateManyWithoutOwnerInput
-    email?: string | null; // String
     goals?: NexusGenInputs['GoalUpdateManyWithoutOwnerInput'] | null; // GoalUpdateManyWithoutOwnerInput
     id?: string | null; // ID
     password?: string | null; // String
+    username?: string | null; // String
   }
   UserUpdateOneRequiredWithoutDailyRoutineInput: { // input type
     connect?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
@@ -241,17 +241,17 @@ export interface NexusGenInputs {
   }
   UserUpdateWithoutDailyRoutineDataInput: { // input type
     createdAt?: any | null; // DateTime
-    email?: string | null; // String
     goals?: NexusGenInputs['GoalUpdateManyWithoutOwnerInput'] | null; // GoalUpdateManyWithoutOwnerInput
     id?: string | null; // ID
     password?: string | null; // String
+    username?: string | null; // String
   }
   UserUpdateWithoutGoalsDataInput: { // input type
     createdAt?: any | null; // DateTime
     dailyRoutine?: NexusGenInputs['DailyRoutineEventUpdateManyWithoutOwnerInput'] | null; // DailyRoutineEventUpdateManyWithoutOwnerInput
-    email?: string | null; // String
     id?: string | null; // ID
     password?: string | null; // String
+    username?: string | null; // String
   }
   UserUpsertWithoutDailyRoutineInput: { // input type
     create: NexusGenInputs['UserCreateWithoutDailyRoutineInput']; // UserCreateWithoutDailyRoutineInput!
@@ -262,8 +262,8 @@ export interface NexusGenInputs {
     update: NexusGenInputs['UserUpdateWithoutGoalsDataInput']; // UserUpdateWithoutGoalsDataInput!
   }
   UserWhereUniqueInput: { // input type
-    email?: string | null; // String
     id?: string | null; // ID
+    username?: string | null; // String
   }
 }
 
@@ -397,13 +397,13 @@ export interface NexusGenArgTypes {
       where: NexusGenInputs['UserWhereUniqueInput']; // UserWhereUniqueInput!
     }
     signin: { // args
-      email: string; // String!
       password: string; // String!
+      username: string; // String!
     }
     signup: { // args
-      email: string; // String!
       password: string; // String!
       passwordConfirmation: string; // String!
+      username: string; // String!
     }
     updateOneDailyRoutineEvent: { // args
       data: NexusGenInputs['DailyRoutineEventUpdateInput']; // DailyRoutineEventUpdateInput!

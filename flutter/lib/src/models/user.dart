@@ -5,7 +5,7 @@ import 'package:lifetools/src/models/daily_routine_event.dart';
 ///
 /// A user is identified by his unique [id].
 ///
-/// A user has to use his email (unique) and password to log him in.
+/// A user has to use his username (unique) and password to log him in.
 /// For security and privacy reasons neither of thoses are stored.
 ///
 /// When a user is logged in a [token] (JWT) is given to him

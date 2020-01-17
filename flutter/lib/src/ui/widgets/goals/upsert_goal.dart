@@ -135,7 +135,6 @@ class _UpsertGoalState extends State<UpsertGoal> {
   /// Form to create or update a daily routine event.
   Form _buildForm() {
     final name = TextFormField(
-      keyboardType: TextInputType.emailAddress,
       autofocus: true,
       controller: _name,
       validator: FieldValidator.validateText,

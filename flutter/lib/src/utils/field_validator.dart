@@ -15,7 +15,7 @@ class FieldValidator {
     if (value.isEmpty) return 'Email can\'t be empty!';
 
     if (!isEmail(value)) {
-      return 'Please enter a valid email address.';
+      return 'Please enter a valid username address.';
     }
     return null;
   }

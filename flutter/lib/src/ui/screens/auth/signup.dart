@@ -20,8 +20,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   /// and allows its validation.
   final _formKey = GlobalKey<FormState>();
 
-  /// Controller for the editable email [TextFormField].
-  final _email = TextEditingController();
+  /// Controller for the editable username [TextFormField].
+  final _username = TextEditingController();
 
   /// Controller for the editable password [TextFormField].
   final _password = TextEditingController();
@@ -45,7 +45,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   /// Dispose of the [UserBloc].
   @override
   void dispose() {
-    _email.dispose();
+    _username.dispose();
     _password.dispose();
     _passwordConfirmation.dispose();
     _userBloc.dispose();
@@ -71,14 +71,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
     );
 
-    final email = TextFormField(
-      keyboardType: TextInputType.emailAddress,
+    final username = TextFormField(
       autofocus: true,
-      controller: _email,
-      validator: FieldValidator.validateEmail,
+      controller: _username,
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-        labelText: 'Email',
+        labelText: 'Username',
       ),
     );
 
@@ -108,7 +106,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
       onPressed: () {
         _signUp({
-          'email': _email.text,
+          'username': _username.text,
           'password': _password.text,
           'passwordConfirmation': _passwordConfirmation.text,
         });
@@ -125,7 +123,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
 
     final errorLabel = Text(
-      'Invalid email or password.',
+      'Invalid username or password.',
       textAlign: TextAlign.center,
       style: Theme.of(context)
           .textTheme
@@ -171,7 +169,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   children: <Widget>[
                     header,
                     SizedBox(height: 48.0),
-                    email,
+                    username,
                     SizedBox(height: 24.0),
                     password,
                     SizedBox(height: 24.0),

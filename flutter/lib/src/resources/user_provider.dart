@@ -15,8 +15,8 @@ class UserProvider {
   /// Sign a user in based on his [credentials].
   Future<UserModel> signIn(Map<String, String> credentials) async {
     final String body = """
-      mutation SignIn(\$email: String!, \$password: String!) {
-        signin(email: \$email, password: \$password) {
+      mutation SignIn(\$username: String!, \$password: String!) {
+        signin(username: \$username, password: \$password) {
           token
           expiresIn
         }
@@ -36,12 +36,12 @@ class UserProvider {
   Future<UserModel> signUp(Map<String, String> credentials) async {
     final String body = """
       mutation SignUp(
-        \$email: String!
+        \$username: String!
         \$password: String!
         \$passwordConfirmation: String!
       ) {
         signup(
-          email: \$email
+          username: \$username
           password: \$password
           passwordConfirmation: \$passwordConfirmation
         ) {

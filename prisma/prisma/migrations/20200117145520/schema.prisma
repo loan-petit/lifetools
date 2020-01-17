@@ -4,21 +4,21 @@ datasource db {
   default  = true
 }
 
-generator photonjs {
+generator photon {
   provider = "photonjs"
 }
 
 model User {
-  id           String              @default(cuid()) @id @unique
+  id           String              @default(cuid()) @id
   createdAt    DateTime            @default(now())
-  email        String              @unique
+  username     String              @unique
   password     String
   dailyRoutine DailyRoutineEvent[]
   goals        Goal[]
 }
 
 model DailyRoutineEvent {
-  id        String @default(cuid()) @id @unique
+  id        String @default(cuid()) @id
   name      String
   startTime Int
   endTime   Int
@@ -26,7 +26,7 @@ model DailyRoutineEvent {
 }
 
 model Goal {
-  id          String   @default(cuid()) @id @unique
+  id          String   @default(cuid()) @id
   name        String
   date        DateTime
   isCompleted Boolean  @default(false)

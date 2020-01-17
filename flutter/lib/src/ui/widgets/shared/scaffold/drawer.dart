@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Drawer for application triggered by click on the [AppBar] menu button.
 class AppDrawer extends StatefulWidget {
   @override
   _AppDrawerState createState() => _AppDrawerState();

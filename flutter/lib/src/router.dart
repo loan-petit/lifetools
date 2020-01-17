@@ -16,15 +16,16 @@ class Router {
   Route<dynamic> onGenerateRoute(RouteSettings settings) {
     if (!UserBloc.isLoggedIn) {
       switch (settings.name) {
-        // Sign a user in
-        case '/auth/signin':
-          return MaterialPageRoute(
-              settings: settings, builder: (_) => SignInScreen());
-
         // Sign a user up
-        default:
+        case '/auth/signup':
           return MaterialPageRoute(
               settings: settings, builder: (_) => SignUpScreen());
+
+        // Sign a user in
+        case '/auth/signin':
+        default:
+          return MaterialPageRoute(
+              settings: settings, builder: (_) => SignInScreen());
 
       }
     } else if (UserBloc.isLoggedIn) {

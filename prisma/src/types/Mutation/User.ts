@@ -7,18 +7,18 @@ import { JWT_SECRET } from '../../utils/getUserId'
 export const signup = mutationField('signup', {
   type: 'AuthPayload',
   args: {
-    email: stringArg({ nullable: false }),
+    username: stringArg({ nullable: false }),
     password: stringArg({ nullable: false }),
     passwordConfirmation: stringArg({ nullable: false })
   },
-  resolve: async (_parent, { email, password, passwordConfirmation }, ctx) => {
+  resolve: async (_parent, { username, password, passwordConfirmation }, ctx) => {
     if (password !== passwordConfirmation) {
       throw new Error("'password' must match 'passwordConfirmation'")
     }
     const hashedPassword = await hash(password, 10)
     const user = await ctx.photon.users.create({
       data: {
-        email,
+        username,
         password: hashedPassword
       }
     })
@@ -35,17 +35,17 @@ export const signup = mutationField('signup', {
 export const signin = mutationField('signin', {
   type: 'AuthPayload',
   args: {
-    email: stringArg({ nullable: false }),
+    username: stringArg({ nullable: false }),
     password: stringArg({ nullable: false })
   },
-  resolve: async (_parent, { email, password }, ctx) => {
+  resolve: async (_parent, { username, password }, ctx) => {
     const user = await ctx.photon.users.findOne({
       where: {
-        email
+        username
       }
     })
     if (!user) {
-      throw new Error(`No user found for email: ${email}`)
+      throw new Error(`No user found for username: ${username}`)
     }
     const passwordValid = await compare(password, user.password)
     if (!passwordValid) {

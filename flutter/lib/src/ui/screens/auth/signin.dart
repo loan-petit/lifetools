@@ -20,8 +20,8 @@ class _SignInScreenState extends State<SignInScreen> {
   /// and allows its validation.
   final _formKey = GlobalKey<FormState>();
 
-  /// Controller for the editable email [TextFormField].
-  final _email = TextEditingController();
+  /// Controller for the editable username [TextFormField].
+  final _username = TextEditingController();
 
   /// Controller for the editable password [TextFormField].
   final _password = TextEditingController();
@@ -42,7 +42,7 @@ class _SignInScreenState extends State<SignInScreen> {
   /// Dispose of the [UserBloc].
   @override
   void dispose() {
-    _email.dispose();
+    _username.dispose();
     _password.dispose();
     _userBloc.dispose();
 
@@ -67,14 +67,13 @@ class _SignInScreenState extends State<SignInScreen> {
       ),
     );
 
-    final email = TextFormField(
-      keyboardType: TextInputType.emailAddress,
+    final username = TextFormField(
       autofocus: true,
-      controller: _email,
-      validator: FieldValidator.validateEmail,
+      controller: _username,
+      validator: FieldValidator.validateText,
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-        labelText: 'Email',
+        labelText: 'Username',
       ),
     );
 
@@ -93,7 +92,7 @@ class _SignInScreenState extends State<SignInScreen> {
         borderRadius: BorderRadius.circular(24),
       ),
       onPressed: () {
-        _signIn({'email': _email.text, 'password': _password.text});
+        _signIn({'username': _username.text, 'password': _password.text});
       },
       padding: EdgeInsets.all(12),
       color: Theme.of(context).colorScheme.primary,
@@ -107,7 +106,7 @@ class _SignInScreenState extends State<SignInScreen> {
     );
 
     final errorLabel = Text(
-      'Invalid email or password.',
+      'Invalid username or password.',
       textAlign: TextAlign.center,
       style: Theme.of(context)
           .textTheme
@@ -152,7 +151,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   children: <Widget>[
                     header,
                     SizedBox(height: 48.0),
-                    email,
+                    username,
                     SizedBox(height: 24.0),
                     password,
                     if (_areCredentialsInvalid) SizedBox(height: 24.0),
