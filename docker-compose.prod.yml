@@ -53,7 +53,7 @@ services:
     build: 
       context: ./flutter/
       args:
-        FLUTTER_VERSION: v1.13.0
+        FLUTTER_VERSION: v1.14.0
     image: lifetools_flutter:latest
     container_name: lifetools_flutter
     restart: always
