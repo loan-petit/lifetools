@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:lifetools/src/blocs/user.dart';
+import 'package:lifetools/src/ui/widgets/shared/emphasised_text.dart';
 import 'package:lifetools/src/ui/widgets/shared/scaffold/drawer.dart';
+import 'package:lifetools/src/utils/size_config.dart';
 
 /// Wrapper around [Scaffold] used as screen UI base.
 ///
@@ -22,9 +24,6 @@ class AppScaffold extends StatefulWidget {
   /// Specify an [AppBar] to use instead of the default one.
   final Widget appBar;
 
-  /// Title presented in the [AppBar].
-  final String title;
-
   /// [Scaffold] body which will be wrapped.
   final Widget body;
 
@@ -34,7 +33,6 @@ class AppScaffold extends StatefulWidget {
   AppScaffold({
     this.showAppBar = true,
     this.appBar,
-    this.title,
     this.floatingActionButtonBuilder,
     @required this.body,
   }) : assert(body != null);
@@ -44,32 +42,26 @@ class AppScaffold extends StatefulWidget {
 }
 
 class _AppScaffoldState extends State<AppScaffold> {
-  /// Build the scaffold based on the widget properties and wrap the body
-  /// with the UI base.
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
+      key: _scaffoldKey,
       appBar: widget.appBar ?? (widget.showAppBar) ? _buildAppBar() : null,
       drawer: SafeArea(child: AppDrawer()),
       body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return Container(
-              margin: (constraints.maxWidth > 600)
-                  ? EdgeInsets.symmetric(horizontal: constraints.maxWidth / 4)
-                  : null,
-              child: widget.body,
-              alignment: Alignment.topCenter,
-            );
-          },
+        child: Container(
+          margin: (!SizeConfig.isPortrait)
+              ? EdgeInsets.symmetric(
+                  horizontal: SizeConfig.bodyHorizontalMargin)
+              : null,
+          child: widget.body,
+          alignment: Alignment.topCenter,
         ),
       ),
       floatingActionButton: widget.floatingActionButtonBuilder != null
           ? Container(
-              margin: EdgeInsets.only(
-                  right: screenWidth > 600 ? screenWidth / 5 : 0.0),
               child: Builder(builder: widget.floatingActionButtonBuilder),
             )
           : null,
@@ -78,31 +70,18 @@ class _AppScaffoldState extends State<AppScaffold> {
 
   /// Create the [Scaffold]'s [AppBar].
   Widget _buildAppBar() {
-    double screenWidth = MediaQuery.of(context).size.width;
-
     return AppBar(
-      title: Container(
-        margin: EdgeInsets.only(
-          left: screenWidth > 600 ? screenWidth / 5 : 0.0,
+      leading: IconButton(
+        alignment: Alignment.center,
+        icon: Icon(
+          Icons.menu,
+          size: 2.5 * SizeConfig.textMultiplier,
         ),
-        child: RichText(
-          text: TextSpan(
-            style: Theme.of(context).textTheme.title.apply(fontWeightDelta: 2),
-            children: <TextSpan>[
-              TextSpan(
-                  text: (widget.title?.isNotEmpty ?? false)
-                      ? widget.title
-                      : 'Life'),
-              if (widget.title?.isNotEmpty ?? true)
-                TextSpan(
-                  text: 'Tools',
-                  style: Theme.of(context).textTheme.title.apply(
-                      fontWeightDelta: 2,
-                      color: Theme.of(context).colorScheme.primary),
-                ),
-            ],
-          ),
-        ),
+        onPressed: () => _scaffoldKey.currentState.openDrawer(),
+      ),
+      title: EmphasisedText(
+        text: "Life*Tools*",
+        style: Theme.of(context).textTheme.title.apply(fontWeightDelta: 2),
       ),
       elevation: 0,
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lifetools/src/utils/size_config.dart';
 
 import 'package:pedantic/pedantic.dart';
 
@@ -111,7 +112,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           'passwordConfirmation': _passwordConfirmation.text,
         });
       },
-      padding: EdgeInsets.all(12),
+      padding: EdgeInsets.all(1.5 * SizeConfig.heightMultiplier),
       color: Theme.of(context).colorScheme.primary,
       child: Text(
         "SIGN UP",
@@ -160,7 +161,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           key: _formKey,
           autovalidate: _autoValidate,
           child: Padding(
-            padding: EdgeInsets.all(24.0),
+            padding: EdgeInsets.all(3 * SizeConfig.heightMultiplier),
             child: Center(
               child: SingleChildScrollView(
                 child: Column(
@@ -168,17 +169,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     header,
-                    SizedBox(height: 48.0),
+                    SizedBox(height: 4 * SizeConfig.heightMultiplier),
                     username,
-                    SizedBox(height: 24.0),
+                    SizedBox(height: 3 * SizeConfig.heightMultiplier),
                     password,
-                    SizedBox(height: 24.0),
+                    SizedBox(height: 3 * SizeConfig.heightMultiplier),
                     passwordConfirmation,
-                    if (_areCredentialsInvalid) SizedBox(height: 24.0),
+                    if (_areCredentialsInvalid) SizedBox(height: 3 * SizeConfig.heightMultiplier),
                     if (_areCredentialsInvalid) errorLabel,
-                    SizedBox(height: 48.0),
+                    SizedBox(height: 4 * SizeConfig.heightMultiplier),
                     signUpButton,
-                    SizedBox(height: 12.0),
+                    SizedBox(height: 2 * SizeConfig.heightMultiplier),
                     signInLabel,
                   ],
                 ),

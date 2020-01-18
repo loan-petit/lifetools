@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lifetools/src/utils/size_config.dart';
 
 import 'package:pedantic/pedantic.dart';
 
@@ -94,7 +95,7 @@ class _SignInScreenState extends State<SignInScreen> {
       onPressed: () {
         _signIn({'username': _username.text, 'password': _password.text});
       },
-      padding: EdgeInsets.all(12),
+      padding: EdgeInsets.all(1.5 * SizeConfig.heightMultiplier),
       color: Theme.of(context).colorScheme.primary,
       child: Text(
         "SIGN IN",
@@ -143,22 +144,22 @@ class _SignInScreenState extends State<SignInScreen> {
           key: _formKey,
           autovalidate: _autoValidate,
           child: Padding(
-            padding: EdgeInsets.all(24.0),
+            padding: EdgeInsets.all(3 * SizeConfig.heightMultiplier),
             child: Center(
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     header,
-                    SizedBox(height: 48.0),
+                    SizedBox(height: 4 * SizeConfig.heightMultiplier),
                     username,
-                    SizedBox(height: 24.0),
+                    SizedBox(height: 3 * SizeConfig.heightMultiplier),
                     password,
-                    if (_areCredentialsInvalid) SizedBox(height: 24.0),
+                    if (_areCredentialsInvalid) SizedBox(height: 3 * SizeConfig.heightMultiplier),
                     if (_areCredentialsInvalid) errorLabel,
-                    SizedBox(height: 48.0),
+                    SizedBox(height: 4 * SizeConfig.heightMultiplier),
                     signInButton,
-                    SizedBox(height: 12.0),
+                    SizedBox(height: 2 * SizeConfig.heightMultiplier),
                     signUpLabel,
                   ],
                 ),

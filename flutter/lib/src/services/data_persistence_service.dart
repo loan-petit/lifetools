@@ -1,7 +1,12 @@
-/// Inform that data persistence isn't supported on this platform.
+import 'package:shared_preferences/shared_preferences.dart';
+
+/// Manage the persistence of the application's data.
 class DataPersistenceService {
   static final DataPersistenceService _singleton =
       DataPersistenceService._internal();
+
+  /// Data persistence helper for native apps.
+  SharedPreferences _prefs;
 
   factory DataPersistenceService() {
     return _singleton;
@@ -11,21 +16,21 @@ class DataPersistenceService {
 
   /// Calls every asynchronous operations needed to initialize the class.
   Future<void> init() async {
-    throw Exception('Platform Not Supported');
+    _prefs = await SharedPreferences.getInstance();
   }
 
   /// Set a field with the key [key] to [value].
   void set(String key, String value) {
-    throw Exception('Platform Not Supported');
+    _prefs.setString(key, value);
   }
 
   /// Get the field associated to the [key].
   String get(String key) {
-    throw Exception('Platform Not Supported');
+    return _prefs.getString(key);
   }
 
   /// Remove the field associated to the [key].
   void remove(String key) {
-    throw Exception('Platform Not Supported');
+    _prefs.remove(key);
   }
 }

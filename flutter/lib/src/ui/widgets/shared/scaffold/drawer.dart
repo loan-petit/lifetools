@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:lifetools/src/utils/size_config.dart';
 
 /// Drawer for application triggered by click on the [AppBar] menu button.
-class AppDrawer extends StatefulWidget {
-  @override
-  _AppDrawerState createState() => _AppDrawerState();
-}
-
-class _AppDrawerState extends State<AppDrawer> {
+class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final header = RichText(
@@ -43,20 +39,22 @@ class _AppDrawerState extends State<AppDrawer> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          SizedBox(height: 16.0),
+          SizedBox(height: 2 * SizeConfig.heightMultiplier),
           header,
-          SizedBox(height: 32.0),
-          buildMenuItem(Icons.timelapse, 'Daily Routine', '/daily-routine'),
-          SizedBox(height: 8.0),
-          buildMenuItem(Icons.work, 'Goals', '/goals'),
-          SizedBox(height: 32.0),
+          SizedBox(height: 3 * SizeConfig.heightMultiplier),
+          buildMenuItem(
+              context, Icons.timelapse, 'Daily Routine', '/daily-routine'),
+          SizedBox(height: 2 * SizeConfig.heightMultiplier),
+          buildMenuItem(context, Icons.work, 'Goals', '/goals'),
+          SizedBox(height: 3 * SizeConfig.heightMultiplier),
           logoutButton,
         ],
       ),
     );
   }
 
-  Widget buildMenuItem(IconData icon, String title, namedRoute) {
+  Widget buildMenuItem(
+      BuildContext context, IconData icon, String title, String namedRoute) {
     return InkWell(
       onTap: () {
         Navigator.pushReplacementNamed(context, namedRoute);
@@ -67,7 +65,7 @@ class _AppDrawerState extends State<AppDrawer> {
         decoration: BoxDecoration(
           border: Border(
             left: BorderSide(
-                color: Theme.of(context).colorScheme.primary, width: 8.0),
+                color: Theme.of(context).colorScheme.primary, width: 6.0),
           ),
         ),
         child: Row(

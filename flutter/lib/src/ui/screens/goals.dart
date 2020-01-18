@@ -7,6 +7,7 @@ import 'package:lifetools/src/ui/widgets/goals/goal.dart';
 import 'package:lifetools/src/ui/widgets/goals/upsert_goal.dart';
 import 'package:lifetools/src/ui/widgets/shared/scaffold/index.dart';
 import 'package:lifetools/src/ui/widgets/shared/loading_screen.dart';
+import 'package:lifetools/src/utils/size_config.dart';
 
 /// Display the goals of a user.
 class GoalsScreen extends StatefulWidget {
@@ -43,8 +44,10 @@ class _GoalsScreenState extends State<GoalsScreen> {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasError) {
             return Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 24.0, horizontal: 12.0),
+              padding: EdgeInsets.symmetric(
+                vertical: 3 * SizeConfig.heightMultiplier,
+                horizontal: 2 * SizeConfig.widthMultiplier,
+              ),
               child: Text(
                 "An error occured during the retrieval of your goals.",
                 textAlign: TextAlign.center,
@@ -79,7 +82,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
     final header = Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        SizedBox(height: 16.0),
+        SizedBox(height: 2 * SizeConfig.heightMultiplier),
         Text(
           "Goals",
           textAlign: TextAlign.center,
@@ -88,16 +91,16 @@ class _GoalsScreenState extends State<GoalsScreen> {
                 color: Theme.of(context).colorScheme.primary,
               ),
         ),
-        SizedBox(height: 16.0),
+        SizedBox(height: 2 * SizeConfig.heightMultiplier),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.0),
+          padding: EdgeInsets.symmetric(horizontal: 4 * SizeConfig.widthMultiplier),
           child: Text(
             "\"A goal properly set is halfway reached.\"",
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.title,
           ),
         ),
-        SizedBox(height: 36.0),
+        SizedBox(height: 4 * SizeConfig.heightMultiplier),
       ],
     );
 

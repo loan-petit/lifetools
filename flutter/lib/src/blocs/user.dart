@@ -3,7 +3,7 @@ import 'package:rxdart/rxdart.dart';
 
 import 'package:lifetools/src/models/user.dart';
 import 'package:lifetools/src/resources/user_provider.dart';
-import 'package:lifetools/src/services/data_persistence_service/index.dart';
+import 'package:lifetools/src/services/data_persistence_service.dart';
 import 'package:lifetools/src/utils/graphql/graphql_exception.dart';
 
 /// Manage the business logic related to the users.

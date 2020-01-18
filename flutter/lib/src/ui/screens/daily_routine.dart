@@ -7,6 +7,7 @@ import 'package:lifetools/src/ui/widgets/daily_routine/event.dart';
 import 'package:lifetools/src/ui/widgets/daily_routine/upsert_event.dart';
 import 'package:lifetools/src/ui/widgets/shared/scaffold/index.dart';
 import 'package:lifetools/src/ui/widgets/shared/loading_screen.dart';
+import 'package:lifetools/src/utils/size_config.dart';
 import 'package:lifetools/src/utils/time.dart';
 
 /// Display the daily routine of a user.
@@ -44,8 +45,10 @@ class _DailyRoutineScreenState extends State<DailyRoutineScreen> {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasError) {
             return Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 24.0, horizontal: 12.0),
+              padding: EdgeInsets.symmetric(
+                vertical: 3 * SizeConfig.heightMultiplier,
+                horizontal: 2 * SizeConfig.widthMultiplier,
+              ),
               child: Text(
                 "An error occured during the retrieval of your daily routine.",
                 textAlign: TextAlign.center,
@@ -89,7 +92,7 @@ class _DailyRoutineScreenState extends State<DailyRoutineScreen> {
     final header = Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        SizedBox(height: 16.0),
+        SizedBox(height: 2 * SizeConfig.heightMultiplier),
         Text(
           "Daily Routine",
           textAlign: TextAlign.center,
@@ -98,16 +101,16 @@ class _DailyRoutineScreenState extends State<DailyRoutineScreen> {
                 color: Theme.of(context).colorScheme.primary,
               ),
         ),
-        SizedBox(height: 16.0),
+        SizedBox(height: 2 * SizeConfig.heightMultiplier),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.0),
+          padding: EdgeInsets.symmetric(horizontal: 4 * SizeConfig.widthMultiplier),
           child: Text(
             "\"You will never change your life until you change something you do daily.\"",
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.title,
           ),
         ),
-        SizedBox(height: 36.0),
+        SizedBox(height: 4 * SizeConfig.heightMultiplier),
       ],
     );
 

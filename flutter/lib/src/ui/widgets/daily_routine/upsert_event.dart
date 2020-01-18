@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lifetools/src/utils/size_config.dart';
 
 import 'package:pedantic/pedantic.dart';
 
@@ -134,6 +135,7 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
       icon: Icon(
         iconData,
         color: Theme.of(context).colorScheme.onPrimary,
+        size: 2.5 * SizeConfig.textMultiplier,
       ),
       label: Text(
         labelText,
@@ -161,6 +163,7 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text("Start Time"),
+        SizedBox(width: 8 * SizeConfig.widthMultiplier),
         FlatButton(
           onPressed: () async {
             _startTime = await _showTimePicker(_startTime) ?? _startTime;
@@ -168,6 +171,7 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
               // Update _startTime with picked time.
             });
           },
+          padding: EdgeInsets.only(bottom: 0.5 * SizeConfig.heightMultiplier),
           shape: UnderlineInputBorder(
             borderSide: BorderSide(
                 color: Theme.of(context).colorScheme.primary, width: 2.0),
@@ -181,6 +185,7 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text("End Time"),
+        SizedBox(width: 5 * SizeConfig.widthMultiplier),
         FlatButton(
           onPressed: () async {
             _endTime = await _showTimePicker(_endTime) ?? _endTime;
@@ -188,6 +193,7 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
               // Update _endTime with picked time.
             });
           },
+          padding: EdgeInsets.only(bottom: 0.5 * SizeConfig.heightMultiplier),
           shape: UnderlineInputBorder(
             borderSide: BorderSide(
                 color: Theme.of(context).colorScheme.primary, width: 2.0),
@@ -211,11 +217,11 @@ class _UpsertDailyRoutineEventState extends State<UpsertDailyRoutineEvent> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           name,
-          SizedBox(height: 24.0),
+          SizedBox(height: 3 * SizeConfig.heightMultiplier),
           startTimePicker,
-          SizedBox(height: 24.0),
+          SizedBox(height: 3 * SizeConfig.heightMultiplier),
           endTimePicker,
-          if (_error != null) SizedBox(height: 24.0),
+          if (_error != null) SizedBox(height: 3 * SizeConfig.heightMultiplier),
           if (_error != null) errorLabel,
         ],
       ),

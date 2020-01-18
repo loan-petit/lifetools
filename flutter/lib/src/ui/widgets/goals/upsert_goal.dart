@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lifetools/src/blocs/goal.dart';
+import 'package:lifetools/src/utils/size_config.dart';
 
 import 'package:pedantic/pedantic.dart';
 
@@ -121,6 +122,7 @@ class _UpsertGoalState extends State<UpsertGoal> {
       icon: Icon(
         iconData,
         color: Theme.of(context).colorScheme.onPrimary,
+        size: 2.5 * SizeConfig.textMultiplier,
       ),
       label: Text(
         labelText,
@@ -148,7 +150,7 @@ class _UpsertGoalState extends State<UpsertGoal> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text("Date"),
-        SizedBox(width: 5),
+        SizedBox(width: 5 * SizeConfig.widthMultiplier),
         FlatButton(
           onPressed: () async {
             _date = await _showDatePicker(_date) ?? _date;
@@ -179,9 +181,9 @@ class _UpsertGoalState extends State<UpsertGoal> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           name,
-          SizedBox(height: 24.0),
+          SizedBox(height: 3 * SizeConfig.heightMultiplier),
           datePicker,
-          if (_error != null) SizedBox(height: 24.0),
+          if (_error != null) SizedBox(height: 3 * SizeConfig.heightMultiplier),
           if (_error != null) errorLabel,
         ],
       ),
