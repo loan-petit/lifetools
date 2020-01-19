@@ -19,32 +19,35 @@ it still is rough, but it may be one day. Stay tuned.
 
 ![Preview of LifeTools app](https://github.com/loan-petit/lifetools/blob/media/app_preview.png)
 
-## Build the project
+## Try the application in the browser
 
-Please install Docker and docker-compose before running the following commands.
+Please install Docker and docker-compose before running the following command.
 ([Get started with Docker](https://www.docker.com/get-started))
 
-* For development:
+```bash
+docker-compose up -d
+```
 
-    ```bash
-    docker-compose up -d
-    ```
+This command may take some time as it build the whole app.
+When it finishes, you can go to <http://localhost:80/>, create an account and use the web app.
 
-* For production:
+## Application deployment
 
-    ```bash
-    docker-compose -f docker-compose.prod.yml up -d
-    ```
+The deployment is fully automatized and triggers when something is pushed onto master.
 
-These commands will create and start the following containers:
-- **NGINX web server**: lifetools_nginx
-- **Prisma2 GraphQL API**: lifetools_prisma
-- **Flutter application**: lifetools_flutter
-- **PostgreSQL database**: lifetools_postgres
-- **Certbot for Let's Encrypt certificates administration**: lifetools_certbot *(production only)*
+The application is deployed to an AWS EC2 instance using Docker images saved in
+petitloan/lifetools Docker Hub repository.
+
+When the deployment is finised, the following containers should be running on the hosting server.
+
+- **NGINX web server**: Based on petitloan/lifetools:nginx
+- **Prisma2 GraphQL API**: Based on petitloan/lifetools:prisma
+- **PostgreSQL database**: Based on postgres:12-alpine
+- **Flutter application**: Based on petitloan/lifetools:flutter
+- **Certbot for Let's Encrypt certificates administration**: Based on certbot/certbot
 
 ## Found this project useful?
 
 Please consider giving it a star. :star:
 
-You can also share it with your friends via social media.
+You can also share it on social media.
