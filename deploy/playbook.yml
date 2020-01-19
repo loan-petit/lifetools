@@ -1,6 +1,6 @@
 - name: Deploy LifeTools project
   hosts: lifetools
-  become: true
+  become: yes
   roles:
     - base
     - docker

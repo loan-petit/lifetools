@@ -1,7 +1,25 @@
 - name: Upgrade all packages
-  apt:
-    upgrade: 'yes'
-    update_cache: yes
-    cache_valid_time: 86400 #One day
-  notify:
-    - Start Docker
+  yum:
+    name: '*'
+    state: latest
+
+- name: Ensure crucial packages are installed
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - git
+    - docker
+    - python-pip
+    - gcc
+
+- name: Ensure Docker daemon is running
+  service:
+    name: docker
+    state: started
+
+- name: Install Docker Module for Python
+  pip:
+    name:
+      - docker
+      - docker-compose
