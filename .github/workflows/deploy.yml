@@ -18,6 +18,12 @@ jobs:
           docker build -t petitloan/lifetools:prisma ./prisma/
           docker build -t petitloan/lifetools:flutter --build-arg FLUTTER_VERSION=v1.14.0 ./flutter/
 
+      - name: Login to Docker Hub
+        run: docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
       - name: Push images to Docker Hub 'petitloan/lifetools' repository
         run: |
           docker push petitloan/lifetools:nginx
