@@ -3,11 +3,7 @@ version: '3'
 
 services:
   nginx:
-    build: 
-      context: ./nginx/
-      args:
-        APP_ENV: prod
-    image: lifetools_nginx:latest
+    image: petitloan/lifetools:nginx
     container_name: lifetools_nginx
     restart: always
     depends_on:
@@ -24,9 +20,9 @@ services:
       - "8081:8081"
 
   prisma:
-    build: ./prisma/
-    image: lifetools_prisma:latest
+    image: petitloan/lifetools:prisma
     container_name: lifetools_prisma
+    restart: always
     depends_on:
       - postgres
     env_file:
@@ -43,18 +39,14 @@ services:
     environment:
       POSTGRES_USER: prisma
       POSTGRES_PASSWORD: prisma
-      POSTGRES_DB: life-tools
+      POSTGRES_DB: lifetools
     expose:
       - "5432"
     volumes:
       - "db-data:/var/lib/postgresql/data"
 
   flutter:
-    build: 
-      context: ./flutter/
-      args:
-        FLUTTER_VERSION: v1.14.0
-    image: lifetools_flutter:latest
+    image: petitloan/lifetools:flutter
     container_name: lifetools_flutter
     restart: always
     expose:

@@ -21,6 +21,7 @@ services:
     build: ./prisma/
     image: lifetools_prisma:latest
     container_name: lifetools_prisma
+    restart: always
     depends_on:
       - postgres
     env_file:
