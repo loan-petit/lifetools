@@ -1,0 +1,29 @@
+name: Deploy the application
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Build images
+        run: |
+          docker build -t petitloan/lifetools:nginx --build-arg APP_ENV=prod ./nginx/
+          docker build -t petitloan/lifetools:prisma ./prisma/
+          docker build -t petitloan/lifetools:flutter --build-arg FLUTTER_VERSION=v1.14.0 ./flutter/
+
+      - name: Push images to Docker Hub 'petitloan/lifetools' repository
+        run: |
+          docker push petitloan/lifetools:nginx
+          docker push petitloan/lifetools:prisma
+          docker push petitloan/lifetools:flutter
+
+      - name: Deploy using Ansible playbook
+        run: ansible-playbook playbook.yml -i production
+        working-directory: ./deploy/
