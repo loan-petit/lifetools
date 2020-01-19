@@ -1,27 +1,14 @@
 - name: Clone repository
   git:
     repo: 'https://github.com/loan-petit/lifetools.git'
-    dest: ~/lifetools/
+    dest: lifetools
     force: yes
-    version: master
-
-- name: Pull changes in repository
-  shell: git pull
-  args:
-    chdir: ~/lifetools/
 
 - name: Tear down existing services
   docker_compose:
     project_src: lifetools
     files: docker-compose.pre-prod.yml
     state: absent
-
-- name: Prune docker system to avoid taking too much space
-  docker_prune:
-    containers: yes
-    images: yes
-    networks: yes
-    builder_cache: yes
 
 - name: Create and start services
   docker_compose:
@@ -46,7 +33,6 @@
     files: docker-compose.pre-prod.yml
     build: no
     stopped: yes
-  register: output
 
 - name: Assert that services aren't running.
   assert:
@@ -62,7 +48,6 @@
     files: docker-compose.pre-prod.yml
     build: no
     restarted: yes
-  register: output
 
 - name: Assert that services are running.
   assert:

@@ -1,2 +1,2 @@
 [lifetools]
-lifetools1 ansible_host=ec2-35-180-173-108.eu-west-3.compute.amazonaws.com ansible_user=ec2-user ansible_ssh_private_key_file=~/.ssh/aws.pem
+lifetools1 ansible_host=ec2-35-180-173-108.eu-west-3.compute.amazonaws.com ansible_user=ec2-user

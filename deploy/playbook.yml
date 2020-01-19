@@ -1,5 +1,6 @@
 - name: Deploy LifeTools project
   hosts: lifetools
+  gather_facts: no
   become: yes
   roles:
     - base
