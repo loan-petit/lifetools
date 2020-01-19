@@ -1,4 +1,4 @@
-# Stage 0, "build-stage", based on alpine, to build and compile the frontend
+# Stage 0, "build-stage", to build and compile the frontend
 FROM google/dart:latest as build-stage
 
 ARG FLUTTER_VERSION
@@ -32,7 +32,7 @@ RUN pub get --offline
 # Build client files which will be served by nginx
 RUN flutter build web -t lib/main_prod.dart
 
-# Stage 1, based on Nginx, to have only the compiled app, ready for production with Nginx
+# Stage 1, based on Nginx, with the production-ready compiled app
 FROM nginx:alpine
 
 COPY --from=build-stage /app/build/web/ /usr/share/nginx/html
