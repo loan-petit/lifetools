@@ -7,6 +7,11 @@
   yum:
     name: git
 
+- name: Recursively remove repository directory
+  file:
+    path: ./lifetools
+    state: absent
+
 - name: Clone repository
   git:
     repo: 'https://github.com/loan-petit/lifetools.git'

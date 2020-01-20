@@ -1,6 +1,7 @@
 - name: Install Docker and some required dependencies
   yum:
     name: "{{ packages }}"
+    state: latest
   vars:
     packages:
     - docker
@@ -17,6 +18,7 @@
     name:
       - docker
       - docker-compose
+    state: latest
 
 - name: Start (or restart) services
   docker_compose:
