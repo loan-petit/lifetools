@@ -124,7 +124,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
 
     final errorLabel = Text(
-      'Invalid username or password.',
+      'Oops. Something went wrong. Please try again later.',
       textAlign: TextAlign.center,
       style: Theme.of(context)
           .textTheme
@@ -175,7 +175,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     password,
                     SizedBox(height: 3 * SizeConfig.heightMultiplier),
                     passwordConfirmation,
-                    if (_areCredentialsInvalid) SizedBox(height: 3 * SizeConfig.heightMultiplier),
+                    if (_areCredentialsInvalid)
+                      SizedBox(height: 3 * SizeConfig.heightMultiplier),
                     if (_areCredentialsInvalid) errorLabel,
                     SizedBox(height: 4 * SizeConfig.heightMultiplier),
                     signUpButton,

@@ -236,7 +236,7 @@ class _UpsertGoalState extends State<UpsertGoal> {
         // Notify the user that an error happend.
         await _changeLoadingVisible();
         setState(() {
-          _error = 'An unexpected error occured, please retry.';
+          _error = 'Oops. Something went wrong. Please try again later.';
         });
       }
     } else {
@@ -256,7 +256,7 @@ class _UpsertGoalState extends State<UpsertGoal> {
       // Notify the user that an error happend.
       await _changeLoadingVisible();
       setState(() {
-        _error = 'An unexpected error occured, please retry.';
+        _error = 'Oops. Something went wrong. Please try again later.';
       });
     }
   }
