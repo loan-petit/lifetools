@@ -1,7 +1,9 @@
 - name: Deploy LifeTools project
   hosts: lifetools
   gather_facts: no
-  become: yes
   roles:
-    - base
-    - docker
+    - role: base
+      become: yes
+    - role: docker
+      become: yes
+    - role: lift

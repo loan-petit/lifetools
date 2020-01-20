@@ -1,55 +1,30 @@
-- name: Clone repository
-  git:
-    repo: 'https://github.com/loan-petit/lifetools.git'
-    dest: lifetools
-    force: yes
+- name: Install Docker and some required dependencies
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - docker
+    - python-pip
+    - gcc
 
-- name: Tear down existing services
+- name: Ensure Docker daemon is running
+  service:
+    name: docker
+    state: started
+
+- name: Install Docker Module for Python
+  pip:
+    name:
+      - docker
+      - docker-compose
+
+- name: Start (or restart) services
   docker_compose:
-    project_src: lifetools
+    project_src: ./lifetools
     files: docker-compose.pre-prod.yml
-    state: absent
+    pull: yes
 
-- name: Create and start services
-  docker_compose:
-    project_src: lifetools
-    files: docker-compose.pre-prod.yml
-  register: output
-
-- name: Run `docker-compose up` again
-  docker_compose:
-    project_src: lifetools
-    files: docker-compose.pre-prod.yml
-    build: no
-  register: output
-
-- name: Assert that the output doesn't differ between the execution of the two 'up' tasks
-  assert:
-    that: "not output.changed "
-
-- name: Stop all services
-  docker_compose:
-    project_src: lifetools
-    files: docker-compose.pre-prod.yml
-    build: no
-    stopped: yes
-
-- name: Assert that services aren't running.
-  assert:
-    that:
-      - "not nginx.lifetools_nginx.state.running"
-      - "not prisma.lifetools_prisma.state.running"
-      - "not postgres.lifetools_postgres.state.running"
-      - "not flutter.lifetools_flutter.state.running"
-
-- name: Restart services
-  docker_compose:
-    project_src: lifetools
-    files: docker-compose.pre-prod.yml
-    build: no
-    restarted: yes
-
-- name: Assert that services are running.
+- name: Assert that services are running
   assert:
     that:
       - "nginx.lifetools_nginx.state.running"

@@ -3,23 +3,12 @@
     name: '*'
     state: latest
 
-- name: Ensure crucial packages are installed
+- name: Install git
   yum:
-    name: "{{ packages }}"
-  vars:
-    packages:
-    - git
-    - docker
-    - python-pip
-    - gcc
+    name: git
 
-- name: Ensure Docker daemon is running
-  service:
-    name: docker
-    state: started
-
-- name: Install Docker Module for Python
-  pip:
-    name:
-      - docker
-      - docker-compose
+- name: Clone repository
+  git:
+    repo: 'https://github.com/loan-petit/lifetools.git'
+    dest: ./lifetools
+    force: yes
