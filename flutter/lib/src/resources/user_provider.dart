@@ -51,8 +51,6 @@ class UserProvider {
       }
     """;
 
-print(body);
-print(credentials);
     final Map<String, dynamic> result = await _graphQLHelper.request(
       body: body,
       variables: credentials,
