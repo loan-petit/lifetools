@@ -5,15 +5,15 @@
 LifeTools is a personal project created for better **management of daily habits
 and daily goals**. It helps you building and sticking to habits that matter to you.
 
-This idea came from a lack of any applications matching my expectations in daily
-routine management. LifeTools is still is in a very early stage. Some crucial
+This idea came from a lack of applications matching my expectations in daily
+routine management. LifeTools still is in a very early stage. Some crucial
 features will be implemented over time.
 
-Currently, this repository is open-sourced mostly to showcase some of my
-technical skills.
+Currently, this repository is open-sourced mostly to **showcase some of my
+technical skills**.
 
 LifeTools isn't currently available on the stores (Play Store and App Store) as
-it still is rough, but it may be one day. Stay tuned. 
+it still is rough, but it may be one day. Stay tuned.
 
 ## Application Preview
 
@@ -33,10 +33,11 @@ When it finishes, you can go to <http://localhost:80/>, create an account and us
 
 ## Application deployment
 
-The deployment is fully automatized and triggers when something is pushed onto master.
+Thanks to GitHub Actions the deployment process is fully automatized.
+It triggers when something is pushed onto master.
 
 The application is deployed to an AWS EC2 instance using Docker images saved in
-petitloan/lifetools Docker Hub repository.
+petitloan/lifetools Docker Hub public repository.
 
 When the deployment is finised, the following containers should be running on the hosting server.
 
