@@ -6,4 +6,4 @@
       become: yes
     - role: docker
       become: yes
-    - role: lift
+    - role: migrate

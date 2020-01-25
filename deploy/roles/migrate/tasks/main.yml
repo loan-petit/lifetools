@@ -10,13 +10,13 @@
     nvm version
   register: node_version
 
-- name: Install Prisma2 CLI to use Lift
+- name: Install Prisma2 CLI
   npm:
     executable: ~/.nvm/versions/node/{{ node_version.stdout }}/bin/npm
     name: prisma2
     global: yes
 
-- name: Apply migrations to the database using Lift from Prisma Framework
-  shell: prisma2 lift up
+- name: Apply migrations to the database using Prisma2
+  shell: prisma2 migrate up --experimental
   args:
     chdir: ./lifetools/prisma
