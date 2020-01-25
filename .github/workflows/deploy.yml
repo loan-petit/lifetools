@@ -14,9 +14,9 @@ jobs:
 
       - name: Build images
         run: |
-          docker build -t petitloan/lifetools:nginx --build-arg APP_ENV=dev ./nginx/
+          docker build -t petitloan/lifetools:nginx --build-arg APP_ENV=prod ./nginx/
           docker build -t petitloan/lifetools:prisma ./prisma/
-          docker build -t petitloan/lifetools:flutter --build-arg FLUTTER_VERSION=v1.14.0 ./flutter/
+          docker build -t petitloan/lifetools:flutter --build-arg FLUTTER_VERSION=v1.14.4 ./flutter/
 
       - name: Login to Docker Hub
         run: docker login --username ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }}

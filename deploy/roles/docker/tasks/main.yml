@@ -23,7 +23,7 @@
 - name: Start (or restart) services
   docker_compose:
     project_src: ./lifetools
-    files: docker-compose.pre-prod.yml
+    files: docker-compose.prod.yml
     pull: yes
 
 - name: Assert that services are running
