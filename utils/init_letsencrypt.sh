@@ -17,7 +17,7 @@ DATA_PATH="./data/certbot"
 EMAIL="petit.loan1@gmail.com"
 STAGING=0 # Set to 1 if you're testing your setup to avoid hitting request limits
 
-if [ -d "$DATA_PATH" ]; then
+if [ "$1" != "-y" ] && [ -d "$DATA_PATH" ]; then
   read -p "Existing data found for $DOMAINS. Continue and replace existing certificate? (y/N) " DECISION
   if [ "$DECISION" != "Y" ] && [ "$DECISION" != "y" ]; then
     exit
@@ -36,7 +36,7 @@ fi
 echo "### Creating dummy certificate for $DOMAINS ..."
 DOMAINS_PATH="/etc/letsencrypt/live/$DOMAINS"
 mkdir -p "$DATA_PATH/conf/live/$DOMAINS"
-docker-compose run --rm --entrypoint "\
+docker-compose -f docker-compose.prod.yml run --rm --entrypoint "\
   openssl req -x509 -nodes -newkey rsa:1024 -days 1\
     -keyout '$DOMAINS_PATH/privkey.pem' \
     -out '$DOMAINS_PATH/fullchain.pem' \
@@ -45,11 +45,11 @@ echo
 
 
 echo "### Starting nginx ..."
-docker-compose up --force-recreate -d nginx
+docker-compose -f docker-compose.prod.yml up --force-recreate -d nginx
 echo
 
 echo "### Deleting dummy certificate for $DOMAINS ..."
-docker-compose run --rm --entrypoint "\
+docker-compose -f docker-compose.prod.yml run --rm --entrypoint "\
   rm -Rf /etc/letsencrypt/live/$DOMAINS && \
   rm -Rf /etc/letsencrypt/archive/$DOMAINS && \
   rm -Rf /etc/letsencrypt/renewal/$DOMAINS.conf" certbot
@@ -72,7 +72,7 @@ esac
 # Enable staging mode if needed
 if [ $STAGING != "0" ]; then STAGING_ARG="--staging"; fi
 
-docker-compose run --rm --entrypoint "\
+docker-compose -f docker-compose.prod.yml run --rm --entrypoint "\
   certbot certonly --webroot -w /var/www/certbot \
     --non-interactive \
     --no-eff-email \
@@ -85,4 +85,4 @@ docker-compose run --rm --entrypoint "\
 echo
 
 echo "### Reloading nginx ..."
-docker-compose exec nginx nginx -s reload
+docker-compose -f docker-compose.prod.yml exec nginx nginx -s reload
