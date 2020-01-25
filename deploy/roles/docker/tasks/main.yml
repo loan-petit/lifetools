@@ -21,7 +21,7 @@
     state: latest
 
 - name: Init SSL certificates using Let's Encrypt certbot
-  shell: ./utils/init_letsencrypt.sh
+  shell: ./utils/init_letsencrypt/index.sh
   args:
     chdir: lifetools
 
