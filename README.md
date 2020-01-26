@@ -37,7 +37,7 @@ Thanks to GitHub Actions the deployment process is fully automatized.
 It triggers when something is pushed onto master.
 
 The application is deployed to an AWS EC2 instance using Docker images saved in
-petitloan/lifetools Docker Hub public repository.
+[petitloan/lifetools](https://hub.docker.com/r/petitloan/lifetools) Docker Hub public repository.
 
 When the deployment is finised, the following containers should be running on the hosting server.
 
