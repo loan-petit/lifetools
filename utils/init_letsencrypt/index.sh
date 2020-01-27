@@ -3,6 +3,7 @@
 set -e
 
 SOURCE_DIR=$( dirname "${BASH_SOURCE[0]}")
+SOURCE_PATH=$(readlink -e $SOURCE_DIR)
 
 cd $SOURCE_DIR/../..
 
@@ -12,15 +13,23 @@ if ! [ -x "$(command -v docker-compose)" ]; then
 fi
 
 domains=(lifetools.loanpetit.com www.lifetools.loanpetit.com)
+data_volume="lifetools-certbot-conf"
 rsa_key_size=4096
 email="petit.loan1@gmail.com" # Adding a valid address is strongly recommended
 staging=0 # Set to 1 if you're testing your setup to avoid hitting request limits
 
 domains_path="/etc/letsencrypt/live/$domains"
 
+echo "### Verify certificate validity..."
+if docker run --rm alpine /bin/sh -c "apk add openssl ; echo | \
+    openssl s_client -connect ${domains[0]}:443 2> /dev/null | \
+    openssl x509 -checkend 86400 -noout"; then
+  exit
+fi
+
 echo "### Downloading recommended TLS parameters..."
-docker run -v lifetools-certbot-conf:/etc/letsencrypt \
-  -v "$(pwd)/utils/init_letsencrypt/install_tls_params.sh":/install_tls_params.sh \
+docker run -v $data_volume:/etc/letsencrypt \
+  -v "$SOURCE_PATH/install_tls_params.sh":/install_tls_params.sh \
   --rm alpine /bin/sh -c "/install_tls_params.sh && \
     mkdir -p \"/etc/letsencrypt/conf/live/$domains\" && \
     mkdir -p \"$domains_path\""
@@ -67,8 +76,8 @@ docker-compose -f docker-compose.prod.yml run --rm --entrypoint " \
     $email_arg \
     $domain_args \
     --rsa-key-size $rsa_key_size \
-    --agree-tos \
-    --force-renewal" certbot
+    --agree-tos
+    --keep-until-expiring" certbot
 echo
 
 echo "### Reloading nginx..."
