@@ -32,7 +32,7 @@ RUN npm install
 # Copy code ressources
 COPY . .
 
-# Generate Photon and Nexus clients
+# Generate Prisma clients
 RUN npm run generate
 
 # Build API for production

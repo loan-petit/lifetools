@@ -4,7 +4,7 @@ export const User = objectType({
   name: 'User',
   definition (t) {
     t.model.id()
-    t.model.dailyRoutine()
-    t.model.goals()
+    t.model.dailyRoutine({ pagination: false })
+    t.model.goals({ pagination: false })
   }
 })

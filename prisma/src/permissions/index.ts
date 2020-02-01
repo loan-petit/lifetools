@@ -2,23 +2,22 @@ import { rule, shield } from 'graphql-shield'
 import { getUserId } from '../utils/getUserId'
 
 const rules = {
-  isAuthenticatedUser: rule()((parent, args, context) => {
-    const userId = getUserId(context)
-
+  isAuthenticatedUser: rule()((_parent, _args, ctx) => {
+    const userId = getUserId(ctx)
     return Boolean(userId)
   }),
-  isCurrentUser: rule()(async (parent, args, context) => {
-    const userId = getUserId(context)
-    const user = await context.photon.users.findOne({
+  isCurrentUser: rule()(async (_parent, args, ctx) => {
+    const userId = getUserId(ctx)
+    const user = await ctx.prisma.user.findOne({
       where: {
         id: args.where.id
       }
     })
     return userId === user.id
   }),
-  isDailyRoutineEventOwner: rule()(async (parent, args, context) => {
-    const userId = getUserId(context)
-    const owner = await context.photon.dailyRoutineEvents
+  isDailyRoutineEventOwner: rule()(async (_parent, args, ctx) => {
+    const userId = getUserId(ctx)
+    const owner = await ctx.prisma.dailyRoutineEvent
       .findOne({
         where: {
           id: args.where.id
@@ -27,9 +26,9 @@ const rules = {
       .owner()
     return userId === owner.id
   }),
-  isGoalOwner: rule()(async (parent, args, context) => {
-    const userId = getUserId(context)
-    const owner = await context.photon.goals
+  isGoalOwner: rule()(async (_parent, args, ctx) => {
+    const userId = getUserId(ctx)
+    const owner = await ctx.prisma.goal
       .findOne({
         where: {
           id: args.where.id

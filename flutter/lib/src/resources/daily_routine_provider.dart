@@ -36,7 +36,7 @@ class DailyRoutineProvider {
 
     // Retrieve the daily routine of a specific user.
     final String body = """
-      query DailyRoutine(\$ownerId: ID!) {
+      query DailyRoutine(\$ownerId: String!) {
         user(where: { id: \$ownerId }) {
           dailyRoutine {
             __typename
@@ -69,7 +69,7 @@ class DailyRoutineProvider {
     bool updateCache = false,
   }) async {
     final String body = """
-      query DailyRoutineEvent(\$id: ID!) {
+      query DailyRoutineEvent(\$id: String!) {
         dailyroutineevent(id: \$id) {
           __typename
           id
@@ -98,7 +98,7 @@ class DailyRoutineProvider {
         \$name: String!
         \$startTime: Int!
         \$endTime: Int!
-        \$ownerId: ID!
+        \$ownerId: String!
       ) {
         createOneDailyRoutineEvent(
           data: {
@@ -132,7 +132,7 @@ class DailyRoutineProvider {
   Future<void> updateOneEvent(String whereId, Map<String, dynamic> data) async {
     final String body = """
       mutation UpdateOneDailyRoutineEvent(
-        \$whereId: ID!
+        \$whereId: String!
         \$name: String
         \$startTime: Int
         \$endTime: Int
@@ -168,7 +168,7 @@ class DailyRoutineProvider {
   Future<void> deleteOneEvent(String id) async {
     final String body = """
       mutation DeleteOneDailyRoutineEvent(
-        \$id: ID!
+        \$id: String!
       ) {
         deleteOneDailyRoutineEvent(
           where: {

@@ -8,20 +8,22 @@ export const me = queryField('me', {
   type: 'AuthPayload',
   resolve: async (_parent, _args, ctx) => {
     const userId = getUserId(ctx)
-    const user = await ctx.photon.users.findOne({
+    const user = await ctx.prisma.user.findOne({
       where: {
-        id: userId,
-      },
+        id: userId
+      }
     })
+
     if (!user) {
-      throw new Error(`No user match this JWT.`)
+      throw new Error('No user match this JWT.')
     }
+
     return {
       token: sign({ userId: user.id }, JWT_SECRET, {
-        expiresIn: 86400 * 7,
+        expiresIn: 86400 * 7
       }),
       expiresIn: 86400 * 7,
-      user,
+      user
     }
-  },
+  }
 })

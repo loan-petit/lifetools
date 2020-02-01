@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:meta/meta.dart';
 
 import 'package:graphql/client.dart';
@@ -49,23 +47,6 @@ class GraphQLHelper {
       link: _link,
       cache: cache,
     );
-  }
-
-  /// Convert the [map] to GraphQL resolver paramenters.
-  String mapToParams(Map<String, dynamic> map) {
-    if (map.isEmpty) {
-      return '';
-    }
-
-    String args = json.encode(map);
-
-    args = args.replaceRange(0, 1, '(');
-    args = args.replaceRange(args.length - 1, args.length, ')');
-    args = args.replaceAllMapped(
-      RegExp(r'"([^"]*?)":'),
-      (Match m) => "${m[1]}:",
-    );
-    return args;
   }
 
   /// Send a request to the GraphQL API, treat errors and return the data.

@@ -2,8 +2,9 @@
   "compilerOptions": {
     "outDir": "dist",
     "rootDir": "src",
-    "lib": ["esnext"],
-    "strict": true
+    "lib": ["esnext", "dom"],
+    "strict": true,
+    "esModuleInterop": true
   },
   "include": ["src/**/*"]
 }

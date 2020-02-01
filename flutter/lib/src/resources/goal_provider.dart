@@ -35,7 +35,7 @@ class GoalProvider {
     }
 
     final String body = """
-      query FetchGoals(\$ownerId: ID!) {
+      query FetchGoals(\$ownerId: String!) {
         user(where: { id: \$ownerId }) {
           goals {
             __typename
@@ -68,7 +68,7 @@ class GoalProvider {
     bool updateCache = false,
   }) async {
     final String body = """
-      query Goal(\$id: ID!) {
+      query Goal(\$id: String!) {
         goal(id: \$id) {
           __typename
           id
@@ -96,7 +96,7 @@ class GoalProvider {
       mutation CreateOneGoal(
         \$name: String!
         \$date: DateTime!
-        \$ownerId: ID!
+        \$ownerId: String!
       ) {
         createOneGoal(
           data: {
@@ -129,7 +129,7 @@ class GoalProvider {
   Future<void> updateOne(String whereId, Map<String, dynamic> data) async {
     final String body = """
       mutation UpdateOneGoal(
-        \$whereId: ID!
+        \$whereId: String!
         \$name: String
         \$date: DateTime
         \$isCompleted: Boolean
@@ -165,7 +165,7 @@ class GoalProvider {
   Future<void> deleteOne(String id) async {
     final String body = """
       mutation DeleteOneGoal(
-        \$id: ID!
+        \$id: String!
       ) {
         deleteOneGoal(
           where: {

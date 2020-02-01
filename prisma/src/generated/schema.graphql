@@ -15,7 +15,7 @@ input BooleanFilter {
 
 type DailyRoutineEvent {
   endTime: Int!
-  id: ID!
+  id: String!
   name: String!
   owner: User!
   startTime: Int!
@@ -23,20 +23,20 @@ type DailyRoutineEvent {
 
 input DailyRoutineEventCreateInput {
   endTime: Int!
-  id: ID
+  id: String
   name: String!
-  owner: UserCreateOneWithoutOwnerInput!
+  owner: UserCreateOneWithoutDailyRoutineInput!
   startTime: Int!
 }
 
-input DailyRoutineEventCreateManyWithoutDailyRoutineInput {
+input DailyRoutineEventCreateManyWithoutOwnerInput {
   connect: [DailyRoutineEventWhereUniqueInput!]
   create: [DailyRoutineEventCreateWithoutOwnerInput!]
 }
 
 input DailyRoutineEventCreateWithoutOwnerInput {
   endTime: Int!
-  id: ID
+  id: String
   name: String!
   startTime: Int!
 }
@@ -53,7 +53,7 @@ input DailyRoutineEventScalarWhereInput {
 
 input DailyRoutineEventUpdateInput {
   endTime: Int
-  id: ID
+  id: String
   name: String
   owner: UserUpdateOneRequiredWithoutDailyRoutineInput
   startTime: Int
@@ -61,7 +61,7 @@ input DailyRoutineEventUpdateInput {
 
 input DailyRoutineEventUpdateManyDataInput {
   endTime: Int
-  id: ID
+  id: String
   name: String
   startTime: Int
 }
@@ -85,7 +85,7 @@ input DailyRoutineEventUpdateManyWithWhereNestedInput {
 
 input DailyRoutineEventUpdateWithoutOwnerDataInput {
   endTime: Int
-  id: ID
+  id: String
   name: String
   startTime: Int
 }
@@ -102,7 +102,7 @@ input DailyRoutineEventUpsertWithWhereUniqueWithoutOwnerInput {
 }
 
 input DailyRoutineEventWhereUniqueInput {
-  id: ID
+  id: String
 }
 
 scalar DateTime
@@ -120,7 +120,7 @@ input DateTimeFilter {
 
 type Goal {
   date: DateTime!
-  id: ID!
+  id: String!
   isCompleted: Boolean!
   name: String!
   owner: User!
@@ -128,20 +128,20 @@ type Goal {
 
 input GoalCreateInput {
   date: DateTime!
-  id: ID
+  id: String
   isCompleted: Boolean
   name: String!
-  owner: UserCreateOneWithoutOwnerInput!
+  owner: UserCreateOneWithoutGoalsInput!
 }
 
-input GoalCreateManyWithoutGoalsInput {
+input GoalCreateManyWithoutOwnerInput {
   connect: [GoalWhereUniqueInput!]
   create: [GoalCreateWithoutOwnerInput!]
 }
 
 input GoalCreateWithoutOwnerInput {
   date: DateTime!
-  id: ID
+  id: String
   isCompleted: Boolean
   name: String!
 }
@@ -158,7 +158,7 @@ input GoalScalarWhereInput {
 
 input GoalUpdateInput {
   date: DateTime
-  id: ID
+  id: String
   isCompleted: Boolean
   name: String
   owner: UserUpdateOneRequiredWithoutGoalsInput
@@ -166,7 +166,7 @@ input GoalUpdateInput {
 
 input GoalUpdateManyDataInput {
   date: DateTime
-  id: ID
+  id: String
   isCompleted: Boolean
   name: String
 }
@@ -190,7 +190,7 @@ input GoalUpdateManyWithWhereNestedInput {
 
 input GoalUpdateWithoutOwnerDataInput {
   date: DateTime
-  id: ID
+  id: String
   isCompleted: Boolean
   name: String
 }
@@ -207,7 +207,7 @@ input GoalUpsertWithWhereUniqueWithoutOwnerInput {
 }
 
 input GoalWhereUniqueInput {
-  id: ID
+  id: String
 }
 
 input IntFilter {
@@ -236,12 +236,12 @@ type Mutation {
 
 type Query {
   dailyRoutineEvent(where: DailyRoutineEventWhereUniqueInput!): DailyRoutineEvent
-  dailyRoutineEvents(after: ID, before: ID, first: Int, last: Int, skip: Int): [DailyRoutineEvent!]!
+  dailyRoutineEvents(after: String, before: String, first: Int, last: Int, skip: Int): [DailyRoutineEvent!]!
   goal(where: GoalWhereUniqueInput!): Goal
-  goals(after: ID, before: ID, first: Int, last: Int, skip: Int): [Goal!]!
+  goals(after: String, before: String, first: Int, last: Int, skip: Int): [Goal!]!
   me: AuthPayload!
   user(where: UserWhereUniqueInput!): User
-  users(after: ID, before: ID, first: Int, last: Int, skip: Int): [User!]!
+  users(after: String, before: String, first: Int, last: Int, skip: Int): [User!]!
 }
 
 input StringFilter {
@@ -259,28 +259,33 @@ input StringFilter {
 }
 
 type User {
-  dailyRoutine(after: ID, before: ID, first: Int, last: Int, skip: Int): [DailyRoutineEvent!]!
-  goals(after: ID, before: ID, first: Int, last: Int, skip: Int): [Goal!]!
-  id: ID!
+  dailyRoutine: [DailyRoutineEvent!]!
+  goals: [Goal!]!
+  id: String!
 }
 
-input UserCreateOneWithoutOwnerInput {
+input UserCreateOneWithoutDailyRoutineInput {
   connect: UserWhereUniqueInput
   create: UserCreateWithoutDailyRoutineInput
 }
 
+input UserCreateOneWithoutGoalsInput {
+  connect: UserWhereUniqueInput
+  create: UserCreateWithoutGoalsInput
+}
+
 input UserCreateWithoutDailyRoutineInput {
   createdAt: DateTime
-  goals: GoalCreateManyWithoutGoalsInput
-  id: ID
+  goals: GoalCreateManyWithoutOwnerInput
+  id: String
   password: String!
   username: String!
 }
 
 input UserCreateWithoutGoalsInput {
   createdAt: DateTime
-  dailyRoutine: DailyRoutineEventCreateManyWithoutDailyRoutineInput
-  id: ID
+  dailyRoutine: DailyRoutineEventCreateManyWithoutOwnerInput
+  id: String
   password: String!
   username: String!
 }
@@ -289,7 +294,7 @@ input UserUpdateInput {
   createdAt: DateTime
   dailyRoutine: DailyRoutineEventUpdateManyWithoutOwnerInput
   goals: GoalUpdateManyWithoutOwnerInput
-  id: ID
+  id: String
   password: String
   username: String
 }
@@ -311,7 +316,7 @@ input UserUpdateOneRequiredWithoutGoalsInput {
 input UserUpdateWithoutDailyRoutineDataInput {
   createdAt: DateTime
   goals: GoalUpdateManyWithoutOwnerInput
-  id: ID
+  id: String
   password: String
   username: String
 }
@@ -319,7 +324,7 @@ input UserUpdateWithoutDailyRoutineDataInput {
 input UserUpdateWithoutGoalsDataInput {
   createdAt: DateTime
   dailyRoutine: DailyRoutineEventUpdateManyWithoutOwnerInput
-  id: ID
+  id: String
   password: String
   username: String
 }
@@ -335,6 +340,6 @@ input UserUpsertWithoutGoalsInput {
 }
 
 input UserWhereUniqueInput {
-  id: ID
+  id: String
   username: String
 }
