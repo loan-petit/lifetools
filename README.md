@@ -1,5 +1,7 @@
 # LifeTools
 
+The application is available online at <https://lifetools.loanpetit.com/>, check it out.
+
 ## About LifeTools
 
 LifeTools is a personal project created for better **management of daily habits
@@ -22,7 +24,7 @@ it still is rough, but it may be one day. Stay tuned.
 ## Try the application in the browser
 
 Please install Docker and docker-compose before running the following command.
-([Get started with Docker](https://www.docker.com/get-started))
+([Get started with Docker](https://www.docker.com/get-started/))
 
 ```bash
 docker-compose up -d
@@ -37,7 +39,7 @@ Thanks to GitHub Actions the deployment process is fully automatized.
 It triggers when something is pushed onto master.
 
 The application is deployed to an AWS EC2 instance using Docker images saved in
-[petitloan/lifetools](https://hub.docker.com/r/petitloan/lifetools) Docker Hub public repository.
+[petitloan/lifetools](https://hub.docker.com/r/petitloan/lifetools/) Docker Hub public repository.
 
 When the deployment is finised, the following containers should be running on the hosting server.
 
