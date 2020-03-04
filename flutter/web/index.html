@@ -1,10 +1,48 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <title>LifeTools</title>
-</head>
-<body>
-  <script src="main.dart.js" type="application/javascript"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
+
+    <title>LifeTools</title>
+    <meta
+      name="description"
+      content="LifeTools is a personal project created for better management of daily habits and daily goals. It helps you building and sticking to habits that matter to you."
+    />
+    <link rel="manifest" href="/manifest.json" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Loan PETIT",
+        "url": "https://www.lifetools.loanpetit.com/",
+        "logo": "",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+33 (0)6 51 27 75 72",
+          "contactType": "customer service",
+          "availableLanguage": ["en", "fr"]
+        },
+        "sameAs": [
+          "https://www.linkedin.com/in/loanpetit/",
+          "https://github.com/loan-petit/"
+        ]
+      }
+    </script>
+  </head>
+
+  <body>
+    <!-- This script installs service_worker.js to provide PWA functionality to
+      application. For more information, see:
+      https://developers.google.com/web/fundamentals/primers/service-workers -->
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function() {
+          navigator.serviceWorker.register("/flutter_service_worker.js");
+        });
+      }
+    </script>
+    <script src="main.dart.js" type="application/javascript"></script>
+  </body>
 </html>

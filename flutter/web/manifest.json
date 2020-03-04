@@ -1,0 +1,8 @@
+{
+  "name": "LifeTools",
+  "start_url": ".",
+  "display": "minimal-ui",
+  "description": "App for management of daily habits and daily goals.",
+  "orientation": "portrait-primary",
+  "prefer_related_applications": false
+}
