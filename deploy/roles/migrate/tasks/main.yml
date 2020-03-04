@@ -17,6 +17,6 @@
     global: yes
 
 - name: Apply migrations to the database using Prisma2
-  shell: prisma2 migrate up --experimental
+  shell: (export $(grep '^POSTGRES_URL' .env | xargs) && prisma2 migrate up --experimental)
   args:
     chdir: ./lifetools/prisma
