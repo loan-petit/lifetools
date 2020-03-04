@@ -26,13 +26,13 @@ WORKDIR /prisma
 RUN mkdir ./prisma/
 COPY ./package.json ./
 COPY ./prisma/schema.prisma ./prisma/
-COPY ./.prod.env ./.env
 RUN npm install
 
 # Copy code ressources
 COPY . .
 
 # Generate Prisma clients
+ENV POSTGRES_URL postgresql://prisma:prisma@postgres/lifetools?schema=public
 RUN npm run generate
 
 # Build API for production

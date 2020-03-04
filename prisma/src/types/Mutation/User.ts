@@ -1,4 +1,4 @@
-import { compare, hash } from 'bcrypt'
+import { compare, hash } from 'bcryptjs'
 import { sign } from 'jsonwebtoken'
 import { mutationField, stringArg } from 'nexus'
 
