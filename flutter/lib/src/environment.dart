@@ -21,7 +21,7 @@ class Environment {
   static void prod() {
     env = EnvironmentType.PROD;
     vars = {
-      'apiEndpoint': 'http://35.180.173.108:8081/',
+      'apiEndpoint': 'https://lifetools.loanpetit.com:8081/',
     };
   }
 }
