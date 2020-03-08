@@ -39,14 +39,14 @@ class AppDrawer extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          SizedBox(height: 2 * SizeConfig.heightMultiplier),
+          SizedBox(height: 15 * SizeConfig.sizeMultiplier),
           header,
-          SizedBox(height: 3 * SizeConfig.heightMultiplier),
+          SizedBox(height: 25 * SizeConfig.sizeMultiplier),
           buildMenuItem(
               context, Icons.timelapse, 'Daily Routine', '/daily-routine'),
-          SizedBox(height: 2 * SizeConfig.heightMultiplier),
+          SizedBox(height: 15 * SizeConfig.sizeMultiplier),
           buildMenuItem(context, Icons.work, 'Goals', '/goals'),
-          SizedBox(height: 3 * SizeConfig.heightMultiplier),
+          SizedBox(height: 25 * SizeConfig.sizeMultiplier),
           logoutButton,
         ],
       ),

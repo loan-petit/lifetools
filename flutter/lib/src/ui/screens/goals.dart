@@ -45,8 +45,8 @@ class _GoalsScreenState extends State<GoalsScreen> {
           if (snapshot.hasError) {
             return Padding(
               padding: EdgeInsets.symmetric(
-                vertical: 3 * SizeConfig.heightMultiplier,
-                horizontal: 2 * SizeConfig.widthMultiplier,
+                vertical: 25 * SizeConfig.sizeMultiplier,
+                horizontal: 15 * SizeConfig.sizeMultiplier,
               ),
               child: Text(
                 "An error occured during the retrieval of your goals.",
@@ -82,7 +82,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
     final header = Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        SizedBox(height: 2 * SizeConfig.heightMultiplier),
+        SizedBox(height: 15 * SizeConfig.sizeMultiplier),
         Text(
           "Goals",
           textAlign: TextAlign.center,
@@ -91,16 +91,17 @@ class _GoalsScreenState extends State<GoalsScreen> {
                 color: Theme.of(context).colorScheme.primary,
               ),
         ),
-        SizedBox(height: 2 * SizeConfig.heightMultiplier),
+        SizedBox(height: 15 * SizeConfig.sizeMultiplier),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 4 * SizeConfig.widthMultiplier),
+          padding:
+              EdgeInsets.symmetric(horizontal: 30 * SizeConfig.sizeMultiplier),
           child: Text(
             "\"A goal properly set is halfway reached.\"",
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.title,
           ),
         ),
-        SizedBox(height: 4 * SizeConfig.heightMultiplier),
+        SizedBox(height: 30 * SizeConfig.sizeMultiplier),
       ],
     );
 

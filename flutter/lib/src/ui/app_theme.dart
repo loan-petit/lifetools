@@ -49,7 +49,7 @@ class AppTheme {
   void init() {
     _englishLike2018 = Typography.englishLike2018.apply(
       fontFamily: 'OpenSans',
-      fontSizeFactor: 0.125 * SizeConfig.textMultiplier,
+      fontSizeFactor: SizeConfig.sizeMultiplier,
       displayColor: onBackgroundColor,
       bodyColor: onBackgroundColor,
       decorationColor: onBackgroundColor,

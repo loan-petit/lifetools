@@ -20,12 +20,13 @@ class Tile extends StatelessWidget {
     return Card(
       elevation: 4.0,
       margin: EdgeInsets.symmetric(
-        vertical:1 * SizeConfig.heightMultiplier,
-        horizontal: 3 * SizeConfig.widthMultiplier,
+        vertical: 10 * SizeConfig.sizeMultiplier,
+        horizontal: 25 * SizeConfig.sizeMultiplier,
       ),
       child: Container(
         padding: EdgeInsets.symmetric(
-          vertical: 2 * SizeConfig.heightMultiplier
+          vertical: 15 * SizeConfig.sizeMultiplier,
+          horizontal: 10 * SizeConfig.sizeMultiplier,
         ),
         child: IntrinsicHeight(
           child: Row(
@@ -48,10 +49,11 @@ class Tile extends StatelessWidget {
           border: Border(
             right: BorderSide(
               color: Theme.of(context).colorScheme.primary,
-              width: 0.3 * SizeConfig.textMultiplier,
+              width: 3 * SizeConfig.sizeMultiplier,
             ),
           ),
         ),
+        padding: EdgeInsets.only(right: 10 * SizeConfig.sizeMultiplier),
         child: leading,
       ),
     );
@@ -62,7 +64,7 @@ class Tile extends StatelessWidget {
       flex: 4,
       child: Container(
         alignment: Alignment.centerLeft,
-        padding: EdgeInsets.only(left: 3 * SizeConfig.widthMultiplier),
+        padding: EdgeInsets.only(left: 25 * SizeConfig.sizeMultiplier),
         child: body,
       ),
     );
@@ -73,14 +75,14 @@ class Tile extends StatelessWidget {
       child: UnconstrainedBox(
         child: Container(
           padding: EdgeInsets.symmetric(
-            vertical: 0.5 * SizeConfig.heightMultiplier,
-            horizontal: 1 * SizeConfig.widthMultiplier,
+            vertical: 5 * SizeConfig.sizeMultiplier,
+            horizontal: 10 * SizeConfig.sizeMultiplier,
           ),
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
                   color: Theme.of(context).colorScheme.primary,
-                  width: 0.3 * SizeConfig.textMultiplier),
+                  width: 3 * SizeConfig.sizeMultiplier),
             ),
           ),
           child: trailing,

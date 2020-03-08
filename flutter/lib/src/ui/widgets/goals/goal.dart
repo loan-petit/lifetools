@@ -67,7 +67,7 @@ class _GoalState extends State<Goal> {
             ? Icons.check_box
             : Icons.check_box_outline_blank,
         semanticLabel: semanticLabel,
-        size: 3 * SizeConfig.textMultiplier,
+        size: 25 * SizeConfig.sizeMultiplier,
       ),
     );
   }
@@ -95,7 +95,7 @@ class _GoalState extends State<Goal> {
       },
       child: Icon(
         Icons.edit,
-        size: 4 * SizeConfig.textMultiplier,
+        size: 30 * SizeConfig.sizeMultiplier,
       ),
     );
   }

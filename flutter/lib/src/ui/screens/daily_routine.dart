@@ -46,8 +46,8 @@ class _DailyRoutineScreenState extends State<DailyRoutineScreen> {
           if (snapshot.hasError) {
             return Padding(
               padding: EdgeInsets.symmetric(
-                vertical: 3 * SizeConfig.heightMultiplier,
-                horizontal: 2 * SizeConfig.widthMultiplier,
+                vertical: 25 * SizeConfig.sizeMultiplier,
+                horizontal: 15 * SizeConfig.sizeMultiplier,
               ),
               child: Text(
                 "An error occured during the retrieval of your daily routine.",
@@ -92,7 +92,7 @@ class _DailyRoutineScreenState extends State<DailyRoutineScreen> {
     final header = Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        SizedBox(height: 2 * SizeConfig.heightMultiplier),
+        SizedBox(height: 15 * SizeConfig.sizeMultiplier),
         Text(
           "Daily Routine",
           textAlign: TextAlign.center,
@@ -101,16 +101,17 @@ class _DailyRoutineScreenState extends State<DailyRoutineScreen> {
                 color: Theme.of(context).colorScheme.primary,
               ),
         ),
-        SizedBox(height: 2 * SizeConfig.heightMultiplier),
+        SizedBox(height: 15 * SizeConfig.sizeMultiplier),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 4 * SizeConfig.widthMultiplier),
+          padding:
+              EdgeInsets.symmetric(horizontal: 30 * SizeConfig.sizeMultiplier),
           child: Text(
             "\"You will never change your life until you change something you do daily.\"",
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.title,
           ),
         ),
-        SizedBox(height: 4 * SizeConfig.heightMultiplier),
+        SizedBox(height: 30 * SizeConfig.sizeMultiplier),
       ],
     );
 

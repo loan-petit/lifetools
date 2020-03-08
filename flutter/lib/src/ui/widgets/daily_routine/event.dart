@@ -81,7 +81,7 @@ class _DailyRoutineEventState extends State<DailyRoutineEvent> {
             size: Theme.of(context).textTheme.body1.fontSize,
           ),
         ),
-        SizedBox(width: 1 * SizeConfig.widthMultiplier),
+        SizedBox(width: 10 * SizeConfig.sizeMultiplier),
         Flexible(
             flex: 2,
             child: Text(
@@ -111,7 +111,7 @@ class _DailyRoutineEventState extends State<DailyRoutineEvent> {
       },
       child: Icon(
         Icons.edit,
-        size: 4 * SizeConfig.textMultiplier,
+        size: 30 * SizeConfig.sizeMultiplier,
       ),
     );
   }

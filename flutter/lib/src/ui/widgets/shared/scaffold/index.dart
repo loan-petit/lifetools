@@ -75,7 +75,7 @@ class _AppScaffoldState extends State<AppScaffold> {
         alignment: Alignment.center,
         icon: Icon(
           Icons.menu,
-          size: 2.5 * SizeConfig.textMultiplier,
+          size: 20 * SizeConfig.sizeMultiplier,
         ),
         onPressed: () => _scaffoldKey.currentState.openDrawer(),
       ),

@@ -122,7 +122,7 @@ class _UpsertGoalState extends State<UpsertGoal> {
       icon: Icon(
         iconData,
         color: Theme.of(context).colorScheme.onPrimary,
-        size: 2.5 * SizeConfig.textMultiplier,
+        size: 20 * SizeConfig.sizeMultiplier,
       ),
       label: Text(
         labelText,
@@ -150,7 +150,7 @@ class _UpsertGoalState extends State<UpsertGoal> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text("Date"),
-        SizedBox(width: 5 * SizeConfig.widthMultiplier),
+        SizedBox(width: 40 * SizeConfig.sizeMultiplier),
         FlatButton(
           onPressed: () async {
             _date = await _showDatePicker(_date) ?? _date;
@@ -181,9 +181,9 @@ class _UpsertGoalState extends State<UpsertGoal> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           name,
-          SizedBox(height: 3 * SizeConfig.heightMultiplier),
+          SizedBox(height: 25 * SizeConfig.sizeMultiplier),
           datePicker,
-          if (_error != null) SizedBox(height: 3 * SizeConfig.heightMultiplier),
+          if (_error != null) SizedBox(height: 25 * SizeConfig.sizeMultiplier),
           if (_error != null) errorLabel,
         ],
       ),
