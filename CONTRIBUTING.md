@@ -24,14 +24,13 @@ working on shared branches though.
 - Push the commit(s) to your working branch.
 - Submit a merge request (MR) to the `develop` branch in the main GitHub project.
 - Your merge request needs at least 1 approval, but feel free to require more.
-- The MR title should describe the change you want to make.
+- The MR headline6 should describe the change you want to make.
 - The MR description should give a reason for your change.
 - If the your merge request solves an issue, mention it using the `Solves #XXX` or
 `Closes #XXX` syntax to auto-close the issue(s) once the merge request is merged.
 - If your merge request adds one or more migrations, make sure to execute all
 migrations on a fresh database before the MR is reviewed. If the review leads
 to large changes in the MR, execute the migrations again once the review is complete.
-
 
 ### Keep it simple
 
@@ -51,26 +50,26 @@ enhance and expand the feature.
 After your pull request is merged, you can safely delete your branch and pull
 the changes from the main (upstream) repository:
 
-* Delete the remote branch on GitHub either through the GitHub web UI or your
+- Delete the remote branch on GitHub either through the GitHub web UI or your
 local shell as follows:
 
     ```shell
     git push origin --delete my-fix-branch
     ```
 
-* Check out the master branch:
+- Check out the master branch:
 
     ```shell
     git checkout master -f
     ```
 
-* Delete the local branch:
+- Delete the local branch:
 
     ```shell
     git branch -D my-fix-branch
     ```
 
-* Update your master with the latest upstream version:
+- Update your master with the latest upstream version:
 
     ```shell
     git pull --ff upstream master
@@ -83,11 +82,12 @@ This leads to **more readable messages** that are easy to follow when looking
 through the **project history**.
 
 ### Commit Message Format
+
 Each commit message consists of a **header**, a **body** and a **footer**. The
 header has a special format that includes a **type**, a **scope** and a **subject**:
 
 ```
-<type>(<scope>): <subject>
+<type> (<scope>): <subject>
 <BLANK LINE>
 <body>
 <BLANK LINE>
@@ -103,56 +103,62 @@ The **footer** is required to close issues. It must contains the closing referen
 to the issues it solves.
 
 ```
-feature(flutter): Add environment specific configuration for dev and prod.
+feature (flutter): Add environment specific configuration for dev and prod.
 ```
 ```
-feature(prisma): Setup authentication endpoints
+feature (prisma): Setup authentication endpoints.
 
 Create the User model.
 Create signup and signin endpoints.
 ```
 
 ### Revert
+
 If the commit reverts a previous commit, it should begin with `revert: `, followed
 by the header of the reverted commit. In the body it should say:
 `This reverts commit <hash>.`, where the hash is the SHA of the commit being reverted.
 
 ### Type
+
 Must be one of the following:
 
-* **build**: Changes that affect the build system or external dependencies.
-* **ci**: Changes to our CI configuration files and scripts.
-* **docs**: Documentation only changes.
-* **feature**: A new feature.
-* **fix**: A bug fix.
-* **perf**: A code change that improves performance.
-* **refactor**: A code change that neither fixes a bug nor adds a feature.
-* **style**: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc).
-* **test**: Adding missing tests or correcting existing tests.
+- **build**: Changes that affect the build system or external dependencies.
+- **ci**: Changes to our CI configuration files and scripts.
+- **docs**: Documentation only changes.
+- **feature**: A new feature.
+- **fix**: A bug fix.
+- **perf**: A code change that improves performance.
+- **refactor**: A code change that neither fixes a bug nor adds a feature.
+- **style**: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc).
+- **test**: Adding missing tests or correcting existing tests.
 
 ### Scope
+
 The scope should be the name of the npm package affected (as perceived by the person reading the changelog generated from commit messages.
 
 The following is the list of supported scopes:
 
-* **docker**
-* **nginx**
-* **prisma**
-* **flutter**
-* **certbot**
+- **docker**
+- **nginx**
+- **prisma**
+- **flutter**
+- **certbot**
 
 ### Subject
+
 The subject contains a succinct description of the change:
 
-* use the imperative, present tense: "change" not "changed" nor "changes"
-* don't capitalize the first letter
-* no dot (.) at the end
+- use the imperative, present tense: "change" not "changed" nor "changes"
+- don't capitalize the first letter
+- no dot (.) at the end
 
 ### Body
+
 Just as in the **subject**, use the imperative, present tense: "change" not "changed" nor "changes".
 The body should include the motivation for the change and contrast this with previous behavior.
 
 ### Footer
+
 The footer should contain any information about **Breaking Changes** and is also
 the place to reference GitHub issues that this commit **Closes**.
 
