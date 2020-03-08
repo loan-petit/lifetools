@@ -21,8 +21,7 @@ class UserBlocProvider extends InheritedWidget {
   /// Retrieve the [UserBloc] from the context of a widget below this one
   /// in the tree.
   static UserBloc of(BuildContext context) {
-    return (context.inheritFromWidgetOfExactType(UserBlocProvider)
-            as UserBlocProvider)
+    return (context.dependOnInheritedWidgetOfExactType<UserBlocProvider>())
         .bloc;
   }
 }

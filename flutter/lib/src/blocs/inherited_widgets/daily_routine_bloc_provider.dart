@@ -22,8 +22,8 @@ class DailyRoutineBlocProvider extends InheritedWidget {
   /// Retrieve the [DailyRoutineBloc] from the context of a widget below this
   /// one in the tree.
   static DailyRoutineBloc of(BuildContext context) {
-    return (context.inheritFromWidgetOfExactType(DailyRoutineBlocProvider)
-            as DailyRoutineBlocProvider)
+    return (context
+            .dependOnInheritedWidgetOfExactType<DailyRoutineBlocProvider>())
         .bloc;
   }
 }

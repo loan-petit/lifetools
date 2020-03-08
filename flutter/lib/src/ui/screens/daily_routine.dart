@@ -54,7 +54,7 @@ class _DailyRoutineScreenState extends State<DailyRoutineScreen> {
                 textAlign: TextAlign.center,
                 style: Theme.of(context)
                     .textTheme
-                    .subhead
+                    .headline6
                     .apply(color: Colors.red, fontWeightDelta: 2),
               ),
             );
@@ -96,7 +96,7 @@ class _DailyRoutineScreenState extends State<DailyRoutineScreen> {
         Text(
           "Daily Routine",
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.display1.apply(
+          style: Theme.of(context).textTheme.headline4.apply(
                 fontWeightDelta: 3,
                 color: Theme.of(context).colorScheme.primary,
               ),
@@ -108,7 +108,7 @@ class _DailyRoutineScreenState extends State<DailyRoutineScreen> {
           child: Text(
             "\"You will never change your life until you change something you do daily.\"",
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.title,
+            style: Theme.of(context).textTheme.headline6,
           ),
         ),
         SizedBox(height: 30 * SizeConfig.sizeMultiplier),

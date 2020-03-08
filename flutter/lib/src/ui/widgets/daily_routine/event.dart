@@ -43,7 +43,7 @@ class _DailyRoutineEventState extends State<DailyRoutineEvent> {
       children: <Widget>[
         Text(
           widget.dailyRoutineEvent.startTime.format(context),
-          style: Theme.of(context).textTheme.body1.apply(fontWeightDelta: 2),
+          style: Theme.of(context).textTheme.bodyText2.apply(fontWeightDelta: 2),
         ),
         if (widget.dailyRoutineEvent.startTime !=
             widget.dailyRoutineEvent.endTime)
@@ -78,7 +78,7 @@ class _DailyRoutineEventState extends State<DailyRoutineEvent> {
           flex: 2,
           child: Icon(
             iconData,
-            size: Theme.of(context).textTheme.body1.fontSize,
+            size: Theme.of(context).textTheme.bodyText2.fontSize,
           ),
         ),
         SizedBox(width: 10 * SizeConfig.sizeMultiplier),
@@ -87,7 +87,7 @@ class _DailyRoutineEventState extends State<DailyRoutineEvent> {
             child: Text(
               status,
               textAlign: TextAlign.start,
-              style: Theme.of(context).textTheme.body2,
+              style: Theme.of(context).textTheme.bodyText1,
             )),
       ],
     );

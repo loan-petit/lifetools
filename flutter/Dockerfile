@@ -4,7 +4,7 @@ FROM google/dart:latest as build-stage
 ARG FLUTTER_VERSION
 
 # Install unzip which is required for flutter doctor
-RUN apt-get update && apt-get install unzip
+RUN apt-get update && apt-get install zip unzip
 
 # Install and check Flutter
 ENV FLUTTER_ROOT ${HOME}/sdks/flutter

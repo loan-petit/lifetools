@@ -21,8 +21,7 @@ class GoalsBlocProvider extends InheritedWidget {
   /// Retrieve the [GoalsBloc] from the context of a widget below this
   /// one in the tree.
   static GoalBloc of(BuildContext context) {
-    return (context.inheritFromWidgetOfExactType(GoalsBlocProvider)
-            as GoalsBlocProvider)
+    return (context.dependOnInheritedWidgetOfExactType<GoalsBlocProvider>())
         .bloc;
   }
 }

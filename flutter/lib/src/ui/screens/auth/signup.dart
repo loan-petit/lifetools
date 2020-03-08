@@ -59,12 +59,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
     final header = RichText(
       textAlign: TextAlign.center,
       text: TextSpan(
-        style: Theme.of(context).textTheme.display2.apply(fontWeightDelta: 2),
+        style: Theme.of(context).textTheme.headline3.apply(fontWeightDelta: 2),
         children: <TextSpan>[
           TextSpan(text: 'Life'),
           TextSpan(
             text: 'Tools',
-            style: Theme.of(context).textTheme.display2.apply(
+            style: Theme.of(context).textTheme.headline3.apply(
                 fontWeightDelta: 2,
                 color: Theme.of(context).colorScheme.primary),
           ),
@@ -128,7 +128,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       textAlign: TextAlign.center,
       style: Theme.of(context)
           .textTheme
-          .body2
+          .bodyText1
           .apply(color: Theme.of(context).colorScheme.error),
     );
 
@@ -136,12 +136,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
     final signInLabel = FlatButton(
       child: RichText(
         text: TextSpan(
-          style: Theme.of(context).textTheme.body1.apply(fontWeightDelta: 2),
+          style: Theme.of(context).textTheme.bodyText2.apply(fontWeightDelta: 2),
           children: <TextSpan>[
             TextSpan(text: 'Already have an account? '),
             TextSpan(
               text: 'Sign in.',
-              style: Theme.of(context).textTheme.body1.apply(
+              style: Theme.of(context).textTheme.bodyText2.apply(
                   fontWeightDelta: 2,
                   color: Theme.of(context).colorScheme.primary),
             ),

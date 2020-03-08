@@ -24,7 +24,7 @@ working on shared branches though.
 - Push the commit(s) to your working branch.
 - Submit a merge request (MR) to the `develop` branch in the main GitHub project.
 - Your merge request needs at least 1 approval, but feel free to require more.
-- The MR headline6 should describe the change you want to make.
+- The MR title should describe the change you want to make.
 - The MR description should give a reason for your change.
 - If the your merge request solves an issue, mention it using the `Solves #XXX` or
 `Closes #XXX` syntax to auto-close the issue(s) once the merge request is merged.

@@ -8,12 +8,12 @@ class AppDrawer extends StatelessWidget {
     final header = RichText(
       textAlign: TextAlign.center,
       text: TextSpan(
-        style: Theme.of(context).textTheme.title.apply(fontWeightDelta: 2),
+        style: Theme.of(context).textTheme.headline6.apply(fontWeightDelta: 2),
         children: <TextSpan>[
           TextSpan(text: 'Life'),
           TextSpan(
             text: 'Tools',
-            style: Theme.of(context).textTheme.title.apply(
+            style: Theme.of(context).textTheme.headline6.apply(
                 fontWeightDelta: 2,
                 color: Theme.of(context).colorScheme.primary),
           ),

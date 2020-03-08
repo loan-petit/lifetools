@@ -126,7 +126,7 @@ class _UpsertGoalState extends State<UpsertGoal> {
       ),
       label: Text(
         labelText,
-        style: Theme.of(context).textTheme.subhead.apply(
+        style: Theme.of(context).textTheme.headline6.apply(
               fontWeightDelta: 2,
               color: Theme.of(context).colorScheme.onPrimary,
             ),
@@ -170,7 +170,7 @@ class _UpsertGoalState extends State<UpsertGoal> {
     final errorLabel = Text(
       _error ?? '',
       textAlign: TextAlign.center,
-      style: Theme.of(context).textTheme.body2.apply(color: Colors.red),
+      style: Theme.of(context).textTheme.bodyText1.apply(color: Colors.red),
     );
 
     return Form(

@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 
-import 'package:lifetools/src/blocs/user.dart';
 import 'package:lifetools/src/ui/widgets/shared/emphasised_text.dart';
 import 'package:lifetools/src/ui/widgets/shared/scaffold/drawer.dart';
 import 'package:lifetools/src/utils/size_config.dart';
 
 /// Wrapper around [Scaffold] used as screen UI base.
 ///
-/// This example shows a simple [body] wrapped by the [AppScaffold] and the provided [title].
+/// This example shows a simple [body] wrapped by the [AppScaffold].
 ///
 /// ```dart
 /// AppScaffold(
-///   title: 'Simple Page',
 ///   body: Center(
 ///     child: Text("Hello World"),
 ///   ),
@@ -81,7 +79,7 @@ class _AppScaffoldState extends State<AppScaffold> {
       ),
       title: EmphasisedText(
         text: "Life*Tools*",
-        style: Theme.of(context).textTheme.title.apply(fontWeightDelta: 2),
+        style: Theme.of(context).textTheme.headline6.apply(fontWeightDelta: 2),
       ),
       elevation: 0,
     );

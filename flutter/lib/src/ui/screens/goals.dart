@@ -53,7 +53,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                 textAlign: TextAlign.center,
                 style: Theme.of(context)
                     .textTheme
-                    .subhead
+                    .headline6
                     .apply(color: Colors.red, fontWeightDelta: 2),
               ),
             );
@@ -86,7 +86,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
         Text(
           "Goals",
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.display1.apply(
+          style: Theme.of(context).textTheme.headline4.apply(
                 fontWeightDelta: 3,
                 color: Theme.of(context).colorScheme.primary,
               ),
@@ -98,7 +98,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
           child: Text(
             "\"A goal properly set is halfway reached.\"",
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.title,
+            style: Theme.of(context).textTheme.headline6,
           ),
         ),
         SizedBox(height: 30 * SizeConfig.sizeMultiplier),
