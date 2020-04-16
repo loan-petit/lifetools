@@ -1,0 +1,65 @@
+version: "3.7"
+
+services:
+  prisma:
+    image: petitloan/lifetools:prisma
+    depends_on:
+      - postgres
+    secrets:
+      - POSTGRES_PASSWORD
+      - JWT_SECRET
+    environment:
+      NODE_ENV: production
+      POSTGRES_HOST: "www.lifetools.loanpetit.com"
+      POSTGRES_PASSWORD_FILE: "/run/secrets/POSTGRES_PASSWORD"
+      JWT_SECRET_FILE: "/run/secrets/JWT_SECRET"
+    cap_add:
+      - SYS_ADMIN
+    configs:
+      - source: prisma_entrypoint
+        target: /usr/local/bin/docker-entrypoint.sh
+        uid: "1000"
+        gid: "1000"
+        mode: 0510
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.services.prisma.loadbalancer.server.port=4000"
+        - "traefik.http.routers.prisma.rule=HostRegexp(`{host:(?:www.)?lifetools.loanpetit.com}`)"
+        - "traefik.http.routers.prisma.entrypoints=prisma"
+        - "traefik.http.routers.prisma.tls.certresolver=default"
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+
+  postgres:
+    image: postgres:12-alpine
+    secrets:
+      - POSTGRES_PASSWORD
+    environment:
+      POSTGRES_DB: lifetools
+      POSTGRES_USER: prisma
+      POSTGRES_PASSWORD_FILE: /run/secrets/POSTGRES_PASSWORD
+    volumes:
+      - "db_data:/var/lib/postgresql/data"
+    ports:
+      - "5432:5432"
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+
+configs:
+  prisma_entrypoint:
+    file: ./prisma_entrypoint.sh
+
+secrets:
+  JWT_SECRET:
+    external: true
+  POSTGRES_PASSWORD:
+    external: true
+
+volumes:
+  db_data:

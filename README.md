@@ -35,19 +35,17 @@ When it finishes, you can go to <http://localhost:80/>, create an account and us
 
 ## Application deployment
 
-Thanks to GitHub Actions the deployment process is fully automatized.
+Thanks to GitHub Actions, the deployment process is fully automatized.
 It triggers when something is pushed onto master.
 
-The application is deployed to an AWS EC2 instance using Docker images saved in
+The application is deployed to a Docker Swarm using Docker images saved in
 [petitloan/lifetools](https://hub.docker.com/r/petitloan/lifetools/) Docker Hub public repository.
 
-When the deployment is finised, the following containers should be running on the hosting server.
-
-- **NGINX web server**: Based on petitloan/lifetools:nginx
-- **Prisma2 GraphQL API**: Based on petitloan/lifetools:prisma
+When the deployment is finished, the following services should be running on the hosting server.
+- **Traefik cloud native router** (named *traefik*): Based on traefik:v2.2
+- **Prisma API based on GraphQL**: Based on petitloan/lifetools:prisma
 - **PostgreSQL database**: Based on postgres:12-alpine
 - **Flutter application**: Based on petitloan/lifetools:flutter
-- **Certbot for Let's Encrypt certificates administration**: Based on certbot/certbot
 
 ## Found this project useful?
 

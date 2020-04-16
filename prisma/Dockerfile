@@ -1,3 +1,4 @@
+# syntax = docker/dockerfile:1.0-experimental
 FROM node:alpine
 
 ENV GLIBC_VERSION 2.30-r0
@@ -14,7 +15,7 @@ RUN apk add --update curl && \
     rm -rf glibc.apk glibc-bin.apk /var/cache/apk/*
 
 # Install required dependencies
-RUN apk add nodejs npm python g++ make && rm -rf /var/cache/apk/*
+RUN apk add bash nodejs npm python g++ make && rm -rf /var/cache/apk/*
 
 # Create Prisma Dir
 RUN mkdir /prisma
@@ -32,8 +33,11 @@ RUN npm install
 COPY . .
 
 # Generate Prisma clients
-ENV POSTGRES_URL postgresql://prisma:prisma@postgres/lifetools?schema=public
-RUN npm run generate
+ARG POSTGRES_HOST
+RUN --mount=type=secret,id=POSTGRES_PASSWORD \
+    --mount=type=secret,id=JWT_SECRET \
+    POSTGRES_URL=postgresql://prisma:$(cat /run/secrets/POSTGRES_PASSWORD)@${POSTGRES_HOST}:5432/lifetools?schema=public \
+    npm run generate
 
 # Build API for production
 RUN npm run build

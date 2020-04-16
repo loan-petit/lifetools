@@ -48,6 +48,7 @@ export interface NexusGenInputs {
     name?: NexusGenInputs['StringFilter'] | null; // StringFilter
     NOT?: NexusGenInputs['DailyRoutineEventScalarWhereInput'][] | null; // [DailyRoutineEventScalarWhereInput!]
     OR?: NexusGenInputs['DailyRoutineEventScalarWhereInput'][] | null; // [DailyRoutineEventScalarWhereInput!]
+    ownerId?: NexusGenInputs['StringFilter'] | null; // StringFilter
     startTime?: NexusGenInputs['IntFilter'] | null; // IntFilter
   }
   DailyRoutineEventUpdateInput: { // input type
@@ -131,6 +132,7 @@ export interface NexusGenInputs {
     name?: NexusGenInputs['StringFilter'] | null; // StringFilter
     NOT?: NexusGenInputs['GoalScalarWhereInput'][] | null; // [GoalScalarWhereInput!]
     OR?: NexusGenInputs['GoalScalarWhereInput'][] | null; // [GoalScalarWhereInput!]
+    ownerId?: NexusGenInputs['StringFilter'] | null; // StringFilter
   }
   GoalUpdateInput: { // input type
     date?: any | null; // DateTime

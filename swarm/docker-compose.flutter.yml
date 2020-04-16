@@ -1,0 +1,16 @@
+version: "3.7"
+
+services:
+  flutter:
+    image: petitloan/lifetools:flutter
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.services.flutter.loadbalancer.server.port=80"
+        - "traefik.http.routers.flutter.rule=HostRegexp(`{host:(?:www.)?lifetools.loanpetit.com}`)"
+        - "traefik.http.routers.flutter.entrypoints=websecure"
+        - "traefik.http.routers.flutter.tls.certresolver=default"

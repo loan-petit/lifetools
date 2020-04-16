@@ -1,14 +1,12 @@
-name: Prisma2 GraphQL API CI
+name: Prisma API CI
 
 on:
   push:
     branches:
       - master
-      - develop
   pull_request:
     branches:
       - master
-      - develop
 
 jobs:
   build:
@@ -24,7 +22,7 @@ jobs:
 
       - name: Install npm packages and run production build
         run: |
-          export $(grep '^POSTGRES_URL' .env | xargs)
+          export "POSTGRES_URL=postgresql://prisma:${{ secrets.POSTGRES_PASSWORD }}@lifetools.loanpetit.com:5432/lifetools?schema=public"
           npm ci
           npm run build --if-present
         env:

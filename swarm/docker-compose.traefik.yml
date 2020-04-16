@@ -1,0 +1,59 @@
+version: "3.7"
+
+services:
+  traefik:
+    image: "traefik:v2.2"
+    command:
+      - "--api.dashboard=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.swarmMode=true"
+      # Entrypoints
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.prisma.address=:4000"
+      - "--entrypoints.traefik.address=:8080"
+      # ACME challenge for SSL certificate creation
+      - "--certificatesresolvers.default.acme.httpchallenge=true"
+      - "--certificatesresolvers.default.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.default.acme.email=petit.loan1@gmail.com"
+      - "--certificatesresolvers.default.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "4000:4000"
+      - "8080:8080"
+    secrets:
+      - TRAEFIK_USERS
+    volumes:
+      - "letsencrypt:/letsencrypt"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - "traefik.enable=true"
+        # Redirect HTTP to HTTPS
+        - "traefik.http.routers.httpsredirect.rule=HostRegexp(`{host:.*.?lifetools.loanpetit.com}`)"
+        - "traefik.http.routers.httpsredirect.entrypoints=web"
+        - "traefik.http.routers.httpsredirect.middlewares=httpsredirect"
+        - "traefik.http.middlewares.httpsredirect.redirectscheme.scheme=https"
+        - "traefik.http.middlewares.httpsredirect.redirectscheme.permanent=true"
+        # Expose secured dashboard
+        - "traefik.http.routers.api.rule=HostRegexp(`{host:(?:www.)?lifetools.loanpetit.com}`)"
+        - "traefik.http.routers.api.service=api@internal"
+        - "traefik.http.routers.api.entrypoints=traefik"
+        - "traefik.http.routers.api.tls.certresolver=default"
+        - "traefik.http.routers.api.tls.domains[0].main=lifetools.loanpetit.com"
+        - "traefik.http.routers.api.tls.domains[1].main=www.lifetools.loanpetit.com"
+        - "traefik.http.routers.api.middlewares=auth"
+        - "traefik.http.middlewares.auth.basicauth.usersfile=/run/secrets/TRAEFIK_USERS"
+        - "traefik.http.services.dashboard.loadbalancer.server.port=8080"
+
+secrets:
+  TRAEFIK_USERS:
+    external: true
+
+volumes:
+  letsencrypt:

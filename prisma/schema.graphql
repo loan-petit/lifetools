@@ -48,6 +48,7 @@ input DailyRoutineEventScalarWhereInput {
   name: StringFilter
   NOT: [DailyRoutineEventScalarWhereInput!]
   OR: [DailyRoutineEventScalarWhereInput!]
+  ownerId: StringFilter
   startTime: IntFilter
 }
 
@@ -154,6 +155,7 @@ input GoalScalarWhereInput {
   name: StringFilter
   NOT: [GoalScalarWhereInput!]
   OR: [GoalScalarWhereInput!]
+  ownerId: StringFilter
 }
 
 input GoalUpdateInput {

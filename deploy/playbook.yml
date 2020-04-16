@@ -1,9 +1,0 @@
-- name: Deploy LifeTools project
-  hosts: lifetools
-  gather_facts: no
-  roles:
-    - role: base
-      become: yes
-    - role: docker
-      become: yes
-    - role: migrate

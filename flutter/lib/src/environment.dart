@@ -13,7 +13,7 @@ class Environment {
   static void dev() {
     env = EnvironmentType.DEV;
     vars = {
-      'apiEndpoint': 'http://localhost:8081/',
+      'apiEndpoint': 'http://localhost:4000/',
     };
   }
 
@@ -21,7 +21,7 @@ class Environment {
   static void prod() {
     env = EnvironmentType.PROD;
     vars = {
-      'apiEndpoint': 'https://lifetools.loanpetit.com:8081/',
+      'apiEndpoint': 'https://www.lifetools.loanpetit.com:4000/',
     };
   }
 }

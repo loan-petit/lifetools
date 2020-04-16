@@ -1,37 +1,41 @@
-name: Deploy the application
+name: Deployment pipeline
 
 on:
   push:
-    branches:
-      - master
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
 
-      - name: Build images
-        run: |
-          docker build -t petitloan/lifetools:nginx --build-arg APP_ENV=prod ./nginx/
-          docker build -t petitloan/lifetools:prisma ./prisma/
-          docker build -t petitloan/lifetools:flutter --build-arg FLUTTER_VERSION=v1.15.18 ./flutter/
+    - name: Login to Docker Hub
+      run: docker login --username ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Login to Docker Hub
-        run: docker login --username ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }}
+    - name: Load Postgresql password
+      run: echo "${{ secrets.POSTGRES_PASSWORD }}" > ./.secrets/POSTGRES_PASSWORD.txt
+      working-directory: ./swarm/
 
-      - name: Push images to Docker Hub repository
-        run: |
-          docker push petitloan/lifetools:nginx
-          docker push petitloan/lifetools:prisma
-          docker push petitloan/lifetools:flutter
+    - name: Load JWT secret for Prisma authentication management
+      run: echo "${{ secrets.JWT_SECRET }}" > ./.secrets/JWT_SECRET.txt
+      working-directory: ./swarm/
 
-      - name: Load AWS EC2 private key.
-        run: |
-          echo "${{ secrets.AWS_EC2_KEY }}" > ~/.aws_ec2_key.pem
-          chmod 600 ~/.aws_ec2_key.pem
+    - name: Build and push images to Docker Hub
+      run: ./build_and_push_images.sh
+      working-directory: ./swarm/
 
-      - name: Deploy using Ansible playbook
-        run: ansible-playbook playbook.yml -i production --key-file=~/.aws_ec2_key.pem
-        working-directory: ./deploy/
+    - name: Load AWS EC2 private key
+      run: |
+        echo "${{ secrets.AWS_EC2_KEY }}" > ~/.aws_ec2_key.pem
+        chmod 600 ~/.aws_ec2_key.pem
+         
+    - name: Create SSH tunnel to remote EC2 Docker socket
+      run: ssh -o StrictHostKeyChecking=no -i ~/.aws_ec2_key.pem -fNL localhost:2376:/var/run/docker.sock ${{ secrets.AWS_EC2_DESTINATION }}
+
+    - name: Deploy services to the remote swarm.
+      run: docker -H localhost:2376 stack deploy $(for f in docker-compose.*.yml; do echo -n "-c $f "; done) lifetools
+      working-directory: ./swarm/

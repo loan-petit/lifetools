@@ -9,7 +9,7 @@ generator client {
 }
 
 model User {
-  id           String              @id @default(cuid())
+  id           String              @default(cuid()) @id
   createdAt    DateTime            @default(now())
   username     String              @unique
   password     String
@@ -18,17 +18,19 @@ model User {
 }
 
 model DailyRoutineEvent {
-  id        String @id @default(cuid())
+  id        String @default(cuid()) @id
   name      String
   startTime Int
   endTime   Int
-  owner     User
+  owner     User   @relation(fields: [ownerId], references: [id])
+  ownerId   String
 }
 
 model Goal {
-  id          String   @id @default(cuid())
+  id          String   @default(cuid()) @id
   name        String
   date        DateTime
   isCompleted Boolean  @default(false)
-  owner       User
+  owner       User     @relation(fields: [ownerId], references: [id])
+  ownerId     String
 }
